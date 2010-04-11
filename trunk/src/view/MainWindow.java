@@ -1,4 +1,4 @@
-
+package view;
 
 import javax.swing.JPanel;
 import javax.swing.JFrame;
@@ -25,7 +25,7 @@ public class MainWindow extends JFrame {
 	private JButton jButtonDeshacer = null;
 	private JButton jButtonAlmacenar = null;
 	private JButton jButtonSimilar = null;
-	
+/*	
 	public static void main(	String[] args	){
 		
 		//Create the frame.
@@ -38,7 +38,7 @@ public class MainWindow extends JFrame {
 		frame.setVisible(true);
 	
 	}
-
+*/
 	public MainWindow(){
 		
 		super();
@@ -54,6 +54,7 @@ public class MainWindow extends JFrame {
 		
 		//Initialize with an image, otherwise it looks like shit
 		ImageIcon iconoImagen = new ImageIcon("IMG_1.jpg");
+		
 		jLabel1.setIcon(iconoImagen);
 	}
 
