@@ -39,9 +39,11 @@ public class MainWindow extends JFrame {
 	
 	}
 
-	public MainWindow() {
+	public MainWindow(){
+		
 		super();
 		initialize();
+	
 	}
 
 	
