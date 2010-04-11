@@ -32,7 +32,7 @@ public class MainWindow extends JFrame {
 		//What happens when it closes
 		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
 
-		//Show it.
+		//Show it
 		frame.setVisible(true);
 	
 	}
@@ -45,19 +45,20 @@ public class MainWindow extends JFrame {
 	}
 
 	
-	private void initialize() {
+	private void initialize(){
+		
 		this.setSize(1000, 750);
+		
 		this.setContentPane(getJContentPane());
+		
 		this.setTitle("Ey ey fierita ete e el proyecto toson");
-		
-		//Initialize with an image, otherwise it looks like shit
-		//ImageIconWithFilters iconoImagen = new ImageIconWithFilters("IMG_1.jpg");
-		
+	
 	}
 
 	
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
+			
 			jLabelFoto = new JLabel();
 			jLabelFoto.setBounds(new Rectangle(41, 21, 228, 22));
 			jLabelFoto.setText("Ingrese la foto en jpg a procesar sin la extension");
@@ -73,6 +74,7 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonAlmacenar(), null);
 			jContentPane.add(getJButtonSimilar(), null);
 			
+			// Initialize with a img
 			jContentPane.loadImage( "IMG_1.jpg" );
 			jContentPane.createBufferedImage();
 			
@@ -99,10 +101,10 @@ public class MainWindow extends JFrame {
 			jButtonAbrir.setText("Abrir");
 			jButtonAbrir.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
+				
 					String foto=jTextFieldFoto.getText();
 					
-					//ImageIconWithFilters iconoImagen = new ImageIconWithFilters(foto+".jpg");
-					//jLabel1.setIcon(iconoImagen);
+					jContentPane.loadImage( foto+".jpg" );
 				
 				}
 			});

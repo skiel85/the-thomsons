@@ -25,15 +25,6 @@ public class JPanelWithFilters extends JPanel {
     
     LookupTable lookupTable;
 
-    public JPanelWithFilters( String string ){
-    	
-        setBackground(Color.black); // panel background color
-        loadImage( string );
-        setSize(displayImage.getWidth(this), displayImage.getWidth(this)); // panel
-        createBufferedImage();
-    
-    }
-
     public JPanelWithFilters() {
 		
     	super();
@@ -41,11 +32,16 @@ public class JPanelWithFilters extends JPanel {
 	}
 
 	public void loadImage( String string ) {
-        displayImage = Toolkit.getDefaultToolkit().getImage( string );
-        MediaTracker mt = new MediaTracker(this);
-        mt.addImage(displayImage, 1);
+        
+		displayImage = Toolkit.getDefaultToolkit().getImage( string );
+		
+		MediaTracker mt = new MediaTracker(this);
+        
+		mt.addImage(displayImage, 1);
+        
         try {
             mt.waitForAll();
+        
         } catch (Exception e) {
             System.out.println("Exception while loading.");
         }
