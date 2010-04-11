@@ -40,16 +40,25 @@ public class JPanelWithFilters extends JPanel {
 		mt.addImage(displayImage, 1);
         
         try {
+        	
             mt.waitForAll();
         
         } catch (Exception e) {
-            System.out.println("Exception while loading.");
+            
+        	System.out.println("Exception while loading.");
+        
         }
 
         if (displayImage.getWidth(this) == -1) {
-            System.out.println("No jpg file");
-            System.exit(0);
+        
+        	System.out.println("No jpg file");
+            
+        	System.exit(0);
+        
         }
+        
+        this.createBufferedImage();
+        
     }
 
     public void createBufferedImage() {
