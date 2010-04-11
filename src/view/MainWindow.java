@@ -1,5 +1,6 @@
 package view;
 
+import model.image.*;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import java.awt.Dimension;
@@ -8,6 +9,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+
+import model.image.ImageIconWithFilters;
 
 import java.awt.Point;
 
@@ -21,11 +24,11 @@ public class MainWindow extends JFrame {
 	private JButton jButtonFiltro1 = null;
 	private JButton jButtonFiltro2 = null;
 	private JButton jButtonFiltro3 = null;
-	private JLabel jLabel1 = null;
+	private JPanelWithFilters jPanel = null;
 	private JButton jButtonDeshacer = null;
 	private JButton jButtonAlmacenar = null;
 	private JButton jButtonSimilar = null;
-/*	
+
 	public static void main(	String[] args	){
 		
 		//Create the frame.
@@ -38,7 +41,7 @@ public class MainWindow extends JFrame {
 		frame.setVisible(true);
 	
 	}
-*/
+
 	public MainWindow(){
 		
 		super();
@@ -53,18 +56,21 @@ public class MainWindow extends JFrame {
 		this.setTitle("Ey ey fierita ete e el proyecto toson");
 		
 		//Initialize with an image, otherwise it looks like shit
-		ImageIcon iconoImagen = new ImageIcon("IMG_1.jpg");
+		//ImageIconWithFilters iconoImagen = new ImageIconWithFilters("IMG_1.jpg");
 		
-		jLabel1.setIcon(iconoImagen);
+		jPanel = new JPanelWithFilters( "IMG_1.jpg" );
+		jPanel.setSize( new Dimension( 700, 550 ) );
+		jPanel.setLocation( new Point(44, 104) );
+		
 	}
 
 	
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
-			jLabel1 = new JLabel();
-			jLabel1.setText("Imagen");
-			jLabel1.setSize(new Dimension(700, 550));
-			jLabel1.setLocation(new Point(44, 104));
+			//jLabel1 = new JLabel();
+			//jLabel1.setText("Imagen");
+			//jLabel1.setSize(new Dimension(700, 550));
+			//jLabel1.setLocation(new Point(44, 104));
 			jLabelFoto = new JLabel();
 			jLabelFoto.setBounds(new Rectangle(41, 21, 228, 22));
 			jLabelFoto.setText("Ingrese la foto en jpg a procesar sin la extension");
@@ -76,7 +82,7 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonFiltro1(), null);
 			jContentPane.add(getJButtonFiltro2(), null);
 			jContentPane.add(getJButtonFiltro3(), null);
-			jContentPane.add(jLabel1, null);
+			jContentPane.add(jPanel, null);
 			jContentPane.add(getJButtonDeshacer(), null);
 			jContentPane.add(getJButtonAlmacenar(), null);
 			jContentPane.add(getJButtonSimilar(), null);
@@ -102,8 +108,8 @@ public class MainWindow extends JFrame {
 			jButtonAbrir.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					String foto=jTextFieldFoto.getText();
-					ImageIcon iconoImagen = new ImageIcon(foto+".jpg");
-					jLabel1.setIcon(iconoImagen);
+					ImageIconWithFilters iconoImagen = new ImageIconWithFilters(foto+".jpg");
+					//jLabel1.setIcon(iconoImagen);
 					
 	
 				
@@ -123,7 +129,17 @@ public class MainWindow extends JFrame {
 			jButtonFiltro1.setSize(new Dimension(120, 26));
 			jButtonFiltro1.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
-					System.out.println("mouseClicked()"); 
+					
+					//insert code here for filtro1
+					
+					//ImageIconWithFilters i = (ImageIconWithFilters) jLabel1.getIcon();
+					
+					//i.brighten();
+					
+					//jLabel1.repaint();
+					
+					System.out.println("mouseClicked() on Filtro1"); 
+				
 				}
 			});
 		}

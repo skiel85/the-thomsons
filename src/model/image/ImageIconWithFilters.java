@@ -1,5 +1,7 @@
 package model.image;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
 import java.awt.image.ShortLookupTable;
 
@@ -10,7 +12,17 @@ public class ImageIconWithFilters extends ImageIcon {
 
 	LookupTable lookupTable;
 	
-    public void brighten(){
+	BufferedImage bi;
+	
+    public ImageIconWithFilters(String string) {
+		
+    	super( string );
+    	
+        bi = new BufferedImage( this.getImage().getWidth(null), this.getImage().getHeight(null), BufferedImage.TYPE_INT_ARGB);
+    	
+	}
+
+	public void brighten(){
     	
         short brighten[] = new short[256];
         
@@ -27,6 +39,14 @@ public class ImageIconWithFilters extends ImageIcon {
         }
         
         lookupTable = new ShortLookupTable(0, brighten);
+    }
+	
+    public void applyFilter() {
+     
+    	LookupOp lop = new LookupOp(lookupTable, null);
+        
+    	lop.filter(bi, bi);
+    
     }
 	
 }
