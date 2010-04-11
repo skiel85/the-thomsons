@@ -57,7 +57,7 @@ public class JPanelWithFilters extends JPanel {
         
         }
         
-        this.createBufferedImage();
+        createBufferedImage();
         
     }
 
