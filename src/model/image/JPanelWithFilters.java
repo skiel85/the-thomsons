@@ -12,6 +12,7 @@ import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
 import java.awt.image.ShortLookupTable;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
