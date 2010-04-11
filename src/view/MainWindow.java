@@ -76,7 +76,6 @@ public class MainWindow extends JFrame {
 			
 			// Initialize with a img
 			jContentPane.loadImage( "IMG_1.jpg" );
-			jContentPane.createBufferedImage();
 			
 		}
 		
@@ -104,7 +103,9 @@ public class MainWindow extends JFrame {
 				
 					String foto=jTextFieldFoto.getText();
 					
-					jContentPane.loadImage( foto+".jpg" );
+					jContentPane.loadImage( foto + ".jpg" ); //TODO no funca esto todavia
+					
+					jContentPane.repaint();
 				
 				}
 			});
