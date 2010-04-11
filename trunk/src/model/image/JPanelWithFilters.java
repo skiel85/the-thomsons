@@ -25,7 +25,7 @@ public class JPanelWithFilters extends JPanel {
     Graphics2D big;
     
     LookupTable lookupTable;
-
+   
     public JPanelWithFilters() {
 		
     	super();
@@ -68,7 +68,7 @@ public class JPanelWithFilters extends JPanel {
 
         big = bi.createGraphics();
         
-        big.drawImage(displayImage, 44, 104, this);
+        big.drawImage(displayImage, 44, 104, 700, 600, this);
     
     }
 
@@ -133,9 +133,9 @@ public class JPanelWithFilters extends JPanel {
     }
 
     public void reset() {
-        big.setColor(Color.black);
-        big.clearRect(0, 0, bi.getWidth(this), bi.getHeight(this));
-        big.drawImage(displayImage, 0, 0, this);
+    	        
+        big.drawImage(displayImage, 44, 104, 700, 600, this);
+        
     }
 
     public void applyFilter() {
