@@ -3,9 +3,7 @@
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import java.awt.Dimension;
-
 import java.awt.Rectangle;
-
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -51,6 +49,10 @@ public class MainWindow extends JFrame {
 		this.setSize(1000, 750);
 		this.setContentPane(getJContentPane());
 		this.setTitle("Ey ey fierita ete e el proyecto toson");
+		
+		//Initialize with an image, otherwise it looks like shit
+		ImageIcon iconoImagen = new ImageIcon("IMG_1.jpg");
+		jLabel1.setIcon(iconoImagen);
 	}
 
 	
@@ -62,7 +64,7 @@ public class MainWindow extends JFrame {
 			jLabel1.setLocation(new Point(44, 104));
 			jLabelFoto = new JLabel();
 			jLabelFoto.setBounds(new Rectangle(41, 21, 228, 22));
-			jLabelFoto.setText("Ingrese la foto a procesar");
+			jLabelFoto.setText("Ingrese la foto en jpg a procesar sin la extension");
 			jContentPane = new JPanel();
 			jContentPane.setLayout(null);
 			jContentPane.add(getJTextFieldFoto(), null);
