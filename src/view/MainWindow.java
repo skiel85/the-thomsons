@@ -186,7 +186,13 @@ public class MainWindow extends JFrame {
 			jButtonDeshacer.setLocation(new Point(585, 57));
 			jButtonDeshacer.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
-					System.out.println("mouseClicked()"); 
+					
+					jContentPane.reset();
+					jContentPane.applyFilter();
+					jContentPane.repaint();
+					
+					System.out.println("mouseClicked() on deshacer"); 
+				
 				}
 			});
 		}
