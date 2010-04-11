@@ -1,133 +1,47 @@
-package model;
+package model.image;
 
-
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ByteLookupTable;
 import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
 import java.awt.image.ShortLookupTable;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.TitledBorder;
 
-public class ColorApp extends JFrame {
-    DisplayPanel displayPanel;
-
-    JButton brightenButton, darkenButton, contrastIncButton, contrastDecButton, reverseButton, resetButton;
-
-    public ColorApp() {
-        super();
-        Container container = getContentPane();
-
-        displayPanel = new DisplayPanel();
-        container.add(displayPanel);
-
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 2));
-        panel.setBorder(new TitledBorder("Click a Button to Perform the Associated Operation and Reset..."));
-
-        brightenButton = new JButton("Brightness >>");
-        brightenButton.addActionListener(new ButtonListener());
-        darkenButton = new JButton("Darkness >>");
-        darkenButton.addActionListener(new ButtonListener());
-        contrastIncButton = new JButton("Contrast >>");
-        contrastIncButton.addActionListener(new ButtonListener());
-        contrastDecButton = new JButton("Contrast <<");
-        contrastDecButton.addActionListener(new ButtonListener());
-        reverseButton = new JButton("Negative");
-        reverseButton.addActionListener(new ButtonListener());
-        resetButton = new JButton("Reset");
-        resetButton.addActionListener(new ButtonListener());
-
-        panel.add(brightenButton);
-        panel.add(darkenButton);
-        panel.add(contrastIncButton);
-        panel.add(contrastDecButton);
-        panel.add(reverseButton);
-        panel.add(resetButton);
-
-        container.add(BorderLayout.SOUTH, panel);
-
-        addWindowListener(new WindowEventHandler());
-        setSize(displayPanel.getWidth(), displayPanel.getHeight() + 25);
-        show();
-    }
-
-    class WindowEventHandler extends WindowAdapter {
-        public void windowClosing(WindowEvent e) {
-            System.exit(0);
-        }
-    }
-
-    public static void main(String arg[]) {
-        new ColorApp();
-    }
-
-    class ButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            JButton button = (JButton) e.getSource();
-
-            if (button.equals(brightenButton)) {
-                displayPanel.brightenLUT();
-                displayPanel.applyFilter();
-                displayPanel.repaint();
-            } else if (button.equals(darkenButton)) {
-                displayPanel.darkenLUT();
-                displayPanel.applyFilter();
-                displayPanel.repaint();
-            } else if (button.equals(contrastIncButton)) {
-                displayPanel.contrastIncLUT();
-                displayPanel.applyFilter();
-                displayPanel.repaint();
-            } else if (button.equals(contrastDecButton)) {
-                displayPanel.contrastDecLUT();
-                displayPanel.applyFilter();
-                displayPanel.repaint();
-            } else if (button.equals(reverseButton)) {
-                displayPanel.reverseLUT();
-                displayPanel.applyFilter();
-                displayPanel.repaint();
-            } else if (button.equals(resetButton)) {
-                displayPanel.reset();
-                displayPanel.repaint();
-            }
-        }
-    }
-}
-
-class DisplayPanel extends JPanel {
-    Image displayImage;
+@SuppressWarnings("serial")
+public class JPanelWithFilters extends JPanel {
+   
+	Image displayImage;
 
     BufferedImage bi;
-
+    
     Graphics2D big;
-
+    
     LookupTable lookupTable;
 
-    DisplayPanel() {
+    public JPanelWithFilters( String string ){
+    	
         setBackground(Color.black); // panel background color
-        loadImage();
+        loadImage( string );
         setSize(displayImage.getWidth(this), displayImage.getWidth(this)); // panel
         createBufferedImage();
+    
     }
 
-    public void loadImage() {
-        displayImage = Toolkit.getDefaultToolkit().getImage("IMG_1.jpg");
+    public JPanelWithFilters() {
+		
+    	super();
+    	
+	}
+
+	public void loadImage( String string ) {
+        displayImage = Toolkit.getDefaultToolkit().getImage( string );
         MediaTracker mt = new MediaTracker(this);
         mt.addImage(displayImage, 1);
         try {

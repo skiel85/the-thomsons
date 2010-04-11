@@ -5,13 +5,9 @@ import javax.swing.JPanel;
 import javax.swing.JFrame;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-
-import model.image.ImageIconWithFilters;
-
 import java.awt.Point;
 
 public class MainWindow extends JFrame {
@@ -76,7 +72,10 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonDeshacer(), null);
 			jContentPane.add(getJButtonAlmacenar(), null);
 			jContentPane.add(getJButtonSimilar(), null);
-		
+			
+			jContentPane.loadImage( "IMG_1.jpg" );
+			jContentPane.createBufferedImage();
+			
 		}
 		
 		return jContentPane;
@@ -101,12 +100,10 @@ public class MainWindow extends JFrame {
 			jButtonAbrir.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					String foto=jTextFieldFoto.getText();
-					ImageIconWithFilters iconoImagen = new ImageIconWithFilters(foto+".jpg");
-					//jLabel1.setIcon(iconoImagen);
 					
-	
+					//ImageIconWithFilters iconoImagen = new ImageIconWithFilters(foto+".jpg");
+					//jLabel1.setIcon(iconoImagen);
 				
-
 				}
 			});
 		}
@@ -123,13 +120,9 @@ public class MainWindow extends JFrame {
 			jButtonFiltro1.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
-					//insert code here for filtro1
-					
-					//ImageIconWithFilters i = (ImageIconWithFilters) jLabel1.getIcon();
-					
-					//i.brighten();
-					
-					//jLabel1.repaint();
+					jContentPane.brightenLUT();
+					jContentPane.applyFilter();
+					jContentPane.repaint();
 					
 					System.out.println("mouseClicked() on Filtro1"); 
 				
