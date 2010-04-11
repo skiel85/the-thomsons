@@ -53,10 +53,13 @@ public class JPanelWithFilters extends JPanel {
     }
 
     public void createBufferedImage() {
-        bi = new BufferedImage(displayImage.getWidth(this), displayImage.getHeight(this), BufferedImage.TYPE_INT_ARGB);
+        
+    	bi = new BufferedImage(displayImage.getWidth(this), displayImage.getHeight(this), BufferedImage.TYPE_INT_ARGB);
 
         big = bi.createGraphics();
-        big.drawImage(displayImage, 0, 0, this);
+        
+        big.drawImage(displayImage, 44, 104, this);
+    
     }
 
     public void brightenLUT() {
