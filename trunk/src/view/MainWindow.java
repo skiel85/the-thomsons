@@ -17,14 +17,13 @@ import java.awt.Point;
 public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private JPanel jContentPane = null;
+	private JPanelWithFilters jContentPane = null;
 	private JTextField jTextFieldFoto = null;
 	private JLabel jLabelFoto = null;
 	private JButton jButtonAbrir = null;
 	private JButton jButtonFiltro1 = null;
 	private JButton jButtonFiltro2 = null;
 	private JButton jButtonFiltro3 = null;
-	private JPanelWithFilters jPanel = null;
 	private JButton jButtonDeshacer = null;
 	private JButton jButtonAlmacenar = null;
 	private JButton jButtonSimilar = null;
@@ -58,23 +57,15 @@ public class MainWindow extends JFrame {
 		//Initialize with an image, otherwise it looks like shit
 		//ImageIconWithFilters iconoImagen = new ImageIconWithFilters("IMG_1.jpg");
 		
-		jPanel = new JPanelWithFilters( "IMG_1.jpg" );
-		jPanel.setSize( new Dimension( 700, 550 ) );
-		jPanel.setLocation( new Point(44, 104) );
-		
 	}
 
 	
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
-			//jLabel1 = new JLabel();
-			//jLabel1.setText("Imagen");
-			//jLabel1.setSize(new Dimension(700, 550));
-			//jLabel1.setLocation(new Point(44, 104));
 			jLabelFoto = new JLabel();
 			jLabelFoto.setBounds(new Rectangle(41, 21, 228, 22));
 			jLabelFoto.setText("Ingrese la foto en jpg a procesar sin la extension");
-			jContentPane = new JPanel();
+			jContentPane = new JPanelWithFilters();
 			jContentPane.setLayout(null);
 			jContentPane.add(getJTextFieldFoto(), null);
 			jContentPane.add(jLabelFoto, null);
@@ -82,12 +73,14 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonFiltro1(), null);
 			jContentPane.add(getJButtonFiltro2(), null);
 			jContentPane.add(getJButtonFiltro3(), null);
-			jContentPane.add(jPanel, null);
 			jContentPane.add(getJButtonDeshacer(), null);
 			jContentPane.add(getJButtonAlmacenar(), null);
 			jContentPane.add(getJButtonSimilar(), null);
+		
 		}
+		
 		return jContentPane;
+
 	}
 
 	
