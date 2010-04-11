@@ -13,7 +13,7 @@ import javax.swing.JButton;
 
 import java.awt.Point;
 
-public class main extends JFrame {
+public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
@@ -28,7 +28,20 @@ public class main extends JFrame {
 	private JButton jButtonAlmacenar = null;
 	private JButton jButtonSimilar = null;
 	
-	public main() {
+	public static void main(	String[] args	){
+		
+		//Create the frame.
+		MainWindow frame = new MainWindow();
+		
+		//What happens when it closes
+		frame.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+
+		//Show it.
+		frame.setVisible(true);
+	
+	}
+
+	public MainWindow() {
 		super();
 		initialize();
 	}
