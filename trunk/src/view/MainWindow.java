@@ -143,7 +143,12 @@ public class MainWindow extends JFrame {
 			jButtonFiltro2.setLocation(new Point(789, 301));
 			jButtonFiltro2.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
-					System.out.println("mouseClicked()"); 
+					
+					jContentPane.darkenLUT();
+					jContentPane.applyFilter();
+					jContentPane.repaint();
+					
+					System.out.println("mouseClicked() on Filtro2"); 
 				}
 			});
 		}
@@ -158,7 +163,12 @@ public class MainWindow extends JFrame {
 			jButtonFiltro3.setLocation(new Point(789, 441));
 			jButtonFiltro3.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
-					System.out.println("mouseClicked()"); 
+					
+					jContentPane.contrastIncLUT();
+					jContentPane.applyFilter();
+					jContentPane.repaint();
+					
+					System.out.println("mouseClicked() on Filtro3"); 
 				}
 			});
 		}
