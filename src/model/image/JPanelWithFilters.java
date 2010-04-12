@@ -7,6 +7,8 @@ import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.ByteLookupTable;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
 import java.awt.image.ShortLookupTable;
@@ -21,7 +23,9 @@ public class JPanelWithFilters extends JPanel {
     
     Graphics2D big;
     
-    LookupTable lookupTable;
+    //LookupTable lookupTable;
+    
+    float[] pattern;
    
     public JPanelWithFilters() {
 		
@@ -69,6 +73,8 @@ public class JPanelWithFilters extends JPanel {
     
     }
 
+    /*
+     
     public void brightenLUT() {
         short brighten[] = new short[256];
         for (int i = 0; i < 256; i++) {
@@ -128,16 +134,50 @@ public class JPanelWithFilters extends JPanel {
         }
         lookupTable = new ByteLookupTable(0, reverse);
     }
-
+*/
+    
     public void reset() {
+    	
+    	bi = new BufferedImage(displayImage.getWidth(this), displayImage.getHeight(this), BufferedImage.TYPE_INT_ARGB);
+
+        big = bi.createGraphics();
     	        
         big.drawImage(displayImage, 44, 104, 700, 600, this);
         
     }
+    
+    public void sharpen(){
+    	   
+    	pattern = new float[] {
+    			
+      		     0.0f, -1.0f, 0.0f,
+      		    -1.0f, 5.0f, -1.0f,
+      		     0.0f, -1.0f, 0.0f
+      		
+    	};
+    	
+    }
+    
+    public void lowFilter(){
+ 	   
+    	pattern = new float[] {
+    			
+      		     0.0f, 0.1f, 0.0f,
+      		     0.1f, 0.6f, 0.1f,
+      		     0.0f, 0.1f, 0.0f
+      		
+    	};
+    	
+    }
 
     public void applyFilter() {
-        LookupOp lop = new LookupOp(lookupTable, null);
-        lop.filter(bi, bi);
+   		
+    	Kernel kernel = new Kernel(3, 3, pattern);
+   		
+    	ConvolveOp op = new ConvolveOp(kernel);
+   	
+    	bi = op.filter( bi, null);
+    
     }
 
     public void update(Graphics g) {
