@@ -24,6 +24,7 @@ public class MainWindow extends JFrame {
 	private JButton jButtonAlmacenar = null;
 	private JButton jButtonSimilar = null;
 	private JButton jButtonBinarizar = null;
+	private JButton jButtonDarken = null;
 
 	public static void main(	String[] args	){
 		
@@ -75,6 +76,7 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonAlmacenar(), null);
 			jContentPane.add(getJButtonSimilar(), null);
 			jContentPane.add(getJButtonBinarizar(), null);
+			jContentPane.add(getJButtonDarken(), null);
 			
 			// Initialize with a img
 			jContentPane.loadImage( "7_113_F.jpg" );
@@ -119,7 +121,7 @@ public class MainWindow extends JFrame {
 	private JButton getJButtonFiltro1() {
 		if (jButtonFiltro1 == null) {
 			jButtonFiltro1 = new JButton();
-			jButtonFiltro1.setText("Filtro 1");
+			jButtonFiltro1.setText("Sharpen");
 			jButtonFiltro1.setLocation(new Point(789, 165));
 			jButtonFiltro1.setSize(new Dimension(120, 26));
 			jButtonFiltro1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -129,7 +131,7 @@ public class MainWindow extends JFrame {
 					jContentPane.applyFilter();
 					jContentPane.repaint();
 					
-					System.out.println("mouseClicked() on Filtro1"); 
+					System.out.println("mouseClicked() on Sharpen"); 
 				
 				}
 			});
@@ -141,7 +143,7 @@ public class MainWindow extends JFrame {
 	private JButton getJButtonFiltro2() {
 		if (jButtonFiltro2 == null) {
 			jButtonFiltro2 = new JButton();
-			jButtonFiltro2.setText("Filtro 2");
+			jButtonFiltro2.setText("Low Filter");
 			jButtonFiltro2.setSize(new Dimension(120, 26));
 			jButtonFiltro2.setLocation(new Point(789, 301));
 			jButtonFiltro2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -151,7 +153,7 @@ public class MainWindow extends JFrame {
 					jContentPane.applyFilter();
 					jContentPane.repaint();
 					
-					System.out.println("mouseClicked() on Filtro2"); 
+					System.out.println("mouseClicked() on Low Filter"); 
 				}
 			});
 		}
@@ -161,7 +163,7 @@ public class MainWindow extends JFrame {
 	private JButton getJButtonFiltro3() {
 		if (jButtonFiltro3 == null) {
 			jButtonFiltro3 = new JButton();
-			jButtonFiltro3.setText("Filtro 3");
+			jButtonFiltro3.setText("Smooth");
 			jButtonFiltro3.setSize(new Dimension(120, 26));
 			jButtonFiltro3.setLocation(new Point(789, 441));
 			jButtonFiltro3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -171,13 +173,32 @@ public class MainWindow extends JFrame {
 					jContentPane.applyFilter();
 					jContentPane.repaint();
 					
-					System.out.println("mouseClicked() on Filtro3"); 
+					System.out.println("mouseClicked() on Smooth"); 
 				}
 			});
 		}
 		return jButtonFiltro3;
 	}
 
+	private JButton getJButtonDarken() {
+		if (jButtonDarken == null) {
+			jButtonDarken = new JButton();
+			jButtonDarken.setText("Darken");
+			jButtonDarken.setSize(new Dimension(120, 26));
+			jButtonDarken.setLocation(new Point(789, 561));
+			jButtonDarken.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					
+					jContentPane.darkenLUT();
+					jContentPane.applyFilterWithLookUpTable();
+					jContentPane.repaint();
+					
+					System.out.println("mouseClicked() on Darken"); 
+				}
+			});
+		}
+		return jButtonDarken;
+	}
 
 	
 	private JButton getJButtonDeshacer() {
