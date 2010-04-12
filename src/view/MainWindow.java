@@ -209,7 +209,8 @@ public class MainWindow extends JFrame {
 			jButtonBinarizar.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
-					jContentPane.binarize();
+					jContentPane.binarizeLUT();
+					jContentPane.applyFilterWithLookUpTable();
 					jContentPane.repaint();
 					
 					System.out.println("mouseClicked() on binarizar"); 

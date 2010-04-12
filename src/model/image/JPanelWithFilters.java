@@ -139,7 +139,23 @@ public class JPanelWithFilters extends JPanel {
         lookupTable = new ByteLookupTable(0, reverse);
     }
     
-    public void binarize(){
+    public void binarizeLUT(){
+    	
+    	toGrayScale();
+    	
+        byte reverse[] = new byte[256];
+        
+        for (int i = 0; i < 256; i++) {
+        
+        	if( i < 125 ) reverse[i] = (byte) 255;
+        	
+        }
+    
+        lookupTable = new ByteLookupTable(0, reverse);
+    
+    }
+    
+    public void toGrayScale(){
     	
     	ColorSpace colorSpace = ColorSpace.getInstance( ColorSpace.CS_GRAY );
     	
