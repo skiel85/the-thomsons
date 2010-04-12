@@ -25,6 +25,7 @@ public class MainWindow extends JFrame {
 	private JButton jButtonSimilar = null;
 	private JButton jButtonBinarizar = null;
 	private JButton jButtonDarken = null;
+	private JButton jButtonRealce = null;
 
 	public static void main(	String[] args	){
 		
@@ -77,9 +78,10 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonSimilar(), null);
 			jContentPane.add(getJButtonBinarizar(), null);
 			jContentPane.add(getJButtonDarken(), null);
+			jContentPane.add(getJButtonRealce(), null);
 			
 			// Initialize with a img
-			jContentPane.loadImage( "duchenne1.jpg" );
+			jContentPane.loadImage( "7_113_F.jpg" );
 			
 		}
 		
@@ -198,6 +200,26 @@ public class MainWindow extends JFrame {
 			});
 		}
 		return jButtonDarken;
+	}
+	
+	private JButton getJButtonRealce() {
+		if (jButtonRealce == null) {
+			jButtonRealce = new JButton();
+			jButtonRealce.setText("Realce");
+			jButtonRealce.setSize(new Dimension(120, 26));
+			jButtonRealce.setLocation(new Point(789, 661));
+			jButtonRealce.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+										
+					jContentPane.laplaciano();
+					jContentPane.applyFilter();
+					jContentPane.repaint();
+					
+					System.out.println("mouseClicked() on Realce"); 
+				}
+			});
+		}
+		return jButtonRealce;
 	}
 
 	
