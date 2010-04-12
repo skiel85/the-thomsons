@@ -182,13 +182,25 @@ public class JPanelWithFilters extends JPanel {
         
     }
     
-    public void sharpen(){
+    public void sharpenV3(){
     	   
     	pattern = new float[] {
     			
       		     0.0f, -1.0f, 0.0f,
       		    -1.0f, 5.0f, -1.0f,
       		     0.0f, -1.0f, 0.0f
+      		
+    	};
+    	
+    }
+    
+    public void sharpenV2(){
+ 	   
+    	pattern = new float[] {
+    			
+      		     -1.0f, -1.0f, -1.0f,
+      		    -1.0f, 9.0f, -1.0f,
+      		     -1.0f, -1.0f, -1.0f
       		
     	};
     	
