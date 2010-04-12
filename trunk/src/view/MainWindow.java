@@ -25,7 +25,8 @@ public class MainWindow extends JFrame {
 	private JButton jButtonSimilar = null;
 	private JButton jButtonBinarizar = null;
 	private JButton jButtonDarken = null;
-	private JButton jButtonRealce = null;
+	private JButton jButtonDeMedia = null;
+	private JButton jButtonGaussLowV3 = null;
 	private JButton jButtonGrays = null;
 
 	public static void main(	String[] args	){
@@ -79,7 +80,8 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonSimilar(), null);
 			jContentPane.add(getJButtonBinarizar(), null);
 			jContentPane.add(getJButtonDarken(), null);
-			jContentPane.add(getJButtonRealce(), null);
+			jContentPane.add(getJButtonDeMedia(), null);
+			jContentPane.add(getJButtonGaussLowV3(), null);
 			jContentPane.add(getJButtonBlancoNegro(), null);
 			
 			// Initialize with a img
@@ -224,24 +226,45 @@ public class MainWindow extends JFrame {
 		return jButtonDarken;
 	}
 	
-	private JButton getJButtonRealce() {
-		if (jButtonRealce == null) {
-			jButtonRealce = new JButton();
-			jButtonRealce.setText("Realce");
-			jButtonRealce.setSize(new Dimension(120, 26));
-			jButtonRealce.setLocation(new Point(789, 661));
-			jButtonRealce.addMouseListener(new java.awt.event.MouseAdapter() {
+	
+	private JButton getJButtonDeMedia() {
+		if (jButtonDeMedia == null) {
+			jButtonDeMedia = new JButton();
+			jButtonDeMedia.setText("DeMedia");
+			jButtonDeMedia.setSize(new Dimension(120, 26));
+			jButtonDeMedia.setLocation(new Point(700, 661));
+			jButtonDeMedia.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 										
-					jContentPane.laplaciano();
+					jContentPane.media();
 					jContentPane.applyFilter();
 					jContentPane.repaint();
 					
-					System.out.println("mouseClicked() on Realce"); 
+					System.out.println("mouseClicked() on DeMedia"); 
 				}
 			});
 		}
-		return jButtonRealce;
+		return jButtonDeMedia;
+	}
+	
+	private JButton getJButtonGaussLowV3() {
+		if (jButtonGaussLowV3 == null) {
+			jButtonGaussLowV3 = new JButton();
+			jButtonGaussLowV3.setText("GaussLowV3");
+			jButtonGaussLowV3.setSize(new Dimension(120, 26));
+			jButtonGaussLowV3.setLocation(new Point(850, 661));
+			jButtonGaussLowV3.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+										
+					jContentPane.gaussLowFilterV3();
+					jContentPane.applyFilter();
+					jContentPane.repaint();
+					
+					System.out.println("mouseClicked() on GaussLowV3"); 
+				}
+			});
+		}
+		return jButtonGaussLowV3;
 	}
 
 	

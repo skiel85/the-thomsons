@@ -218,13 +218,29 @@ public class JPanelWithFilters extends JPanel {
     	
     }
     
-    public void laplaciano(){
+    public void media(){
+       	
+    	pattern = new float[] {
+
+    	     		     1.0f, -2.0f, 1.0f,
+    	     		     -2.0f, 5.0f, -2.0f,
+    	        		 1.0f, -2.0f, 1.0f
+      		
+    	};
+    	
+    }
+    
+    public void gaussLowFilterV3(){
        	
     	pattern = new float[] {
     			
-     		     1.0f, -2.0f, 1.0f,
-       		    -2.0f,  4.0f, -2.0f,
-       		     1.0f, -2.0f, 1.0f
+    	     	//	     1.0f, -2.0f, 1.0f,
+    	       	//	    -2.0f, 4.0f, -2.0f,
+    	       	//	     1.0f, -2.0f, 1.0f
+    	       		     
+    	     		     1/9f, 2/9f, 1/9f,
+    	     		     2/9f, 4/9f, 2/9f,
+    	        		 1/9f, 2/9f, 1/9f
       		
     	};
     	
