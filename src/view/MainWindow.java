@@ -253,17 +253,17 @@ public class MainWindow extends JFrame {
 	private JButton getJButtonDeMedia() {
 		if (jButtonDeMedia == null) {
 			jButtonDeMedia = new JButton();
-			jButtonDeMedia.setText("DeMedia");
+			jButtonDeMedia.setText("Invertir");
 			jButtonDeMedia.setSize(new Dimension(120, 26));
 			jButtonDeMedia.setLocation(new Point(700, 661));
 			jButtonDeMedia.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 										
-					jContentPane.media();
-					jContentPane.applyFilter();
+					jContentPane.reverseLUT();
+					jContentPane.applyFilterWithLookUpTable();
 					jContentPane.repaint();
 					
-					System.out.println("mouseClicked() on DeMedia"); 
+					System.out.println("mouseClicked() on Invertir"); 
 				}
 			});
 		}
