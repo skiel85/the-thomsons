@@ -278,6 +278,7 @@ public class MainWindow extends JFrame {
 				}
 			});
 		}
+		
 		return jButtonAlmacenar;
 	}
 
