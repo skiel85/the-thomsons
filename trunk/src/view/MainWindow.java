@@ -123,7 +123,7 @@ public class MainWindow extends JFrame {
 			jButtonFiltro1.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
-					jContentPane.brightenLUT();
+					jContentPane.sharpen();
 					jContentPane.applyFilter();
 					jContentPane.repaint();
 					
@@ -145,7 +145,7 @@ public class MainWindow extends JFrame {
 			jButtonFiltro2.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
-					jContentPane.darkenLUT();
+					jContentPane.lowFilter();
 					jContentPane.applyFilter();
 					jContentPane.repaint();
 					
@@ -165,7 +165,7 @@ public class MainWindow extends JFrame {
 			jButtonFiltro3.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
-					jContentPane.contrastIncLUT();
+					jContentPane.sharpen();
 					jContentPane.applyFilter();
 					jContentPane.repaint();
 					
