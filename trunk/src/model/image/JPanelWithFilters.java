@@ -5,8 +5,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
+import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ByteLookupTable;
+import java.awt.image.ColorConvertOp;
 import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.awt.image.LookupOp;
@@ -137,18 +139,14 @@ public class JPanelWithFilters extends JPanel {
         lookupTable = new ByteLookupTable(0, reverse);
     }
     
-    public void binarizeLUT(){
+    public void binarize(){
     	
-        byte reverse[] = new byte[256];
-        
-        for (int i = 0; i < 256; i++) {
-            
-        	if( i > 125 ) reverse[i] = (byte) 255;
-        
-        }
-        
-        lookupTable = new ByteLookupTable(0, reverse);
-    
+    	ColorSpace colorSpace = ColorSpace.getInstance( ColorSpace.CS_GRAY );
+    	
+    	ColorConvertOp op = new ColorConvertOp(colorSpace, null);
+    	
+    	bi = op.filter(bi, null);
+    	    	    
     }
     
     public void reset() {

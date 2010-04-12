@@ -23,6 +23,7 @@ public class MainWindow extends JFrame {
 	private JButton jButtonDeshacer = null;
 	private JButton jButtonAlmacenar = null;
 	private JButton jButtonSimilar = null;
+	private JButton jButtonBinarizar = null;
 
 	public static void main(	String[] args	){
 		
@@ -200,16 +201,15 @@ public class MainWindow extends JFrame {
 	}
 	
 	private JButton getJButtonBinarizar() {
-		if (jButtonDeshacer == null) {
-			jButtonDeshacer = new JButton();
-			jButtonDeshacer.setText("Binarizar");
-			jButtonDeshacer.setSize(new Dimension(152, 25));
-			jButtonDeshacer.setLocation(new Point(685, 57));
-			jButtonDeshacer.addMouseListener(new java.awt.event.MouseAdapter() {
+		if (jButtonBinarizar == null) {
+			jButtonBinarizar = new JButton();
+			jButtonBinarizar.setText("Binarizar");
+			jButtonBinarizar.setSize(new Dimension(152, 25));
+			jButtonBinarizar.setLocation(new Point(785, 57));
+			jButtonBinarizar.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
-					jContentPane.binarizeLUT();
-					jContentPane.applyFilterWithLookUpTable();
+					jContentPane.binarize();
 					jContentPane.repaint();
 					
 					System.out.println("mouseClicked() on binarizar"); 
@@ -217,7 +217,7 @@ public class MainWindow extends JFrame {
 				}
 			});
 		}
-		return jButtonDeshacer;
+		return jButtonBinarizar;
 	}
 
 
