@@ -215,6 +215,18 @@ public class JPanelWithFilters extends JPanel {
     	
     }
     
+    public void laplaciano(){
+   	   
+    	pattern = new float[] {
+    			
+     		     1.0f, -2.0f, 1.0f,
+       		    -2.0f, 4.0f, -2.0f,
+       		     1.0f, -2.0f, 1.0f
+      		
+    	};
+    	
+    }
+    
     public void applyFilterWithLookUpTable() {
    		
     	LookupOp lop = new LookupOp(lookupTable, null);
