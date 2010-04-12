@@ -188,7 +188,7 @@ public class MainWindow extends JFrame {
 			jButtonDarken.setLocation(new Point(789, 561));
 			jButtonDarken.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
-					
+										
 					jContentPane.darkenLUT();
 					jContentPane.applyFilterWithLookUpTable();
 					jContentPane.repaint();
