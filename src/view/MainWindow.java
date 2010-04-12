@@ -10,9 +10,9 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Point;
 
+@SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 
-	private static final long serialVersionUID = 1L;
 	private JPanelWithFilters jContentPane = null;
 	private JTextField jTextFieldFoto = null;
 	private JLabel jLabelFoto = null;
@@ -73,9 +73,10 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonDeshacer(), null);
 			jContentPane.add(getJButtonAlmacenar(), null);
 			jContentPane.add(getJButtonSimilar(), null);
+			jContentPane.add(getJButtonBinarizar(), null);
 			
 			// Initialize with a img
-			jContentPane.loadImage( "IMG_1.jpg" );
+			jContentPane.loadImage( "7_113_F.jpg" );
 			
 		}
 		
@@ -191,6 +192,27 @@ public class MainWindow extends JFrame {
 					jContentPane.repaint();
 					
 					System.out.println("mouseClicked() on deshacer"); 
+				
+				}
+			});
+		}
+		return jButtonDeshacer;
+	}
+	
+	private JButton getJButtonBinarizar() {
+		if (jButtonDeshacer == null) {
+			jButtonDeshacer = new JButton();
+			jButtonDeshacer.setText("Binarizar");
+			jButtonDeshacer.setSize(new Dimension(152, 25));
+			jButtonDeshacer.setLocation(new Point(685, 57));
+			jButtonDeshacer.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					
+					jContentPane.binarizeLUT();
+					jContentPane.applyFilterWithLookUpTable();
+					jContentPane.repaint();
+					
+					System.out.println("mouseClicked() on binarizar"); 
 				
 				}
 			});

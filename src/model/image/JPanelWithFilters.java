@@ -23,7 +23,7 @@ public class JPanelWithFilters extends JPanel {
     
     Graphics2D big;
     
-    //LookupTable lookupTable;
+    LookupTable lookupTable;
     
     float[] pattern;
    
@@ -73,10 +73,10 @@ public class JPanelWithFilters extends JPanel {
     
     }
 
-    /*
-     
-    public void brightenLUT() {
+    public void brightenLUT(){
+    
         short brighten[] = new short[256];
+        
         for (int i = 0; i < 256; i++) {
             short pixelValue = (short) (i + 10);
             if (pixelValue > 255)
@@ -85,7 +85,9 @@ public class JPanelWithFilters extends JPanel {
                 pixelValue = 0;
             brighten[i] = pixelValue;
         }
+        
         lookupTable = new ShortLookupTable(0, brighten);
+    
     }
 
     public void darkenLUT() {
@@ -134,7 +136,20 @@ public class JPanelWithFilters extends JPanel {
         }
         lookupTable = new ByteLookupTable(0, reverse);
     }
-*/
+    
+    public void binarizeLUT(){
+    	
+        byte reverse[] = new byte[256];
+        
+        for (int i = 0; i < 256; i++) {
+            
+        	if( i > 125 ) reverse[i] = (byte) 255;
+        
+        }
+        
+        lookupTable = new ByteLookupTable(0, reverse);
+    
+    }
     
     public void reset() {
     	
@@ -182,6 +197,14 @@ public class JPanelWithFilters extends JPanel {
     	
     }
     
+    public void applyFilterWithLookUpTable() {
+   		
+    	LookupOp lop = new LookupOp(lookupTable, null);
+    	
+        lop.filter( bi, bi);
+    
+    }
+    
     public void applyFilter() {
    		
     	Kernel kernel = new Kernel( 3, 3, pattern );
@@ -193,8 +216,11 @@ public class JPanelWithFilters extends JPanel {
     }
 
     public void update(Graphics g) {
+    	
         g.clearRect(0, 0, getWidth(), getHeight());
+    
         paintComponent(g);
+    
     }
 
     public void paintComponent(Graphics g) {
