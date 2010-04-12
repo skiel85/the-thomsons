@@ -28,6 +28,7 @@ public class MainWindow extends JFrame {
 	private JButton jButtonDeMedia = null;
 	private JButton jButtonGaussLowV3 = null;
 	private JButton jButtonGrays = null;
+	private JButton jButtonSharpenV2 = null;
 
 	public static void main(	String[] args	){
 		
@@ -83,6 +84,7 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonDeMedia(), null);
 			jContentPane.add(getJButtonGaussLowV3(), null);
 			jContentPane.add(getJButtonBlancoNegro(), null);
+			jContentPane.add(getJButtonSharpenV2(), null);
 			
 			// Initialize with a img
 			jContentPane.loadImage( "7_113_F.jpg" );
@@ -127,13 +129,13 @@ public class MainWindow extends JFrame {
 	private JButton getJButtonFiltro1() {
 		if (jButtonFiltro1 == null) {
 			jButtonFiltro1 = new JButton();
-			jButtonFiltro1.setText("Sharpen");
+			jButtonFiltro1.setText("SharpenV3");
 			jButtonFiltro1.setLocation(new Point(700, 165));
 			jButtonFiltro1.setSize(new Dimension(120, 26));
 			jButtonFiltro1.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
-					jContentPane.sharpen();
+					jContentPane.sharpenV3();
 					jContentPane.applyFilter();
 					jContentPane.repaint();
 					
@@ -143,6 +145,27 @@ public class MainWindow extends JFrame {
 			});
 		}
 		return jButtonFiltro1;
+	}
+	
+	private JButton getJButtonSharpenV2() {
+		if (jButtonSharpenV2 == null) {
+			jButtonSharpenV2 = new JButton();
+			jButtonSharpenV2.setText("SharpenV2");
+			jButtonSharpenV2.setLocation(new Point(700, 301));
+			jButtonSharpenV2.setSize(new Dimension(120, 26));
+			jButtonSharpenV2.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					
+					jContentPane.sharpenV2();
+					jContentPane.applyFilter();
+					jContentPane.repaint();
+					
+					System.out.println("mouseClicked() on Sharpen"); 
+				
+				}
+			});
+		}
+		return jButtonSharpenV2;
 	}
 	
 	private JButton getJButtonBlancoNegro() {
@@ -171,7 +194,7 @@ public class MainWindow extends JFrame {
 			jButtonFiltro2 = new JButton();
 			jButtonFiltro2.setText("Low Filter");
 			jButtonFiltro2.setSize(new Dimension(120, 26));
-			jButtonFiltro2.setLocation(new Point(789, 301));
+			jButtonFiltro2.setLocation(new Point(850, 301));
 			jButtonFiltro2.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
