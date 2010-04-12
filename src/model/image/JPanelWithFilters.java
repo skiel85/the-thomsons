@@ -170,9 +170,21 @@ public class JPanelWithFilters extends JPanel {
     	
     }
 
+    public void smooth(){
+  	   
+    	pattern = new float[] {
+    			
+      		     0.0625f, 0.125f, 0.0625f,
+      		     0.125f, 0.25f, 0.125f,
+      		   0.0625f, 0.125f, 0.0625f
+      		
+    	};
+    	
+    }
+    
     public void applyFilter() {
    		
-    	Kernel kernel = new Kernel(3, 3, pattern);
+    	Kernel kernel = new Kernel( 3, 3, pattern );
    		
     	ConvolveOp op = new ConvolveOp(kernel);
    	

@@ -165,7 +165,7 @@ public class MainWindow extends JFrame {
 			jButtonFiltro3.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
-					jContentPane.sharpen();
+					jContentPane.smooth();
 					jContentPane.applyFilter();
 					jContentPane.repaint();
 					
@@ -188,7 +188,6 @@ public class MainWindow extends JFrame {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
 					jContentPane.reset();
-					jContentPane.applyFilter();
 					jContentPane.repaint();
 					
 					System.out.println("mouseClicked() on deshacer"); 
