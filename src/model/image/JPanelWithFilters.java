@@ -132,11 +132,16 @@ public class JPanelWithFilters extends JPanel {
     }
 
     public void reverseLUT() {
-        byte reverse[] = new byte[256];
-        for (int i = 0; i < 256; i++) {
-            reverse[i] = (byte) (255 - i);
-        }
-        lookupTable = new ByteLookupTable(0, reverse);
+
+    	byte reverse[] = new byte[256];
+        
+    	for (int i = 0; i < 256; i++) {
+        
+    		reverse[i] = (byte) (255 - i);
+        
+    	}
+        
+    	lookupTable = new ByteLookupTable(0, reverse);
     }
     
     public void binarizeLUT(){
