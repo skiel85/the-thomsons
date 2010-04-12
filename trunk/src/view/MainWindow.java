@@ -79,7 +79,7 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonDarken(), null);
 			
 			// Initialize with a img
-			jContentPane.loadImage( "7_113_F.jpg" );
+			jContentPane.loadImage( "lookup/harold1.jpg" );
 			
 		}
 		
