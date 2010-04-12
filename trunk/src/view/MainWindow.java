@@ -26,6 +26,7 @@ public class MainWindow extends JFrame {
 	private JButton jButtonBinarizar = null;
 	private JButton jButtonDarken = null;
 	private JButton jButtonRealce = null;
+	private JButton jButtonGrays = null;
 
 	public static void main(	String[] args	){
 		
@@ -79,6 +80,7 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonBinarizar(), null);
 			jContentPane.add(getJButtonDarken(), null);
 			jContentPane.add(getJButtonRealce(), null);
+			jContentPane.add(getJButtonBlancoNegro(), null);
 			
 			// Initialize with a img
 			jContentPane.loadImage( "7_113_F.jpg" );
@@ -124,7 +126,7 @@ public class MainWindow extends JFrame {
 		if (jButtonFiltro1 == null) {
 			jButtonFiltro1 = new JButton();
 			jButtonFiltro1.setText("Sharpen");
-			jButtonFiltro1.setLocation(new Point(789, 165));
+			jButtonFiltro1.setLocation(new Point(700, 165));
 			jButtonFiltro1.setSize(new Dimension(120, 26));
 			jButtonFiltro1.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -139,6 +141,26 @@ public class MainWindow extends JFrame {
 			});
 		}
 		return jButtonFiltro1;
+	}
+	
+	private JButton getJButtonBlancoNegro() {
+		if (jButtonGrays == null) {
+			jButtonGrays = new JButton();
+			jButtonGrays.setText("Grays");
+			jButtonGrays.setLocation(new Point(850, 165));
+			jButtonGrays.setSize(new Dimension(120, 26));
+			jButtonGrays.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					
+					jContentPane.toGrayScale();
+					jContentPane.repaint();
+					
+					System.out.println("mouseClicked() on Blanco y Negro"); 
+				
+				}
+			});
+		}
+		return jButtonGrays;
 	}
 
 	

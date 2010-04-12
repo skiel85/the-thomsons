@@ -145,9 +145,7 @@ public class JPanelWithFilters extends JPanel {
     }
     
     public void binarizeLUT(){
-    	
-    	toGrayScale();
-    	
+    	    	
         byte reverse[] = new byte[256];
         
         for (int i = 0; i < 256; i++) {
@@ -221,11 +219,11 @@ public class JPanelWithFilters extends JPanel {
     }
     
     public void laplaciano(){
-   	   
+       	
     	pattern = new float[] {
     			
      		     1.0f, -2.0f, 1.0f,
-       		    -2.0f, 4.0f, -2.0f,
+       		    -2.0f,  4.0f, -2.0f,
        		     1.0f, -2.0f, 1.0f
       		
     	};
