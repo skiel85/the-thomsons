@@ -150,7 +150,11 @@ public class JPanelWithFilters extends JPanel {
         
         for (int i = 0; i < 256; i++) {
         
-        	 if( i < 50 ) reverse[i] = (byte) 0;
+        	//primo mauro 150
+        	
+        	//eze 30
+        	
+        	 if( i < 150 ) reverse[i] = (byte) 0;
         	         	 
         	 else reverse[i] = (byte) 255;
         	
