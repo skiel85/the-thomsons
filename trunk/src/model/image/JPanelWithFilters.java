@@ -17,8 +17,9 @@ import java.awt.image.LookupTable;
 import java.awt.image.ShortLookupTable;
 import javax.swing.JPanel;
 
+
 @SuppressWarnings("serial")
-public class JPanelWithFilters extends JPanel {
+public class JPanelWithFilters extends JPanel  {
    
 	Image displayImage;
 
@@ -36,6 +37,9 @@ public class JPanelWithFilters extends JPanel {
     	
 	}
 
+
+    
+    
 	public void loadImage( String string ) {
         
 		displayImage = Toolkit.getDefaultToolkit().getImage( string );
@@ -145,7 +149,7 @@ public class JPanelWithFilters extends JPanel {
     	lookupTable = new ByteLookupTable(0, reverse);
     }
     
-    public void binarizeLUT(){
+    public void binarizeLUT(int valor){
     	    	
         byte reverse[] = new byte[256];
         
@@ -155,7 +159,7 @@ public class JPanelWithFilters extends JPanel {
         	
         	//eze 30
         	
-        	 if( i < 150 ) reverse[i] = (byte) 0;
+        	 if( i < valor ) reverse[i] = (byte) 0;
         	         	 
         	 else reverse[i] = (byte) 255;
         	

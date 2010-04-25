@@ -4,14 +4,19 @@ import model.image.*;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Rectangle;
+
+import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.event.ChangeEvent;
+
 import java.awt.Point;
 
 @SuppressWarnings("serial")
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame{
 
 	private JPanelWithFilters jContentPane = null;
 	private JTextField jTextFieldFoto = null;
@@ -29,6 +34,8 @@ public class MainWindow extends JFrame {
 	private JButton jButtonGaussLowV3 = null;
 	private JButton jButtonGrays = null;
 	private JButton jButtonSharpenV2 = null;
+	private JSlider jSliderBinarizar = null;
+
 
 	public static void main(	String[] args	){
 		
@@ -57,7 +64,7 @@ public class MainWindow extends JFrame {
 		
 		this.setContentPane(getJContentPane());
 		
-		this.setTitle("Ey ey fierita ete e el proyecto toson");
+		this.setTitle("Reconocedor de Rostros v0.2");
 	
 	}
 
@@ -72,6 +79,7 @@ public class MainWindow extends JFrame {
 			jContentPane.setLayout(null);
 			jContentPane.add(getJTextFieldFoto(), null);
 			jContentPane.add(jLabelFoto, null);
+			jContentPane.add(getJSliderBinarizar(), null);
 			jContentPane.add(getJButtonAbrir(), null);
 			jContentPane.add(getJButtonFiltro1(), null);
 			jContentPane.add(getJButtonFiltro2(), null);
@@ -87,7 +95,7 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonSharpenV2(), null);
 			
 			// Initialize with a img
-			jContentPane.loadImage( "eze_perfil2.png" );
+			jContentPane.loadImage( "7_117_P.jpg" );
 			
 		}
 		
@@ -95,6 +103,8 @@ public class MainWindow extends JFrame {
 
 	}
 
+
+	
 	
 	private JTextField getJTextFieldFoto() {
 		if (jTextFieldFoto == null) {
@@ -146,6 +156,9 @@ public class MainWindow extends JFrame {
 		}
 		return jButtonFiltro1;
 	}
+	
+	
+	
 	
 	private JButton getJButtonSharpenV2() {
 		if (jButtonSharpenV2 == null) {
@@ -320,7 +333,7 @@ public class MainWindow extends JFrame {
 			jButtonBinarizar.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
-					jContentPane.binarizeLUT();
+					jContentPane.binarizeLUT(150);
 					jContentPane.applyFilterWithLookUpTable();
 					jContentPane.repaint();
 					
@@ -366,6 +379,50 @@ public class MainWindow extends JFrame {
 		return jButtonSimilar;
 	}
 	
+	
+	
+	
+	private JSlider  getJSliderBinarizar() {
+		if (jSliderBinarizar == null) {
+			jSliderBinarizar = new JSlider (JSlider.HORIZONTAL,
+                    0, 256, 150);
+
+	        //Turn on labels at major tick marks.
+
+			jSliderBinarizar.setMajorTickSpacing(64);
+			jSliderBinarizar.setMinorTickSpacing(1);
+			jSliderBinarizar.setPaintTicks(true);
+			jSliderBinarizar.setPaintLabels(true);
+			//jFrameBinarizar.setBorder( BorderFactory.createEmptyBorder(0,0,10,0));
+	        Font font = new Font("Serif", Font.PLAIN, 15);
+	        jSliderBinarizar.setFont(font);
+
+	        
+	        jSliderBinarizar.setLocation(new Point(765, 87));
+	        jSliderBinarizar.setSize(new Dimension(200, 50));
+	        
+	        
+			jSliderBinarizar.addChangeListener(new javax.swing.event.ChangeListener(){
+				public void stateChanged(ChangeEvent e) {
+			        JSlider source = (JSlider)e.getSource();
+			        if (!source.getValueIsAdjusting()) {
+			            int valor = (int)source.getValue();
+			            
+						jContentPane.binarizeLUT(valor);
+						jContentPane.applyFilterWithLookUpTable();
+						jContentPane.repaint();
+			            System.out.println("stateChanged() slider"); 
+			        }
+				}
+			});
+
+		}
+		return jSliderBinarizar;
+	}
+	
+	
+
+
 	
 
 }  
