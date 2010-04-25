@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
@@ -182,6 +183,76 @@ public class JPanelWithFilters extends JPanel {
     	        
         big.drawImage(displayImage, 44, 104, 700, 600, this);
         
+    }
+    
+    private int getRGB( int x, int y ){
+    	
+    	return bi.getRGB(x, y);
+    	
+    }
+    
+    private int getWidth( int x, int y ){
+    	
+    	return bi.getWidth();
+    	
+    }
+    
+    private int getHeight( int x, int y ){
+    	
+    	return bi.getHeight();
+    	
+    }
+    
+    /*
+     * 
+     *  Return the "y" position of the swipe
+     *  
+     */
+    
+    public int swipeFromRightToLeft( int x ){
+    	
+    	int actualColor = this.getRGB( x, this.getWidth() );
+    	
+    	int lastColor = actualColor;
+    	
+    	for( int i = 0; i < this.getWidth(); i++ ){
+    		
+    		actualColor = this.getRGB( x, this.getWidth() - i );
+    		
+    		int deltaColor = lastColor - actualColor;
+    		
+    		if( deltaColor > 0 ) return this.getWidth() - i;
+    		
+    	}
+    
+    	return 0;
+    	
+    }
+    
+    public Point getNose( ){
+    
+    	int x = 0;
+    	
+    	int y = 0;
+    	
+    	for( int i = 0; i < this.getHeight(); i++ ){
+    		
+    		int newY = swipeFromRightToLeft( i );
+    		
+    		if( newY > y ){
+    			
+    			y = newY;
+    		
+    			x = i;
+    			
+    		}
+    		
+    	}
+    	
+    	Point p = new Point( x, y );
+    	
+    	return p;
+    	
     }
     
     public void sharpenV3(){

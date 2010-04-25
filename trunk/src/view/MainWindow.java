@@ -53,7 +53,7 @@ public class MainWindow extends JFrame {
 	
 	private void initialize(){
 		
-		this.setSize(1000, 750);
+		this.setSize( 1000, 750 );
 		
 		this.setContentPane(getJContentPane());
 		
