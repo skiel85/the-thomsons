@@ -22,6 +22,7 @@ public class MainWindow extends JFrame{
 	private JTextField jTextFieldFoto = null;
 	private JLabel jLabelFoto = null;
 	private JButton jButtonAbrir = null;
+	private JButton jButtonReset = null;
 	private JButton jButtonFiltro1 = null;
 	private JButton jButtonFiltro2 = null;
 	private JButton jButtonFiltro3 = null;
@@ -81,6 +82,7 @@ public class MainWindow extends JFrame{
 			jContentPane.add(jLabelFoto, null);
 			jContentPane.add(getJSliderBinarizar(), null);
 			jContentPane.add(getJButtonAbrir(), null);
+			jContentPane.add(getJButtonReset(), null);
 			jContentPane.add(getJButtonFiltro1(), null);
 			jContentPane.add(getJButtonFiltro2(), null);
 			jContentPane.add(getJButtonFiltro3(), null);
@@ -118,7 +120,7 @@ public class MainWindow extends JFrame{
 	private JButton getJButtonAbrir() {
 		if (jButtonAbrir == null) {
 			jButtonAbrir = new JButton();
-			jButtonAbrir.setBounds(new Rectangle(284, 57, 152, 25));
+			jButtonAbrir.setBounds(new Rectangle(284, 57, 80, 25));
 			jButtonAbrir.setText("Abrir");
 			jButtonAbrir.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -133,6 +135,22 @@ public class MainWindow extends JFrame{
 			});
 		}
 		return jButtonAbrir;
+	}
+	
+	private JButton getJButtonReset() {
+		if (jButtonReset == null) {
+			jButtonReset = new JButton();
+			jButtonReset.setBounds(new Rectangle(380, 57, 80, 25));
+			jButtonReset.setText("Reset");
+			jButtonReset.addMouseListener(new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+
+					jContentPane.reset();
+					jContentPane.repaint();
+				}
+			});
+		}
+		return jButtonReset;
 	}
 
 	

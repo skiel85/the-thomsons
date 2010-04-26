@@ -43,7 +43,7 @@ public class JPanelWithFilters extends JPanel {
 			System.out.println("Exception while loading.");
 		}
 		if (displayImage.getWidth(this) == -1) {
-			System.out.println("No jpg file");
+			System.out.println("No image file");
 			System.exit(0);
 		}
 		createBufferedImage();
@@ -282,7 +282,7 @@ public class JPanelWithFilters extends JPanel {
 
 		LookupOp lop = new LookupOp(lookupTable, null);
 		biOld = bi;
-		lop.filter(bi, bi);
+		bi = lop.filter(bi, null);
 	}
 
 	public void applyFilter() {
