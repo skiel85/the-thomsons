@@ -22,6 +22,7 @@ public class JPanelWithFilters extends JPanel {
 
 	Image displayImage;
 	BufferedImage bi;
+	BufferedImage biOld;
 	Graphics2D big;
 	LookupTable lookupTable;
 	float[] pattern;
@@ -52,6 +53,7 @@ public class JPanelWithFilters extends JPanel {
 
 		//bi = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
 		bi = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
+		biOld = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
 		big = bi.createGraphics();
 		big.drawImage(displayImage, 0, 0, 640, 480, this);	
 	}
@@ -271,10 +273,15 @@ public class JPanelWithFilters extends JPanel {
 		};
 
 	}
+	
+	public void undo(){
+		bi = biOld;
+	}
 
 	public void applyFilterWithLookUpTable() {
 
 		LookupOp lop = new LookupOp(lookupTable, null);
+		biOld = bi;
 		lop.filter(bi, bi);
 	}
 
@@ -282,6 +289,7 @@ public class JPanelWithFilters extends JPanel {
 
 		Kernel kernel = new Kernel(3, 3, pattern);
 		ConvolveOp op = new ConvolveOp(kernel);
+		biOld = bi;
 		bi = op.filter(bi, null);
 
 	}
@@ -296,7 +304,7 @@ public class JPanelWithFilters extends JPanel {
 		
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D) g;
-		g2D.drawImage(bi, 44, 104, this);
+		g2D.drawImage(bi, 40, 120, this);
 		//g2D.drawImage(bi.getScaledInstance(640, 480, Image.SCALE_AREA_AVERAGING), 0, 0, this);
 	}
 }
