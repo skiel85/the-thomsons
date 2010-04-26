@@ -313,7 +313,7 @@ public class MainWindow extends JFrame{
 			jButtonDeshacer.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
-					jContentPane.reset();
+					jContentPane.undo();
 					jContentPane.repaint();
 					
 					System.out.println("mouseClicked() on deshacer"); 
