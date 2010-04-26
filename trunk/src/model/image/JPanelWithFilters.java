@@ -25,14 +25,14 @@ import javax.swing.JPanel;
 public class JPanelWithFilters extends JPanel {
 
 	Image displayImage;
+	BufferedImage biDisplay;
 	BufferedImage bi;
 	BufferedImage biOld;
 	Graphics2D big;
 	LookupTable lookupTable;
 	float[] pattern;
 	
-	public static final int IMG_FRAME_WIDTH = 640;
-	public static final int IMG_FRAME_HEIGHT = 480;
+
 
 	public JPanelWithFilters() {
 
@@ -55,22 +55,32 @@ public class JPanelWithFilters extends JPanel {
 		}
 		createBufferedImage();
 	}
+	
+	public void paintComponent(Graphics g) {
+		
+		super.paintComponent(g);
+		Graphics2D g2D = (Graphics2D) g;
+		g2D.drawImage(bi, 40, 120, this);
+		//g2D.drawImage(bi.getScaledInstance(640, 480, Image.SCALE_AREA_AVERAGING), 0, 0, this);
+	}
 
 	public void createBufferedImage() {
 
-		int borderWidth = displayImage.getWidth(this);
-		int borderHeight = displayImage.getHeight(this);
-		if (borderWidth < IMG_FRAME_WIDTH) borderWidth = IMG_FRAME_WIDTH;
-		if (borderHeight < IMG_FRAME_HEIGHT) borderHeight = IMG_FRAME_HEIGHT;
-		bi = new BufferedImage(borderWidth, borderHeight, BufferedImage.TYPE_INT_ARGB);
-		biOld = new BufferedImage(borderWidth, borderHeight, BufferedImage.TYPE_INT_ARGB);
-		//bi = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
-		//biOld = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
-		big = bi.createGraphics();
-		big.drawImage(displayImage, 0, 0, IMG_FRAME_WIDTH, IMG_FRAME_HEIGHT, this);	
+		int imageWidth = displayImage.getWidth(this);
+		int imageHeight = displayImage.getHeight(this);
+		int bufimageWidth = 640;
+		if (bufimageWidth > imageWidth) bufimageWidth = imageWidth;
+		int bufimageHeight = 480;
+		if (bufimageHeight > imageHeight) bufimageHeight = imageHeight;
 		
-		System.out.println(bi.getWidth());
-		System.out.println(displayImage.getWidth(this));
+		bi = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+		biOld = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+		
+		//biDisplay = new BufferedImage(IMG_FRAME_WIDTH, IMG_FRAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		
+		big = bi.createGraphics();
+		big.drawImage(displayImage, 0, 0, bufimageWidth, bufimageHeight, this);	
+		
 	}
 
 	public void brightenLUT() {
@@ -136,6 +146,15 @@ public class JPanelWithFilters extends JPanel {
 		byte reverse[] = new byte[256];
 		for (int i = 0; i < 256; i++) {
 			reverse[i] = (byte) (255 - i);
+		}
+		lookupTable = new ByteLookupTable(0, reverse);
+	}
+	
+	public void identityLUT() {
+
+		byte reverse[] = new byte[256];
+		for (int i = 0; i < 256; i++) {
+			reverse[i] = (byte) (i);
 		}
 		lookupTable = new ByteLookupTable(0, reverse);
 	}
@@ -306,12 +325,5 @@ public class JPanelWithFilters extends JPanel {
 		paintComponent(g);
 	}
 
-	public void paintComponent(Graphics g) {
-		
-		super.paintComponent(g);
-		Graphics2D g2D = (Graphics2D) g;
-		//g2D.drawImage(bi, 40, 120, this);
-		g2D.drawImage(bi, 40, 120, this);
-		//g2D.drawImage(bi.getScaledInstance(640, 480, Image.SCALE_AREA_AVERAGING), 0, 0, this);
-	}
+
 }
