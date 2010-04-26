@@ -97,7 +97,8 @@ public class MainWindow extends JFrame{
 			jContentPane.add(getJButtonSharpenV2(), null);
 			
 			// Initialize with a img
-			jContentPane.loadImage( "cabeza_prueba.png" );   //( "eze_perfil2.png" );
+			jContentPane.loadImage( "cabeza_prueba.png" ); 
+			//jContentPane.loadImage( "eze_perfil2.png" );
 			
 		}
 		

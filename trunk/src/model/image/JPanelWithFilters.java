@@ -162,10 +162,10 @@ public class JPanelWithFilters extends JPanel {
 		for (int i = 0; i < bi.getWidth() - 1; i++) {
 
 			actualColor = bi.getRGB( bi.getWidth() - i - 1, y );
-
+			
 			int deltaColor = lastColor - actualColor;
 
-			if( deltaColor > 0 ) return bi.getWidth() - i - 1;
+			if( deltaColor != 0 ) return bi.getWidth() - i - 1;
 
 		}
 
