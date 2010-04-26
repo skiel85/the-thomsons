@@ -17,6 +17,10 @@ import java.awt.image.LookupTable;
 import java.awt.image.ShortLookupTable;
 import javax.swing.JPanel;
 
+
+
+
+
 @SuppressWarnings("serial")
 public class JPanelWithFilters extends JPanel {
 
@@ -26,6 +30,9 @@ public class JPanelWithFilters extends JPanel {
 	Graphics2D big;
 	LookupTable lookupTable;
 	float[] pattern;
+	
+	public static final int IMG_FRAME_WIDTH = 640;
+	public static final int IMG_FRAME_HEIGHT = 480;
 
 	public JPanelWithFilters() {
 
@@ -51,11 +58,19 @@ public class JPanelWithFilters extends JPanel {
 
 	public void createBufferedImage() {
 
-		//bi = new BufferedImage(imgWidth, imgHeight, BufferedImage.TYPE_INT_ARGB);
-		bi = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
-		biOld = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
+		int borderWidth = displayImage.getWidth(this);
+		int borderHeight = displayImage.getHeight(this);
+		if (borderWidth < IMG_FRAME_WIDTH) borderWidth = IMG_FRAME_WIDTH;
+		if (borderHeight < IMG_FRAME_HEIGHT) borderHeight = IMG_FRAME_HEIGHT;
+		bi = new BufferedImage(borderWidth, borderHeight, BufferedImage.TYPE_INT_ARGB);
+		biOld = new BufferedImage(borderWidth, borderHeight, BufferedImage.TYPE_INT_ARGB);
+		//bi = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
+		//biOld = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
 		big = bi.createGraphics();
-		big.drawImage(displayImage, 0, 0, 640, 480, this);	
+		big.drawImage(displayImage, 0, 0, IMG_FRAME_WIDTH, IMG_FRAME_HEIGHT, this);	
+		
+		System.out.println(bi.getWidth());
+		System.out.println(displayImage.getWidth(this));
 	}
 
 	public void brightenLUT() {
@@ -295,6 +310,7 @@ public class JPanelWithFilters extends JPanel {
 		
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D) g;
+		//g2D.drawImage(bi, 40, 120, this);
 		g2D.drawImage(bi, 40, 120, this);
 		//g2D.drawImage(bi.getScaledInstance(640, 480, Image.SCALE_AREA_AVERAGING), 0, 0, this);
 	}
