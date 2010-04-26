@@ -156,24 +156,20 @@ public class JPanelWithFilters extends JPanel {
 		return bi.getRGB(x, y);
 	}
 
-	/*
-	 * 
-	 * Return the "y" position of the swipe
-	 */
 
 	public int swipeFromRightToLeft( int y ) {
-
-		int actualColor = this.getRGB( this.getWidth(), y );
+		
+		int actualColor = bi.getRGB( bi.getWidth(), y );
 
 		int lastColor = actualColor;
 
-		for (int i = 0; i < this.getWidth(); i++) {
+		for (int i = 0; i < bi.getWidth(); i++) {
 
-			actualColor = this.getRGB( this.getWidth() - i, y );
+			actualColor = this.getRGB( bi.getWidth() - i, y );
 
 			int deltaColor = lastColor - actualColor;
 
-			if( deltaColor > 0 ) return this.getWidth() - i;
+			if( deltaColor > 0 ) return bi.getWidth() - i;
 
 		}
 
@@ -187,7 +183,7 @@ public class JPanelWithFilters extends JPanel {
 
 		int y = 0;
 
-		for (int i = 0; i < this.getHeight(); i++) {
+		for (int i = 0; i < bi.getHeight(); i++) {
 
 			int newX = swipeFromRightToLeft(i);
 
