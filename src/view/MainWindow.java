@@ -74,7 +74,7 @@ public class MainWindow extends JFrame{
 			
 			jLabelFoto = new JLabel();
 			jLabelFoto.setBounds(new Rectangle(41, 21, 228, 22));
-			jLabelFoto.setText("Ingrese la foto en jpg a procesar sin la extension");
+			jLabelFoto.setText("Ingrese la foto (CON EXTENSION)");
 			jContentPane = new JPanelWithFilters();
 			jContentPane.setLayout(null);
 			jContentPane.add(getJTextFieldFoto(), null);
@@ -95,7 +95,7 @@ public class MainWindow extends JFrame{
 			jContentPane.add(getJButtonSharpenV2(), null);
 			
 			// Initialize with a img
-			jContentPane.loadImage( "7_117_P.jpg" );
+			jContentPane.loadImage( "eze_perfil2.png" );
 			
 		}
 		
@@ -125,7 +125,7 @@ public class MainWindow extends JFrame{
 				
 					String foto=jTextFieldFoto.getText();
 					
-					jContentPane.loadImage( foto + ".jpg" ); //TODO no funca esto todavia
+					jContentPane.loadImage( foto  ); //TODO no funca esto todavia
 					
 					jContentPane.repaint();
 				
@@ -406,8 +406,8 @@ public class MainWindow extends JFrame{
 				public void stateChanged(ChangeEvent e) {
 			        JSlider source = (JSlider)e.getSource();
 			        if (!source.getValueIsAdjusting()) {
+			    
 			            int valor = (int)source.getValue();
-			            
 						jContentPane.binarizeLUT(valor);
 						jContentPane.applyFilterWithLookUpTable();
 						jContentPane.repaint();
