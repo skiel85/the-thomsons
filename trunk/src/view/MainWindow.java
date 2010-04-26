@@ -6,13 +6,11 @@ import javax.swing.JFrame;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
-
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
-
 import java.awt.Point;
 
 @SuppressWarnings("serial")
