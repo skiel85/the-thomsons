@@ -356,6 +356,8 @@ public class MainWindow extends JFrame{
 					jContentPane.repaint();
 					
 					System.out.println("mouseClicked() on binarizar"); 
+					
+					System.out.println( jContentPane.getNose() );
 				
 				}
 			});
