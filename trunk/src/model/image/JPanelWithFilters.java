@@ -14,7 +14,12 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
+import java.awt.image.RenderedImage;
 import java.awt.image.ShortLookupTable;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 
@@ -324,6 +329,19 @@ public class JPanelWithFilters extends JPanel {
 		g.clearRect(0, 0, getWidth(), getHeight());
 		paintComponent(g);
 	}
+	
+	 public void guardarImagen(String nombre)
+	    {
+	    	RenderedImage rend=bi;
+	    	
+	    	try {
+	    		   ImageIO.write(rend, "png", new File(nombre+".png"));
+	    		} catch (IOException e) {
+	    		   System.out.println("Error de escritura");
+	    		}
+
+
+	    }
 
 
 }
