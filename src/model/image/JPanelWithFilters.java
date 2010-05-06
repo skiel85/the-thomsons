@@ -182,7 +182,14 @@ public class JPanelWithFilters extends JPanel {
 
 		ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
 		ColorConvertOp op = new ColorConvertOp(colorSpace, null);
+		
+		
+		
+		
 		bi = op.filter(bi, null);
+		
+		
+		
 	}
 
 	public void reset() {
@@ -335,7 +342,7 @@ public class JPanelWithFilters extends JPanel {
 	    	RenderedImage rend=bi;
 	    	
 	    	try {
-	    		   ImageIO.write(rend, "png", new File(nombre+".png"));
+	    		   ImageIO.write(rend, "jpg", new File(nombre+".jpg"));
 	    		} catch (IOException e) {
 	    		   System.out.println("Error de escritura");
 	    		}

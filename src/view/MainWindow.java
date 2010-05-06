@@ -171,6 +171,7 @@ public class MainWindow extends JFrame{
 					jContentPane.sharpenV3();
 					jContentPane.applyFilter();
 					jContentPane.repaint();
+					nombreOriginal=nombre;
 					nombre=nombre+"-sharpenV3";
 					
 					System.out.println("mouseClicked() on Sharpen"); 
@@ -196,6 +197,7 @@ public class MainWindow extends JFrame{
 					jContentPane.sharpenV2();
 					jContentPane.applyFilter();
 					jContentPane.repaint();
+					nombreOriginal=nombre;
 					nombre=nombre+"-sharpenV2";
 					
 					System.out.println("mouseClicked() on Sharpen"); 
@@ -218,6 +220,7 @@ public class MainWindow extends JFrame{
 					jContentPane.toGrayScale();
 					
 					jContentPane.repaint();
+					nombreOriginal=nombre;
 					nombre=nombre+"-BlancoNegro";
 					
 					System.out.println("mouseClicked() on Blanco y Negro"); 
@@ -241,6 +244,7 @@ public class MainWindow extends JFrame{
 					jContentPane.lowFilter();
 					jContentPane.applyFilter();
 					jContentPane.repaint();
+					nombreOriginal=nombre;
 					nombre=nombre+"-lowFilter";
 					
 					System.out.println("mouseClicked() on Low Filter"); 
@@ -262,6 +266,7 @@ public class MainWindow extends JFrame{
 					jContentPane.smooth();
 					jContentPane.applyFilter();
 					jContentPane.repaint();
+					nombreOriginal=nombre;
 					nombre=nombre+"-smooth";
 					
 					System.out.println("mouseClicked() on Smooth"); 
@@ -283,6 +288,7 @@ public class MainWindow extends JFrame{
 					jContentPane.darkenLUT();
 					jContentPane.applyFilterWithLookUpTable();
 					jContentPane.repaint();
+					nombreOriginal=nombre;
 					nombre=nombre+"-darkenLUT";
 					
 					System.out.println("mouseClicked() on Darken"); 
@@ -305,6 +311,7 @@ public class MainWindow extends JFrame{
 					jContentPane.reverseLUT();
 					jContentPane.applyFilterWithLookUpTable();
 					jContentPane.repaint();
+					nombreOriginal=nombre;
 					nombre=nombre+"-reverseLUT";
 					
 					System.out.println("mouseClicked() on Invertir"); 
@@ -326,6 +333,7 @@ public class MainWindow extends JFrame{
 					jContentPane.gaussLowFilterV3();
 					jContentPane.applyFilter();
 					jContentPane.repaint();
+					nombreOriginal=nombre;
 					nombre=nombre+"-gaussLowFilterV3";
 					
 					System.out.println("mouseClicked() on GaussLowV3"); 
@@ -369,6 +377,7 @@ public class MainWindow extends JFrame{
 					jContentPane.binarizeLUT(150);
 					jContentPane.applyFilterWithLookUpTable();
 					jContentPane.repaint();
+					nombreOriginal=nombre;
 					nombre=nombre+"-Binarizar";
 					
 					System.out.println("mouseClicked() on binarizar"); 
@@ -392,6 +401,7 @@ public class MainWindow extends JFrame{
 			jButtonAlmacenar.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					System.out.println("mouseClicked()"); 
+					
 					jContentPane.guardarImagen(nombre);
 				}
 			});
