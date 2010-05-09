@@ -32,7 +32,6 @@ public class JPanelWithFilters extends JPanel {
 	Image displayImage;
 	BufferedImage biDisplay;
 	BufferedImage bi;
-	BufferedImage biOld;
 	Graphics2D big;
 	LookupTable lookupTable;
 	float[] pattern;
@@ -79,7 +78,6 @@ public class JPanelWithFilters extends JPanel {
 		if (bufimageHeight > imageHeight) bufimageHeight = imageHeight;
 		
 		bi = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-		biOld = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
 		
 		//biDisplay = new BufferedImage(IMG_FRAME_WIDTH, IMG_FRAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		
@@ -311,14 +309,10 @@ public class JPanelWithFilters extends JPanel {
 
 	}
 	
-	public void undo(){
-		bi = biOld;
-	}
-
 	public void applyFilterWithLookUpTable() {
 
 		LookupOp lop = new LookupOp(lookupTable, null);
-		biOld = bi;
+		BufferedImageChanges.getInstance().changeImage(bi);
 		bi = lop.filter(bi, null);
 	}
 
@@ -326,7 +320,7 @@ public class JPanelWithFilters extends JPanel {
 
 		Kernel kernel = new Kernel(3, 3, pattern);
 		ConvolveOp op = new ConvolveOp(kernel);
-		biOld = bi;
+		BufferedImageChanges.getInstance().changeImage(bi);
 		bi = op.filter(bi, null);
 
 	}
@@ -349,6 +343,10 @@ public class JPanelWithFilters extends JPanel {
 
 
 	    }
+
+	public void undo() {
+		bi = BufferedImageChanges.getInstance().undo();		
+	}
 
 
 }
