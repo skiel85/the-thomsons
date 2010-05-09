@@ -35,4 +35,8 @@ public class BufferedImageChanges {
     	}
     	return changes.get(0);
     }
+    
+    public void empty() {
+    	changes.clear();
+    }
 }
