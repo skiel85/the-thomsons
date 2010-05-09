@@ -8,6 +8,8 @@ import java.awt.Rectangle;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -24,9 +26,7 @@ import model.image.JPanelWithFilters;
 public class MainWindow extends JFrame{
 
 	private JPanelWithFilters jContentPane = null;
-	private JTextField jTextFieldFoto = null;
 	private JLabel jLabelFoto = null;
-	private JButton jButtonAbrir = null;
 	private JButton jButtonReset = null;
 	private JButton jButtonFiltro1 = null;
 	private JButton jButtonFiltro2 = null;
@@ -45,6 +45,7 @@ public class MainWindow extends JFrame{
 	
 
 
+	@SuppressWarnings("static-access")
 	public static void main(	String[] args	){
 		
 		//Create the frame.
@@ -88,11 +89,9 @@ public class MainWindow extends JFrame{
 			jContentPane = new JPanelWithFilters();
 			jContentPane.setLayout(null);
 
-//			jContentPane.add(getImagesCombo());
-			jContentPane.add(getJTextFieldFoto(), null);
+			jContentPane.add(getImagesCombo());
 			jContentPane.add(jLabelFoto, null);
 			jContentPane.add(getJSliderBinarizar(), null);
-			jContentPane.add(getJButtonAbrir(), null);
 			jContentPane.add(getJButtonReset(), null);
 			jContentPane.add(getJButtonFiltro1(), null);
 			jContentPane.add(getJButtonFiltro2(), null);
@@ -108,10 +107,7 @@ public class MainWindow extends JFrame{
 			jContentPane.add(getJButtonSharpenV2(), null);
 			
 			// Initialize with a img
-			jContentPane.loadImage( "7_117_P.jpg" ); 
-			nombreOriginal="7_117_P.jpg";
-			nombre=nombreOriginal;
-			
+		
 		}
 		
 		return jContentPane;
@@ -122,62 +118,38 @@ public class MainWindow extends JFrame{
 	
 	
 	private Component getImagesCombo() {
-		File folder = new File("C:\\");
+		File folder = new File(System.getProperty("user.dir"));
 	    File[] listOfFiles = folder.listFiles();
-	    String fotos[] = new String[200];
+	    List<String> imgList = new ArrayList<String>();
 	    
+	    System.out.println(System.getProperty("user.dir"));
 	    for (int i = 0; i < listOfFiles.length; i++) {
-	      if (listOfFiles[i].isFile()) {
-	        System.out.println("File " + listOfFiles[i].getName());
-	      } else if (listOfFiles[i].isDirectory()) {
-	        fotos[i] = listOfFiles[i].getName();
+	    	String fileName = listOfFiles[i].getName();
+	      if (listOfFiles[i].isFile() && fileName.substring(fileName.length()-4, fileName.length()).toLowerCase().equals(".jpg")) {
+	    	  imgList.add(fileName);
 	      }
 	    }
-		//String fotos[] = {"Nico","Gaby"};
-		final JComboBox combo = new JComboBox(fotos);
+	    Object fotos[] = imgList.toArray();
+
+	    final JComboBox combo = new JComboBox(fotos);
 		combo.setLocation(new Point(39, 54));
-		combo.setSize(new Dimension(120, 26));
-//		combo.addItemListener(new ItemListener() {
-//			public void itemStateChanged(ItemEvent ie) {
-//				String str = (String) combo.getSelectedItem();
-//				txt.setText(str);
-//			}
-//		});
+		combo.setSize(new Dimension(230, 26));
+		combo.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent ie) {
+				String str = (String) combo.getSelectedItem();
+
+				jContentPane.loadImage( str ); 
+				nombreOriginal=str;
+				nombre=nombreOriginal;
+				jContentPane.repaint();
+
+
+			}
+		});
 
 		return combo;
 	}
 
-	private JTextField getJTextFieldFoto() {
-		if (jTextFieldFoto == null) {
-			jTextFieldFoto = new JTextField();
-			jTextFieldFoto.setBounds(new Rectangle(39, 54, 230, 28));
-		}
-		return jTextFieldFoto;
-	}
-
-	
-	private JButton getJButtonAbrir() {
-		if (jButtonAbrir == null) {
-			jButtonAbrir = new JButton();
-			jButtonAbrir.setBounds(new Rectangle(284, 57, 80, 25));
-			jButtonAbrir.setText("Abrir");
-			jButtonAbrir.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseClicked(java.awt.event.MouseEvent e) {
-				
-					String foto=jTextFieldFoto.getText();
-					nombreOriginal=jTextFieldFoto.getText();
-					nombre=nombreOriginal;
-					
-					jContentPane.loadImage( foto  ); //TODO no funca esto todavia
-					
-					jContentPane.repaint();
-				
-				}
-			});
-		}
-		return jButtonAbrir;
-	}
-	
 	private JButton getJButtonReset() {
 		if (jButtonReset == null) {
 			jButtonReset = new JButton();
