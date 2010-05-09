@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 
+import model.image.BufferedImageChanges;
 import model.image.JPanelWithFilters;
 
 @SuppressWarnings("serial")
@@ -127,11 +128,12 @@ public class MainWindow extends JFrame {
 
 		final JComboBox combo = new JComboBox(fotos);
 		combo.setLocation(new Point(39, 54));
-		combo.setSize(new Dimension(230, 26));
+		combo.setSize(new Dimension(300, 26));
 		combo.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent ie) {
 				String str = (String) combo.getSelectedItem();
 
+				BufferedImageChanges.getInstance().empty();
 				jContentPane.loadImage(str);
 				nombreOriginal = str;
 				nombre = nombreOriginal;
@@ -150,7 +152,7 @@ public class MainWindow extends JFrame {
 			jButtonReset.setText("Reset");
 			jButtonReset.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
-
+					BufferedImageChanges.getInstance().empty();
 					jContentPane.reset();
 					jContentPane.repaint();
 				}
