@@ -6,6 +6,7 @@ import java.util.List;
 
 public class BufferedImageChanges {
 
+	private static boolean binarized;
 	private static List<BufferedImage> changes;
     private static BufferedImageChanges instance = null;
     
@@ -39,4 +40,16 @@ public class BufferedImageChanges {
     public void empty() {
     	changes.clear();
     }
+
+	public void binarize(boolean b) {
+		binarized = b;
+	}
+	
+	public boolean lastImageBinarized() {
+		return binarized;
+	}
+
+	public BufferedImage getCurrentImage() {
+		return changes.get(changes.size()-1);
+	}
 }

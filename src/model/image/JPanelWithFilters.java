@@ -312,6 +312,11 @@ public class JPanelWithFilters extends JPanel {
 	public void applyFilterWithLookUpTable() {
 
 		LookupOp lop = new LookupOp(lookupTable, null);
+		if(BufferedImageChanges.getInstance().lastImageBinarized()) {
+			BufferedImageChanges.getInstance().undo();
+			bi = BufferedImageChanges.getInstance().getCurrentImage();
+		}
+		BufferedImageChanges.getInstance().binarize(true);
 		BufferedImageChanges.getInstance().changeImage(bi);
 		bi = lop.filter(bi, null);
 	}
@@ -320,9 +325,9 @@ public class JPanelWithFilters extends JPanel {
 
 		Kernel kernel = new Kernel(3, 3, pattern);
 		ConvolveOp op = new ConvolveOp(kernel);
+		BufferedImageChanges.getInstance().binarize(false);
 		BufferedImageChanges.getInstance().changeImage(bi);
 		bi = op.filter(bi, null);
-
 	}
 
 	public void update(Graphics g) {
