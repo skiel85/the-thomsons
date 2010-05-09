@@ -1,17 +1,24 @@
 package view;
 
-import model.image.*;
-import javax.swing.JPanel;
-import javax.swing.JFrame;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.File;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JButton;
 import javax.swing.event.ChangeEvent;
-import java.awt.Point;
+
+import model.image.JPanelWithFilters;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame{
@@ -48,6 +55,8 @@ public class MainWindow extends JFrame{
 
 		//Show it
 		frame.setVisible(true);
+		
+		frame.setExtendedState(frame.getExtendedState() | frame.MAXIMIZED_BOTH);
 	
 	}
 
@@ -78,6 +87,8 @@ public class MainWindow extends JFrame{
 			jLabelFoto.setText("Ingrese la foto (CON EXTENSION)");
 			jContentPane = new JPanelWithFilters();
 			jContentPane.setLayout(null);
+
+//			jContentPane.add(getImagesCombo());
 			jContentPane.add(getJTextFieldFoto(), null);
 			jContentPane.add(jLabelFoto, null);
 			jContentPane.add(getJSliderBinarizar(), null);
@@ -100,7 +111,6 @@ public class MainWindow extends JFrame{
 			jContentPane.loadImage( "7_117_P.jpg" ); 
 			nombreOriginal="7_117_P.jpg";
 			nombre=nombreOriginal;
-			//jContentPane.loadImage( "eze_perfil2.png" );
 			
 		}
 		
@@ -111,6 +121,32 @@ public class MainWindow extends JFrame{
 
 	
 	
+	private Component getImagesCombo() {
+		File folder = new File("C:\\");
+	    File[] listOfFiles = folder.listFiles();
+	    String fotos[] = new String[200];
+	    
+	    for (int i = 0; i < listOfFiles.length; i++) {
+	      if (listOfFiles[i].isFile()) {
+	        System.out.println("File " + listOfFiles[i].getName());
+	      } else if (listOfFiles[i].isDirectory()) {
+	        fotos[i] = listOfFiles[i].getName();
+	      }
+	    }
+		//String fotos[] = {"Nico","Gaby"};
+		final JComboBox combo = new JComboBox(fotos);
+		combo.setLocation(new Point(39, 54));
+		combo.setSize(new Dimension(120, 26));
+//		combo.addItemListener(new ItemListener() {
+//			public void itemStateChanged(ItemEvent ie) {
+//				String str = (String) combo.getSelectedItem();
+//				txt.setText(str);
+//			}
+//		});
+
+		return combo;
+	}
+
 	private JTextField getJTextFieldFoto() {
 		if (jTextFieldFoto == null) {
 			jTextFieldFoto = new JTextField();
@@ -189,7 +225,7 @@ public class MainWindow extends JFrame{
 		if (jButtonSharpenV2 == null) {
 			jButtonSharpenV2 = new JButton();
 			jButtonSharpenV2.setText("SharpenV2");
-			jButtonSharpenV2.setLocation(new Point(700, 301));
+			jButtonSharpenV2.setLocation(new Point(700, 201));
 			jButtonSharpenV2.setSize(new Dimension(120, 26));
 			jButtonSharpenV2.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -237,7 +273,7 @@ public class MainWindow extends JFrame{
 			jButtonFiltro2 = new JButton();
 			jButtonFiltro2.setText("Low Filter");
 			jButtonFiltro2.setSize(new Dimension(120, 26));
-			jButtonFiltro2.setLocation(new Point(850, 301));
+			jButtonFiltro2.setLocation(new Point(850, 201));
 			jButtonFiltro2.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
@@ -259,7 +295,7 @@ public class MainWindow extends JFrame{
 			jButtonFiltro3 = new JButton();
 			jButtonFiltro3.setText("Smooth");
 			jButtonFiltro3.setSize(new Dimension(120, 26));
-			jButtonFiltro3.setLocation(new Point(789, 441));
+			jButtonFiltro3.setLocation(new Point(700, 236));
 			jButtonFiltro3.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
@@ -281,7 +317,7 @@ public class MainWindow extends JFrame{
 			jButtonDarken = new JButton();
 			jButtonDarken.setText("Darken");
 			jButtonDarken.setSize(new Dimension(120, 26));
-			jButtonDarken.setLocation(new Point(789, 561));
+			jButtonDarken.setLocation(new Point(850, 236));
 			jButtonDarken.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 										
@@ -304,7 +340,7 @@ public class MainWindow extends JFrame{
 			jButtonDeMedia = new JButton();
 			jButtonDeMedia.setText("Invertir");
 			jButtonDeMedia.setSize(new Dimension(120, 26));
-			jButtonDeMedia.setLocation(new Point(700, 661));
+			jButtonDeMedia.setLocation(new Point(700, 270));
 			jButtonDeMedia.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 										
@@ -326,7 +362,7 @@ public class MainWindow extends JFrame{
 			jButtonGaussLowV3 = new JButton();
 			jButtonGaussLowV3.setText("GaussLowV3");
 			jButtonGaussLowV3.setSize(new Dimension(120, 26));
-			jButtonGaussLowV3.setLocation(new Point(850, 661));
+			jButtonGaussLowV3.setLocation(new Point(850, 270));
 			jButtonGaussLowV3.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 										
@@ -348,8 +384,8 @@ public class MainWindow extends JFrame{
 		if (jButtonDeshacer == null) {
 			jButtonDeshacer = new JButton();
 			jButtonDeshacer.setText("Deshacer");
-			jButtonDeshacer.setSize(new Dimension(152, 25));
-			jButtonDeshacer.setLocation(new Point(585, 57));
+			jButtonDeshacer.setSize(new Dimension(184, 28));
+			jButtonDeshacer.setLocation(new Point(700, 410));
 			jButtonDeshacer.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					
@@ -396,7 +432,7 @@ public class MainWindow extends JFrame{
 		if (jButtonAlmacenar == null) {
 			jButtonAlmacenar = new JButton();
 			jButtonAlmacenar.setText("Almacenar");
-			jButtonAlmacenar.setLocation(new Point(97, 677));
+			jButtonAlmacenar.setLocation(new Point(700, 450));
 			jButtonAlmacenar.setSize(new Dimension(184, 28));
 			jButtonAlmacenar.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -416,7 +452,7 @@ public class MainWindow extends JFrame{
 			jButtonSimilar = new JButton();
 			jButtonSimilar.setText("Similar");
 			jButtonSimilar.setSize(new Dimension(184, 28));
-			jButtonSimilar.setLocation(new Point(397, 677));
+			jButtonSimilar.setLocation(new Point(700, 370));
 			jButtonSimilar.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					System.out.println("mouseClicked()"); 
