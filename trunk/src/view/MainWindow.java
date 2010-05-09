@@ -373,7 +373,7 @@ public class MainWindow extends JFrame {
 					.addMouseListener(new java.awt.event.MouseAdapter() {
 						public void mouseClicked(java.awt.event.MouseEvent e) {
 
-							jContentPane.binarizeLUT(150);
+							jContentPane.binarizeLUT(jSliderBinarizar.getValue());
 							jContentPane.applyFilterWithLookUpTable();
 							jContentPane.repaint();
 							nombreOriginal = nombre;
