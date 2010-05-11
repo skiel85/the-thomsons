@@ -119,8 +119,7 @@ public class MainWindow extends JFrame {
 		for (int i = 0; i < listOfFiles.length; i++) {
 			String fileName = listOfFiles[i].getName();
 			if (listOfFiles[i].isFile()
-					&& fileName.substring(fileName.length() - 4,
-							fileName.length()).toLowerCase().equals(".jpg")) {
+					&& isCorrectFormat(listOfFiles[i].getName())) {
 				imgList.add(fileName);
 			}
 		}
@@ -143,6 +142,11 @@ public class MainWindow extends JFrame {
 		});
 
 		return combo;
+	}
+
+	private boolean isCorrectFormat(String fileName) {
+		String extension = fileName.substring(fileName.length() - 4,fileName.length()).toLowerCase();
+		return extension.equals(".jpg") || extension.equals(".png") || extension.equals(".gif");
 	}
 
 	private JButton getJButtonReset() {
