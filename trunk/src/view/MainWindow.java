@@ -81,28 +81,32 @@ public class MainWindow extends JFrame {
 
 			jLabelFoto = new JLabel();
 			jLabelFoto.setBounds(new Rectangle(41, 21, 228, 22));
-			jLabelFoto.setText("Ingrese la foto (CON EXTENSION)");
+			jLabelFoto.setText("Elija la foto:");
 			jContentPane = new JPanelWithFilters();
 			jContentPane.setLayout(null);
 
 			jContentPane.add(getImagesCombo());
 			jContentPane.add(jLabelFoto, null);
+
+			//Binarizar
+			jContentPane.add(getJButtonBinarizar(), null);
 			jContentPane.add(getJSliderBinarizar(), null);
+
+			//Acciones
 			jContentPane.add(getJButtonReset(), null);
-			jContentPane.add(getJButtonFiltro1(), null);
-			jContentPane.add(getJButtonFiltro2(), null);
-			jContentPane.add(getJButtonFiltro3(), null);
 			jContentPane.add(getJButtonDeshacer(), null);
 			jContentPane.add(getJButtonAlmacenar(), null);
 			jContentPane.add(getJButtonSimilar(), null);
-			jContentPane.add(getJButtonBinarizar(), null);
+
+			//Filtros
+			jContentPane.add(getJButtonSharpenV3(), null);
+			jContentPane.add(getJButtonLowFilter(), null);
+			jContentPane.add(getJButtonSmooth(), null);
 			jContentPane.add(getJButtonDarken(), null);
 			jContentPane.add(getJButtonDeMedia(), null);
 			jContentPane.add(getJButtonGaussLowV3(), null);
 			jContentPane.add(getJButtonBlancoNegro(), null);
 			jContentPane.add(getJButtonSharpenV2(), null);
-
-			// Initialize with a img
 
 		}
 
@@ -165,7 +169,7 @@ public class MainWindow extends JFrame {
 		return jButtonReset;
 	}
 
-	private JButton getJButtonFiltro1() {
+	private JButton getJButtonSharpenV3() {
 		if (jButtonFiltro1 == null) {
 			jButtonFiltro1 = new JButton();
 			jButtonFiltro1.setText("SharpenV3");
@@ -235,7 +239,7 @@ public class MainWindow extends JFrame {
 		return jButtonGrays;
 	}
 
-	private JButton getJButtonFiltro2() {
+	private JButton getJButtonLowFilter() {
 		if (jButtonFiltro2 == null) {
 			jButtonFiltro2 = new JButton();
 			jButtonFiltro2.setText("Low Filter");
@@ -257,7 +261,7 @@ public class MainWindow extends JFrame {
 		return jButtonFiltro2;
 	}
 
-	private JButton getJButtonFiltro3() {
+	private JButton getJButtonSmooth() {
 		if (jButtonFiltro3 == null) {
 			jButtonFiltro3 = new JButton();
 			jButtonFiltro3.setText("Smooth");
