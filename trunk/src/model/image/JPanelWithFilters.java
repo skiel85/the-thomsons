@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
@@ -35,6 +34,8 @@ public class JPanelWithFilters extends JPanel {
 	Graphics2D big;
 	LookupTable lookupTable;
 	float[] pattern;
+	int bufimageWidth;
+	int bufimageHeight;
 	
 
 
@@ -72,9 +73,9 @@ public class JPanelWithFilters extends JPanel {
 
 		int imageWidth = displayImage.getWidth(this);
 		int imageHeight = displayImage.getHeight(this);
-		int bufimageWidth = 640;
+		bufimageWidth = 640;
 		if (bufimageWidth > imageWidth) bufimageWidth = imageWidth;
-		int bufimageHeight = 480;
+		bufimageHeight = 480;
 		if (bufimageHeight > imageHeight) bufimageHeight = imageHeight;
 		
 		bi = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
@@ -196,52 +197,7 @@ public class JPanelWithFilters extends JPanel {
 	}
 
 
-	public int swipeFromRightToLeft( int y ) {
 
-		
-		int actualColor = bi.getRGB( bi.getWidth() - 1, y );
-
-		int lastColor = actualColor;
-
-		for (int i = 0; i < bi.getWidth() - 1; i++) {
-
-			actualColor = bi.getRGB( bi.getWidth() - i - 1, y );
-			
-			int deltaColor = lastColor - actualColor;
-
-			if( deltaColor != 0 ) return bi.getWidth() - i - 1;
-
-		}
-
-		return 0;
-
-	}
-
-	public Point getNose() {
-
-		int x = 0;
-
-		int y = 0;
-
-		for (int i = 0; i < bi.getHeight() - 1; i++) {
-
-			int newX = swipeFromRightToLeft(i);
-
-			if (newX > x) {
-
-				x = newX;
-
-				y = i;
-
-			}
-
-		}
-
-		Point p = new Point(x, y);
-
-		return p;
-
-	}
 
 	public void sharpenV3() {
 
@@ -351,6 +307,11 @@ public class JPanelWithFilters extends JPanel {
 
 	public void undo() {
 		bi = BufferedImageChanges.getInstance().undo();		
+	}
+
+	public void detectarBorde() {
+		Bordeador bordeador = new Bordeador (bi,bufimageWidth,bufimageHeight);
+		bordeador.bordear();
 	}
 
 

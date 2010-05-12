@@ -55,7 +55,7 @@ public class MainWindow extends JFrame {
 		// Show it
 		frame.setVisible(true);
 
-		frame.setExtendedState(frame.getExtendedState() | frame.MAXIMIZED_BOTH);
+		frame.setExtendedState(frame.getExtendedState());
 
 	}
 
@@ -72,7 +72,7 @@ public class MainWindow extends JFrame {
 
 		this.setContentPane(getJContentPane());
 
-		this.setTitle("Reconocedor de Rostros v0.2");
+		this.setTitle("Reconocedor de Rostros v0.3");
 
 	}
 
@@ -389,7 +389,7 @@ public class MainWindow extends JFrame {
 
 							System.out.println("mouseClicked() on binarizar");
 
-							System.out.println(jContentPane.getNose());
+							jContentPane.detectarBorde();
 
 						}
 					});
