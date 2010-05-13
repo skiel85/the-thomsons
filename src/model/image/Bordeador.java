@@ -108,7 +108,7 @@ public class Bordeador {
 		
 		boolean found = false;
 		
-		while( !found ){
+		while( !found && y < maxY && y > minY){
 			
 			y = y + way;
 			
