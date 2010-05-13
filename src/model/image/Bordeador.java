@@ -87,6 +87,42 @@ public class Bordeador {
 		}
 		return nose;
 	}
+	
+	/*
+	 * 
+	 *  Encuentra el proximo pozo o relieve en el sentido way desde yInitial
+	 *  
+	 *  way = +1 para arriba, -1 para abajo
+	 *  
+	 *  raise = +1 relieve, -1 pozo  
+	 *  
+	 */
+	
+	public Point getNextCriticalPoint( int yInitial, int way, int raise ){
+		
+		int y = yInitial;
+		
+		int x0 = swipeFromRightToLeft( y, maxX, minX );
+		
+		int x1 = x0;
+		
+		boolean found = false;
+		
+		while( !found ){
+			
+			y = y + way;
+			
+			x1 = swipeFromRightToLeft( y, maxX, minX );
+			
+			if( ( x1 - x0) * raise < 0 ) found = true;
+			
+		}
+		
+		Point point = new Point( x1, y );
+		
+		return point;
+		
+	}
 
 	private Point getNextHigh() {
 		// TODO Auto-generated method stub
@@ -94,10 +130,10 @@ public class Bordeador {
 	}
 
 	public void drawMark(Point p) {
-		drawMark(p.x, p.y);
+		drawRedMark(p.x, p.y);
 	}
 
-	public void drawMark(int x, int y) {
+	public void drawRedMark(int x, int y) {
 		for (int i = -5; i < 5; i++) {
 			bi.setRGB(x + i, y + i, Color.RED.getRGB());
 			bi.setRGB(x - i, y + i, Color.RED.getRGB());
