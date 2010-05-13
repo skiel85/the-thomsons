@@ -15,6 +15,9 @@ public class Bordeador {
 	// Unidad de medida de 1% de la imagen
 	public static int ONE_PERC_IMG_Y;
 	public static int ONE_PERC_IMG_X;
+	// Unidad de medida de 1 de la cara
+	public static int ONE_FACE_SIZE_Y;
+	public static int ONE_FACE_SIZE_X;
 
 	public Bordeador(BufferedImage bi, int bufimageWidth, int bufimageHeight) {
 		this.bi = bi;
@@ -30,12 +33,60 @@ public class Bordeador {
 	public void bordear() {
 
 		Point nose = getNose(minY);
-		Point nextHigh = getNextHigh();
+		Point philtrum = getLowPoint(nose.y);
+		Point upperlip = getHighPoint(philtrum.y);
+		Point mouth = getLowPoint(upperlip.y);
+		Point lowerlip = getHighPoint(mouth.y);
+
+		ONE_FACE_SIZE_Y = lowerlip.y - nose.y;
+		
+		int faceTopY = nose.y - ONE_FACE_SIZE_Y/2;
+		Point faceTop = new Point (swipeFromRightToLeft(faceTopY, maxX, minX),faceTopY);
+		int faceBottomY = lowerlip.y + ONE_FACE_SIZE_Y/2;
+		Point faceBottom = new Point (swipeFromRightToLeft(faceBottomY, maxX, minX),faceBottomY);
+		
+		Point faceCenter = new Point (3*ONE_FACE_SIZE_Y,nose.y);
+		
+		int resolution = 300;
+		Point[] points = new Point[resolution];
+		int faceFrontRes = 60; //2*resolution/10
+		int faceMirrorIni = 150; //60+90
+		int x=0;
+		int y=0;
+		for (int i=0; i < faceFrontRes; i++){
+//			points[i].setLocation(x, y);
+//			points[faceMirrorIni-i].setLocation(x, y);
+		}
+		
+		
+		
 
 		// TODO sacar los println
-		System.out.println(nose);
+		System.out.println("nose: "+nose);
 		drawMark(nose);
+		System.out.println("philtrum: "+philtrum);
+		drawMark(philtrum);
+		System.out.println("upperlip: "+upperlip);
+		drawMark(upperlip);
+		System.out.println("mouth: "+mouth);
+		drawMark(mouth);
+		System.out.println("lowerlip: "+lowerlip);
+		drawMark(lowerlip);
+		System.out.println("faceTop: "+faceTop);
+		drawMark(faceTop);
+		System.out.println("faceBottom: "+faceBottom);
+		drawMark(faceBottom);
+		System.out.println("faceCenter: "+faceCenter);
+		drawMark(faceCenter);
 
+	}
+
+	private Point getHighPoint(int y) {
+		return getNextCriticalPoint(y,+1,+1);
+	}
+
+	private Point getLowPoint(int y) {
+		return getNextCriticalPoint(y,+1,-1);
 	}
 
 	public int swipeFromRightToLeft(int y, int maxX, int minX) {
@@ -124,10 +175,7 @@ public class Bordeador {
 		
 	}
 
-	private Point getNextHigh() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	public void drawMark(Point p) {
 		drawRedMark(p.x, p.y);
