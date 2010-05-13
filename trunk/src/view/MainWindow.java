@@ -12,13 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 
 import model.image.BufferedImageChanges;
@@ -46,7 +44,7 @@ public class MainWindow extends JFrame {
 	private JSlider jSliderBinarizar = null;
 	private String nombre, nombreOriginal = "";
 
-	@SuppressWarnings("static-access")
+//	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
 
 		// Create the frame.
