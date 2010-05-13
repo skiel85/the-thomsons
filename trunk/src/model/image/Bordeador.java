@@ -18,6 +18,14 @@ public class Bordeador {
 	// Unidad de medida de 1 de la cara
 	public static int ONE_FACE_SIZE_Y;
 	public static int ONE_FACE_SIZE_X;
+	// Cantidad hacia arriba medido en unid de cara desde nariz
+	public static double TIMES_FACE_UP = 0.5;
+	// Cantidad hacia abajo medido en unid de cara desde labio inf
+	public static double TIMES_FACE_DOWN = 0.5;
+	// Cantidad hacia adentro medido en unid de cara desde nariz
+	public static double TIMES_FACE_CENTER = 3.0;
+	// Resolucion de puntos
+	public static int RESOLUTION = 300;
 
 	public Bordeador(BufferedImage bi, int bufimageWidth, int bufimageHeight) {
 		this.bi = bi;
@@ -40,25 +48,14 @@ public class Bordeador {
 
 		ONE_FACE_SIZE_Y = lowerlip.y - nose.y;
 		
-		int faceTopY = nose.y - ONE_FACE_SIZE_Y/2;
+		int faceTopY = nose.y - (int)(ONE_FACE_SIZE_Y*TIMES_FACE_UP);
 		Point faceTop = new Point (swipeFromRightToLeft(faceTopY, maxX, minX),faceTopY);
-		int faceBottomY = lowerlip.y + ONE_FACE_SIZE_Y/2;
+		int faceBottomY = lowerlip.y + (int)(ONE_FACE_SIZE_Y*TIMES_FACE_DOWN);
 		Point faceBottom = new Point (swipeFromRightToLeft(faceBottomY, maxX, minX),faceBottomY);
 		
-		Point faceCenter = new Point (3*ONE_FACE_SIZE_Y,nose.y);
+		Point faceCenter = new Point (nose.x-(int)(ONE_FACE_SIZE_Y*TIMES_FACE_CENTER),nose.y);
 		
-		int resolution = 300;
-		Point[] points = new Point[resolution];
-		int faceFrontRes = 60; //2*resolution/10
-		int faceMirrorIni = 150; //60+90
-		int x=0;
-		int y=0;
-		for (int i=0; i < faceFrontRes; i++){
-//			points[i].setLocation(x, y);
-//			points[faceMirrorIni-i].setLocation(x, y);
-		}
-		
-		
+		Point[] points = getBorderPoints (faceTop,faceBottom,faceCenter);
 		
 
 		// TODO sacar los println
@@ -78,7 +75,35 @@ public class Bordeador {
 		drawMark(faceBottom);
 		System.out.println("faceCenter: "+faceCenter);
 		drawMark(faceCenter);
+		for (int i=0; i<RESOLUTION;i++){
+			if (points[i]!=null)
+				drawMark(points[i]);
+			else
+				System.out.println("!!!PUNTO NULL: "+points[i]+" con i="+i);
+		}
 
+	}
+	
+	private Point[] getBorderPoints(Point faceTop, Point faceBottom, Point faceCenter){
+		Point[] points = new Point[RESOLUTION];
+		double faceHeight = (1+TIMES_FACE_UP+TIMES_FACE_DOWN); // Medido en caras
+		double faceWidth =  (TIMES_FACE_CENTER); //Medido en caras
+		int faceFrontRes = (int) (RESOLUTION*faceHeight/(2*faceHeight + 2*faceWidth)); //2*resolution/(2+2+3+3) = 60
+		int faceBorderRes = (int) (RESOLUTION*faceWidth/(2*faceHeight + 2*faceWidth)); //3*resolution/(2+2+3+3) = 90
+		int faceMirrorEnd = faceFrontRes*2 + faceBorderRes ; //60+90+60
+		double salto = (double)(faceHeight*ONE_FACE_SIZE_Y /(double) faceFrontRes);
+		int y=faceTop.y;
+		for (int i=0; i <= faceFrontRes; i++){
+			points[i] = new Point (swipeFromRightToLeft((int)(y+i*salto), maxX, minX),(int)(y+i*salto));
+			points[faceMirrorEnd-i] = new Point(faceCenter.x - (points[i].x-faceCenter.x), points[i].y);
+		}
+		double saltoBottom = (double)((2*(faceBottom.x - faceCenter.x)) /(double) faceBorderRes);
+		double saltoTop = (double)((2*(faceTop.x - faceCenter.x)) /(double) faceBorderRes);
+		for (int i=0; i <= faceBorderRes; i++){
+			points[i+faceFrontRes] = new Point ((int)(faceBottom.x - i*saltoBottom), faceBottom.y);
+			points[RESOLUTION-1 -i] = new Point((int)(faceTop.x - i*saltoTop), faceTop.y);
+		}
+		return points;
 	}
 
 	private Point getHighPoint(int y) {
