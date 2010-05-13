@@ -165,7 +165,11 @@ public class Bordeador {
 			
 			x1 = swipeFromRightToLeft( y, maxX, minX );
 			
+			//System.out.println( "x1: " + x1 );
+			
 			if( ( x1 - x0) * raise < 0 ) found = true;
+			
+			x0 = x1;
 			
 		}
 		
