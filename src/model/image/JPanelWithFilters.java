@@ -268,13 +268,13 @@ public class JPanelWithFilters extends JPanel {
 	public void applyFilterWithLookUpTable() {
 
 		LookupOp lop = new LookupOp(lookupTable, null);
-		if(BufferedImageChanges.getInstance().lastImageBinarized()) {
+		/*if(BufferedImageChanges.getInstance().lastImageBinarized()) {
 			BufferedImageChanges.getInstance().undo();
 			bi = BufferedImageChanges.getInstance().getCurrentImage();
 		}
 		BufferedImageChanges.getInstance().binarize(true);
 		BufferedImageChanges.getInstance().changeImage(bi);
-		bi = lop.filter(bi, null);
+		*/bi = lop.filter(bi, null);
 	}
 
 	public void applyFilter() {
