@@ -8,6 +8,7 @@ public class Bordeador {
 
 	public BufferedImage bi;
 	public int maxY, minY, maxX, minX;
+	public Point faceTop, faceBottom, faceCenter;
 	// Porcentaje de la pantalla a partir de la cual mira
 	public static final int PERC_IMG_LIMIT = 5;
 	// Porcentaje de tolerancia de PELO
@@ -45,15 +46,30 @@ public class Bordeador {
 		Point upperlip = getHighPoint(philtrum.y);
 		Point mouth = getLowPoint(upperlip.y);
 		Point lowerlip = getHighPoint(mouth.y);
+		
+		
+		Point minFacePoint = nose;
+		Point maxFacePoint = lowerlip;
+		
+		getLimits(minFacePoint,maxFacePoint);
+		
+		if (isInvalid(maxFacePoint) || isInvalid(faceBottom)){
+			maxFacePoint = mouth;
+			getLimits(minFacePoint,maxFacePoint);
+			if (isInvalid(mouth) || isInvalid(faceBottom)){
+				maxFacePoint = upperlip;
+				getLimits(minFacePoint,maxFacePoint);
+			}
+		}
+		if (isInvalid(minFacePoint) || isInvalid(faceTop)){
+			minFacePoint = philtrum;
+			getLimits(minFacePoint,maxFacePoint);
+			if (isInvalid(philtrum) || isInvalid(faceTop)){
+				minFacePoint = upperlip;
+				getLimits(minFacePoint,maxFacePoint);
+			}
+		}
 
-		ONE_FACE_SIZE_Y = lowerlip.y - nose.y;
-		
-		int faceTopY = nose.y - (int)(ONE_FACE_SIZE_Y*TIMES_FACE_UP);
-		Point faceTop = new Point (swipeFromRightToLeft(faceTopY, maxX, minX),faceTopY);
-		int faceBottomY = lowerlip.y + (int)(ONE_FACE_SIZE_Y*TIMES_FACE_DOWN);
-		Point faceBottom = new Point (swipeFromRightToLeft(faceBottomY, maxX, minX),faceBottomY);
-		
-		Point faceCenter = new Point (nose.x-(int)(ONE_FACE_SIZE_Y*TIMES_FACE_CENTER),nose.y);
 		
 		Point[] points = getBorderPoints (faceTop,faceBottom,faceCenter);
 		
@@ -84,7 +100,27 @@ public class Bordeador {
 
 	}
 	
+	private boolean isInvalid(Point point) {
+		if (point == null)
+			return true;
+		if(point.x ==0 || point.y ==0 || point.x<minX || point.x>maxX || point.y<minY || point.y>maxY )
+			return true;
+		return false;
+	}
+
+	private void getLimits(Point nose, Point lowerlip) {
+		
+		ONE_FACE_SIZE_Y = lowerlip.y - nose.y;
+		
+		int faceTopY = nose.y - (int)(ONE_FACE_SIZE_Y*TIMES_FACE_UP);
+		faceTop = new Point (swipeFromRightToLeft(faceTopY, maxX, minX),faceTopY);
+		int faceBottomY = lowerlip.y + (int)(ONE_FACE_SIZE_Y*TIMES_FACE_DOWN);
+		faceBottom = new Point (swipeFromRightToLeft(faceBottomY, maxX, minX),faceBottomY);
+		faceCenter = new Point (nose.x-(int)(ONE_FACE_SIZE_Y*TIMES_FACE_CENTER),nose.y);
+	}
+
 	private Point[] getBorderPoints(Point faceTop, Point faceBottom, Point faceCenter){
+		
 		Point[] points = new Point[RESOLUTION];
 		double faceHeight = (1+TIMES_FACE_UP+TIMES_FACE_DOWN); // Medido en caras
 		double faceWidth =  (TIMES_FACE_CENTER); //Medido en caras
