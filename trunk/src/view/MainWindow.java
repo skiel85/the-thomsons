@@ -106,7 +106,7 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonSharpenV3(), null);
 			jContentPane.add(getJButtonLowFilter(), null);
 			jContentPane.add(getJButtonSmooth(), null);
-			jContentPane.add(getJButtonDarken(), null);
+			//jContentPane.add(getJButtonDarken(), null);
 			jContentPane.add(getJButtonDeMedia(), null);
 			jContentPane.add(getJButtonGaussLowV3(), null);
 			jContentPane.add(getJButtonBlancoNegro(), null);
@@ -378,7 +378,7 @@ public class MainWindow extends JFrame {
 	private JButton getJButtonBinarizar() {
 		if (jButtonBinarizar == null) {
 			jButtonBinarizar = new JButton();
-			jButtonBinarizar.setText("Binarizar");
+			jButtonBinarizar.setText("Discretizar");
 			jButtonBinarizar.setSize(new Dimension(152, 25));
 			jButtonBinarizar.setLocation(new Point(785, 57));
 			jButtonBinarizar
@@ -386,9 +386,13 @@ public class MainWindow extends JFrame {
 						public void mouseClicked(java.awt.event.MouseEvent e) {
 
 							jContentPane.binarizeLUT(jSliderBinarizar.getValue());
+							
 							jContentPane.applyFilterWithLookUpTable();
+							
 							jContentPane.repaint();
+							
 							nombreOriginal = nombre;
+							
 							nombre = nombre + "-Bin";
 
 							System.out.println("mouseClicked() on binarizar");
@@ -457,6 +461,7 @@ public class MainWindow extends JFrame {
 					.addChangeListener(new javax.swing.event.ChangeListener() {
 						public void stateChanged(ChangeEvent e) {
 							JSlider source = (JSlider) e.getSource();
+							/*
 							if (!source.getValueIsAdjusting()) {
 
 								int valor = (int) source.getValue();
@@ -464,7 +469,8 @@ public class MainWindow extends JFrame {
 								jContentPane.applyFilterWithLookUpTable();
 								jContentPane.repaint();
 								System.out.println("stateChanged() slider");
-							}
+								
+							} */
 						}
 					});
 
