@@ -105,16 +105,18 @@ public class JPanelWithFilters extends JPanel {
 
 	public void darkenLUT() {
 
-		short brighten[] = new short[256];
+		byte brighten[] = new byte[256];
 		for (int i = 0; i < 256; i++) {
-			short pixelValue = (short) (i - 10);
+			byte pixelValue = (byte) (i - 10);
 			if (pixelValue > 255)
-				pixelValue = 255;
+				pixelValue = (byte) 255;
 			else if (pixelValue < 0)
 				pixelValue = 0;
 			brighten[i] = pixelValue;
 		}
-		lookupTable = new ShortLookupTable(0, brighten);
+		//lookupTable = new ShortLookupTable(0, brighten);
+		lookupTable = new ByteLookupTable(0, brighten);
+		
 	}
 
 	public void contrastIncLUT() {
@@ -129,6 +131,7 @@ public class JPanelWithFilters extends JPanel {
 			brighten[i] = pixelValue;
 		}
 		lookupTable = new ShortLookupTable(0, brighten);
+		
 	}
 
 	public void contrastDecLUT() {

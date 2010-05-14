@@ -296,7 +296,7 @@ public class MainWindow extends JFrame {
 			jButtonDarken.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 
-					jContentPane.darkenLUT();
+					jContentPane.darkenLUT();					
 					jContentPane.applyFilterWithLookUpTable();
 					jContentPane.repaint();
 					nombreOriginal = nombre;
