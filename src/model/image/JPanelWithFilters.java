@@ -7,6 +7,7 @@ import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.awt.image.ByteLookupTable;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.ConvolveOp;
@@ -20,6 +21,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
+import com.jhlabs.image.AbstractBufferedImageOp;
+import com.jhlabs.image.BlurFilter;
+import com.jhlabs.image.ConvolveFilter;
+import com.jhlabs.image.ImageUtils;
 
 import model.filters.AbstractFilter;
 
@@ -81,11 +87,13 @@ public class JPanelWithFilters extends JPanel {
 		if (bufimageHeight > imageHeight) bufimageHeight = imageHeight;
 		
 		bi = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+		//bi = ImageUtils.convertImageToARGB(displayImage);
 		
 		//biDisplay = new BufferedImage(IMG_FRAME_WIDTH, IMG_FRAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		
 		big = bi.createGraphics();
 		big.drawImage(displayImage, 0, 0, bufimageWidth, bufimageHeight, this);	
+		big.dispose();
 		
 	}
 
@@ -252,6 +260,15 @@ public class JPanelWithFilters extends JPanel {
 
 	public void setFilter(AbstractFilter filter) {
 		this.filter = filter;
+	}
+
+	public void applyNewFilters(ConvolveFilter filter) {
+		//Kernel kernel = filter.getKernel();
+		//ConvolveOp op = new ConvolveOp(kernel);
+		BufferedImageChanges.getInstance().binarize(false);
+		BufferedImageChanges.getInstance().changeImage(bi);
+		//bi = op.filter(bi, null);
+		bi = filter.filter(bi, null);
 	}
 
 
