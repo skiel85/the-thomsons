@@ -21,6 +21,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import model.filters.AbstractFilter;
+
 
 
 
@@ -33,7 +35,7 @@ public class JPanelWithFilters extends JPanel {
 	BufferedImage bi;
 	Graphics2D big;
 	LookupTable lookupTable;
-	float[] pattern;
+	AbstractFilter filter;
 	int bufimageWidth;
 	int bufimageHeight;
 	
@@ -199,75 +201,6 @@ public class JPanelWithFilters extends JPanel {
 
 	}
 
-
-
-
-	public void sharpenV3() {
-
-		pattern = new float[] {
-
-		0.0f, -1.0f, 0.0f, -1.0f, 5.0f, -1.0f, 0.0f, -1.0f, 0.0f
-
-		};
-
-	}
-
-	public void sharpenV2() {
-
-		pattern = new float[] {
-
-		-1.0f, -1.0f, -1.0f, -1.0f, 9.0f, -1.0f, -1.0f, -1.0f, -1.0f
-
-		};
-
-	}
-
-	public void lowFilter() {
-
-		pattern = new float[] {
-
-		0.0f, 0.1f, 0.0f, 0.1f, 0.6f, 0.1f, 0.0f, 0.1f, 0.0f
-
-		};
-
-	}
-
-	public void smooth() {
-
-		pattern = new float[] {
-
-		0.0625f, 0.125f, 0.0625f, 0.125f, 0.25f, 0.125f, 0.0625f, 0.125f,
-				0.0625f
-
-		};
-
-	}
-
-	public void media() {
-
-		pattern = new float[] {
-
-		1.0f, -2.0f, 1.0f, -2.0f, 5.0f, -2.0f, 1.0f, -2.0f, 1.0f
-
-		};
-
-	}
-
-	public void gaussLowFilterV3() {
-
-		pattern = new float[] {
-
-				// 1.0f, -2.0f, 1.0f,
-				// -2.0f, 4.0f, -2.0f,
-				// 1.0f, -2.0f, 1.0f
-
-				1 / 9f, 2 / 9f, 1 / 9f, 2 / 9f, 4 / 9f, 2 / 9f, 1 / 9f, 2 / 9f,
-				1 / 9f
-
-		};
-
-	}
-	
 	public void applyFilterWithLookUpTable() {
 
 		LookupOp lop = new LookupOp(lookupTable, null);
@@ -282,7 +215,7 @@ public class JPanelWithFilters extends JPanel {
 
 	public void applyFilter() {
 
-		Kernel kernel = new Kernel(3, 3, pattern);
+		Kernel kernel = new Kernel(3, 3, filter.getPattern());
 		ConvolveOp op = new ConvolveOp(kernel);
 		BufferedImageChanges.getInstance().binarize(false);
 		BufferedImageChanges.getInstance().changeImage(bi);
@@ -315,6 +248,10 @@ public class JPanelWithFilters extends JPanel {
 	public void detectarBorde() {
 		Bordeador bordeador = new Bordeador (bi,bufimageWidth,bufimageHeight);
 		bordeador.bordear();
+	}
+
+	public void setFilter(AbstractFilter filter) {
+		this.filter = filter;
 	}
 
 

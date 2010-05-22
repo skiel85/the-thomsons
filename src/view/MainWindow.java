@@ -19,6 +19,12 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 
+import model.filters.AbstractFilter;
+import model.filters.GaussLowV3Filter;
+import model.filters.LowFilter;
+import model.filters.SharpenV2Filter;
+import model.filters.SharpenV3Filter;
+import model.filters.SmoothFilter;
 import model.image.BufferedImageChanges;
 import model.image.JPanelWithFilters;
 
@@ -183,7 +189,7 @@ public class MainWindow extends JFrame {
 			jButtonFiltro1.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 
-					jContentPane.sharpenV3();
+					jContentPane.setFilter(new SharpenV3Filter());
 					jContentPane.applyFilter();
 					jContentPane.repaint();
 					nombreOriginal = nombre;
@@ -207,7 +213,7 @@ public class MainWindow extends JFrame {
 					.addMouseListener(new java.awt.event.MouseAdapter() {
 						public void mouseClicked(java.awt.event.MouseEvent e) {
 
-							jContentPane.sharpenV2();
+							jContentPane.setFilter(new SharpenV2Filter());
 							jContentPane.applyFilter();
 							jContentPane.repaint();
 							nombreOriginal = nombre;
@@ -252,7 +258,7 @@ public class MainWindow extends JFrame {
 			jButtonFiltro2.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 
-					jContentPane.lowFilter();
+					jContentPane.setFilter(new LowFilter());
 					jContentPane.applyFilter();
 					jContentPane.repaint();
 					nombreOriginal = nombre;
@@ -274,7 +280,7 @@ public class MainWindow extends JFrame {
 			jButtonFiltro3.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 
-					jContentPane.smooth();
+					jContentPane.setFilter(new SmoothFilter());
 					jContentPane.applyFilter();
 					jContentPane.repaint();
 					nombreOriginal = nombre;
@@ -287,27 +293,27 @@ public class MainWindow extends JFrame {
 		return jButtonFiltro3;
 	}
 
-	private JButton getJButtonDarken() {
-		if (jButtonDarken == null) {
-			jButtonDarken = new JButton();
-			jButtonDarken.setText("Darken");
-			jButtonDarken.setSize(new Dimension(120, 26));
-			jButtonDarken.setLocation(new Point(850, 236));
-			jButtonDarken.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseClicked(java.awt.event.MouseEvent e) {
-
-					jContentPane.darkenLUT();					
-					jContentPane.applyFilterWithLookUpTable();
-					jContentPane.repaint();
-					nombreOriginal = nombre;
-					nombre = nombre + "-DLUT";
-
-					System.out.println("mouseClicked() on Darken");
-				}
-			});
-		}
-		return jButtonDarken;
-	}
+//	private JButton getJButtonDarken() {
+//		if (jButtonDarken == null) {
+//			jButtonDarken = new JButton();
+//			jButtonDarken.setText("Darken");
+//			jButtonDarken.setSize(new Dimension(120, 26));
+//			jButtonDarken.setLocation(new Point(850, 236));
+//			jButtonDarken.addMouseListener(new java.awt.event.MouseAdapter() {
+//				public void mouseClicked(java.awt.event.MouseEvent e) {
+//
+//					jContentPane.darkenLUT();					
+//					jContentPane.applyFilterWithLookUpTable();
+//					jContentPane.repaint();
+//					nombreOriginal = nombre;
+//					nombre = nombre + "-DLUT";
+//
+//					System.out.println("mouseClicked() on Darken");
+//				}
+//			});
+//		}
+//		return jButtonDarken;
+//	}
 
 	private JButton getJButtonDeMedia() {
 		if (jButtonDeMedia == null) {
@@ -341,7 +347,7 @@ public class MainWindow extends JFrame {
 					.addMouseListener(new java.awt.event.MouseAdapter() {
 						public void mouseClicked(java.awt.event.MouseEvent e) {
 
-							jContentPane.gaussLowFilterV3();
+							jContentPane.setFilter(new GaussLowV3Filter());
 							jContentPane.applyFilter();
 							jContentPane.repaint();
 							nombreOriginal = nombre;
