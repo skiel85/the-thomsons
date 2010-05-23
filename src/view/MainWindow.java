@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +115,7 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonSharpenV3(), null);
 			jContentPane.add(getJButtonLowFilter(), null);
 			jContentPane.add(getJButtonSmooth(), null);
-			//jContentPane.add(getJButtonDarken(), null);
+			jContentPane.add(getJButtonDarken(), null);
 			jContentPane.add(getJButtonDeMedia(), null);
 			jContentPane.add(getJButtonGaussLowV3(), null);
 			jContentPane.add(getJButtonBlancoNegro(), null);
@@ -167,287 +168,202 @@ public class MainWindow extends JFrame {
 	}
 
 	private JButton getJButtonReset() {
-		if (jButtonReset == null) {
-			jButtonReset = new JButton();
-			jButtonReset.setBounds(new Rectangle(380, 57, 80, 25));
-			jButtonReset.setText("Reset");
-			jButtonReset.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseClicked(java.awt.event.MouseEvent e) {
-					BufferedImageChanges.getInstance().empty();
-					jContentPane.reset();
-					jContentPane.repaint();
-				}
-			});
-		}
-		return jButtonReset;
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				BufferedImageChanges.getInstance().empty();
+				jContentPane.reset();
+				jContentPane.repaint();
+			}
+		};
+		return getButtonGeneric(jButtonReset, "Reset",80,25,380,57,l);
 	}
 
 	private JButton getJButtonSharpenV3() {
-		if (jButtonFiltro1 == null) {
-			jButtonFiltro1 = new JButton();
-			jButtonFiltro1.setText("SharpenV3");
-			jButtonFiltro1.setLocation(new Point(700, 165));
-			jButtonFiltro1.setSize(new Dimension(120, 26));
-			jButtonFiltro1.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseClicked(java.awt.event.MouseEvent e) {
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				jContentPane.setFilter(new SharpenV3Filter());
+				jContentPane.applyFilter();
+				//jContentPane.applyNewFilters(new BlurFilter());
+				jContentPane.repaint();
+				nombreOriginal = nombre;
+				nombre = nombre + "-SV3";
 
-					//jContentPane.setFilter(new SharpenV3Filter());
-					//jContentPane.applyFilter();
-					jContentPane.applyNewFilters(new BlurFilter());
-					jContentPane.repaint();
-					nombreOriginal = nombre;
-					nombre = nombre + "-SV3";
-
-					System.out.println("mouseClicked() on Sharpen");
-
-				}
-			});
-		}
-		return jButtonFiltro1;
+				System.out.println("mouseClicked() on Sharpen");
+			}
+		};
+		return getButtonGeneric(jButtonFiltro1, "SharpenV3",120,25,700,165,l);
 	}
+	
 
 	private JButton getJButtonSharpenV2() {
-		if (jButtonSharpenV2 == null) {
-			jButtonSharpenV2 = new JButton();
-			jButtonSharpenV2.setText("SharpenV2");
-			jButtonSharpenV2.setLocation(new Point(700, 201));
-			jButtonSharpenV2.setSize(new Dimension(120, 26));
-			jButtonSharpenV2
-					.addMouseListener(new java.awt.event.MouseAdapter() {
-						public void mouseClicked(java.awt.event.MouseEvent e) {
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				jContentPane.setFilter(new SharpenV2Filter());
+				jContentPane.applyFilter();
+				jContentPane.repaint();
+				nombreOriginal = nombre;
+				nombre = nombre + "-SV2";
 
-							jContentPane.setFilter(new SharpenV2Filter());
-							jContentPane.applyFilter();
-							jContentPane.repaint();
-							nombreOriginal = nombre;
-							nombre = nombre + "-SV2";
-
-							System.out.println("mouseClicked() on Sharpen");
-
-						}
-					});
-		}
-		return jButtonSharpenV2;
+				System.out.println("mouseClicked() on Sharpen");
+			}
+		};
+		return getButtonGeneric(jButtonSharpenV2, "SharpenV2",120,25,700,201,l);
 	}
 
 	private JButton getJButtonBlancoNegro() {
-		if (jButtonGrays == null) {
-			jButtonGrays = new JButton();
-			jButtonGrays.setText("Grays");
-			jButtonGrays.setLocation(new Point(850, 165));
-			jButtonGrays.setSize(new Dimension(120, 26));
-			jButtonGrays.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseClicked(java.awt.event.MouseEvent e) {
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				jContentPane.toGrayScale();
+				jContentPane.repaint();
+				nombreOriginal = nombre;
+				nombre = nombre + "-BN";
 
-					jContentPane.toGrayScale();
-					jContentPane.repaint();
-					nombreOriginal = nombre;
-					nombre = nombre + "-BN";
-
-					System.out.println("mouseClicked() on Blanco y Negro");
-
-				}
-			});
-		}
-		return jButtonGrays;
+				System.out.println("mouseClicked() on Blanco y Negro");
+			}
+		};
+		return getButtonGeneric(jButtonGrays, "Grays",120,25,850,165,l);
 	}
 
 	private JButton getJButtonLowFilter() {
-		if (jButtonFiltro2 == null) {
-			jButtonFiltro2 = new JButton();
-			jButtonFiltro2.setText("Low Filter");
-			jButtonFiltro2.setSize(new Dimension(120, 26));
-			jButtonFiltro2.setLocation(new Point(850, 201));
-			jButtonFiltro2.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseClicked(java.awt.event.MouseEvent e) {
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				jContentPane.setFilter(new LowFilter());
+				jContentPane.applyFilter();
+				jContentPane.repaint();
+				nombreOriginal = nombre;
+				nombre = nombre + "-LF";
 
-					jContentPane.setFilter(new LowFilter());
-					jContentPane.applyFilter();
-					jContentPane.repaint();
-					nombreOriginal = nombre;
-					nombre = nombre + "-LF";
-
-					System.out.println("mouseClicked() on Low Filter");
-				}
-			});
-		}
-		return jButtonFiltro2;
+				System.out.println("mouseClicked() on Low Filter");
+			}
+		};
+		return getButtonGeneric(jButtonFiltro2, "Low Filter",120,25,850,201,l);
 	}
 
 	private JButton getJButtonSmooth() {
-		if (jButtonFiltro3 == null) {
-			jButtonFiltro3 = new JButton();
-			jButtonFiltro3.setText("Smooth");
-			jButtonFiltro3.setSize(new Dimension(120, 26));
-			jButtonFiltro3.setLocation(new Point(700, 236));
-			jButtonFiltro3.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseClicked(java.awt.event.MouseEvent e) {
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				jContentPane.setFilter(new SmoothFilter());
+				jContentPane.applyFilter();
+				jContentPane.repaint();
+				nombreOriginal = nombre;
+				nombre = nombre + "-Sm";
 
-					jContentPane.setFilter(new SmoothFilter());
-					jContentPane.applyFilter();
-					jContentPane.repaint();
-					nombreOriginal = nombre;
-					nombre = nombre + "-Sm";
-
-					System.out.println("mouseClicked() on Smooth");
-				}
-			});
-		}
-		return jButtonFiltro3;
+				System.out.println("mouseClicked() on Smooth");
+			}
+		};
+		return getButtonGeneric(jButtonFiltro3, "Smooth",120,25,700,236,l);
 	}
 
-//	private JButton getJButtonDarken() {
-//		if (jButtonDarken == null) {
-//			jButtonDarken = new JButton();
-//			jButtonDarken.setText("Darken");
-//			jButtonDarken.setSize(new Dimension(120, 26));
-//			jButtonDarken.setLocation(new Point(850, 236));
-//			jButtonDarken.addMouseListener(new java.awt.event.MouseAdapter() {
-//				public void mouseClicked(java.awt.event.MouseEvent e) {
-//
-//					jContentPane.darkenLUT();					
-//					jContentPane.applyFilterWithLookUpTable();
-//					jContentPane.repaint();
-//					nombreOriginal = nombre;
-//					nombre = nombre + "-DLUT";
-//
-//					System.out.println("mouseClicked() on Darken");
-//				}
-//			});
-//		}
-//		return jButtonDarken;
-//	}
+	private JButton getJButtonDarken() {
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				jContentPane.darkenLUT();					
+				jContentPane.applyFilterWithLookUpTable();
+				jContentPane.repaint();
+				nombreOriginal = nombre;
+				nombre = nombre + "-DLUT";
+
+				System.out.println("mouseClicked() on Darken");
+			}
+		};
+		return getButtonGeneric(jButtonDarken, "Darken",120,25,850,236,l);
+	}
 
 	private JButton getJButtonDeMedia() {
-		if (jButtonDeMedia == null) {
-			jButtonDeMedia = new JButton();
-			jButtonDeMedia.setText("Invertir");
-			jButtonDeMedia.setSize(new Dimension(120, 26));
-			jButtonDeMedia.setLocation(new Point(700, 270));
-			jButtonDeMedia.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseClicked(java.awt.event.MouseEvent e) {
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				jContentPane.reverseLUT();
+				jContentPane.applyFilterWithLookUpTable();
+				jContentPane.repaint();
+				nombreOriginal = nombre;
+				nombre = nombre + "-RLUT";
 
-					jContentPane.reverseLUT();
-					jContentPane.applyFilterWithLookUpTable();
-					jContentPane.repaint();
-					nombreOriginal = nombre;
-					nombre = nombre + "-RLUT";
-
-					System.out.println("mouseClicked() on Invertir");
-				}
-			});
-		}
-		return jButtonDeMedia;
+				System.out.println("mouseClicked() on Invertir");
+			}
+		};
+		return getButtonGeneric(jButtonDeMedia, "Invertir",120,25,700,270,l);
 	}
 
 	private JButton getJButtonGaussLowV3() {
-		if (jButtonGaussLowV3 == null) {
-			jButtonGaussLowV3 = new JButton();
-			jButtonGaussLowV3.setText("GaussLowV3");
-			jButtonGaussLowV3.setSize(new Dimension(120, 26));
-			jButtonGaussLowV3.setLocation(new Point(850, 270));
-			jButtonGaussLowV3
-					.addMouseListener(new java.awt.event.MouseAdapter() {
-						public void mouseClicked(java.awt.event.MouseEvent e) {
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				jContentPane.setFilter(new GaussLowV3Filter());
+				jContentPane.applyFilter();
+				jContentPane.repaint();
+				nombreOriginal = nombre;
+				nombre = nombre + "-GLV3";
 
-							jContentPane.setFilter(new GaussLowV3Filter());
-							jContentPane.applyFilter();
-							jContentPane.repaint();
-							nombreOriginal = nombre;
-							nombre = nombre + "-GLV3";
-
-							System.out.println("mouseClicked() on GaussLowV3");
-						}
-					});
-		}
-		return jButtonGaussLowV3;
+				System.out.println("mouseClicked() on GaussLowV3");
+			}
+		};
+		return getButtonGeneric(jButtonGaussLowV3, "GaussLowV3",120,25,850,270,l);
 	}
 
 
 	private JButton getJButtonBinarizar() {
-		if (jButtonBinarizar == null) {
-			jButtonBinarizar = new JButton();
-			jButtonBinarizar.setText("Discretizar");
-			jButtonBinarizar.setSize(new Dimension(152, 25));
-			jButtonBinarizar.setLocation(new Point(785, 57));
-			jButtonBinarizar
-					.addMouseListener(new java.awt.event.MouseAdapter() {
-						public void mouseClicked(java.awt.event.MouseEvent e) {
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				jContentPane.binarizeLUT(jSliderBinarizar.getValue());
+				
+				jContentPane.applyFilterWithLookUpTable();
+				
+				jContentPane.repaint();
+				
+				nombreOriginal = nombre;
+				
+				nombre = nombre + "-Bin";
 
-							jContentPane.binarizeLUT(jSliderBinarizar.getValue());
-							
-							jContentPane.applyFilterWithLookUpTable();
-							
-							jContentPane.repaint();
-							
-							nombreOriginal = nombre;
-							
-							nombre = nombre + "-Bin";
+				System.out.println("mouseClicked() on binarizar");
 
-							System.out.println("mouseClicked() on binarizar");
-
-							jContentPane.detectarBorde();
-
-						}
-					});
-		}
-		return jButtonBinarizar;
+				jContentPane.detectarBorde();
+			}
+		};
+		return getButtonGeneric(jButtonBinarizar, "Discretizar",152,25,785,57,l);
 	}
 
 
 	private JButton getJButtonSimilar() {
-		if (jButtonSimilar == null) {
-			jButtonSimilar = new JButton();
-			jButtonSimilar.setText("Similar");
-			jButtonSimilar.setSize(new Dimension(184, 28));
-			jButtonSimilar.setLocation(new Point(700, 370+170));
-			jButtonSimilar.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseClicked(java.awt.event.MouseEvent e) {
-					System.out.println("mouseClicked()");
-				}
-			});
-		}
-		return jButtonSimilar;
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				System.out.println("mouseClicked()");
+			}
+		};
+		return getButtonGeneric(jButtonSimilar, "Similar",184,28,700,370+170,l);
 	}
 	
 	private JButton getJButtonDeshacer() {
-		if (jButtonDeshacer == null) {
-			jButtonDeshacer = new JButton();
-			jButtonDeshacer.setText("Deshacer");
-			jButtonDeshacer.setSize(new Dimension(184, 28));
-			jButtonDeshacer.setLocation(new Point(700, 410+170));
-			jButtonDeshacer.addMouseListener(new java.awt.event.MouseAdapter() {
-				public void mouseClicked(java.awt.event.MouseEvent e) {
-
-					jContentPane.undo();
-					jContentPane.repaint();
-					nombre = nombreOriginal;
-
-					System.out.println("mouseClicked() on deshacer");
-
-				}
-			});
-		}
-		return jButtonDeshacer;
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				jContentPane.undo();
+				jContentPane.repaint();
+				nombre = nombreOriginal;
+				System.out.println("mouseClicked() on deshacer");
+			}
+		};
+	return getButtonGeneric(jButtonDeshacer, "Deshacer",184,28,700,410+170,l);
 	}
 	
 	private JButton getJButtonAlmacenar() {
-		if (jButtonAlmacenar == null) {
-			jButtonAlmacenar = new JButton();
-			jButtonAlmacenar.setText("Almacenar");
-			jButtonAlmacenar.setSize(new Dimension(184, 28));
-			jButtonAlmacenar.setLocation(new Point(700, 450+170));
-			jButtonAlmacenar
-					.addMouseListener(new java.awt.event.MouseAdapter() {
-						public void mouseClicked(java.awt.event.MouseEvent e) {
-							System.out.println("mouseClicked()");
-
-							jContentPane.guardarImagen(nombre);
-						}
-					});
+		MouseListener l = new java.awt.event.MouseAdapter() {
+				public void mouseClicked(java.awt.event.MouseEvent e) {
+					System.out.println("mouseClicked()");
+					jContentPane.guardarImagen(nombre);
+				}
+			};
+		return getButtonGeneric(jButtonAlmacenar, "Almacenar",184,28,700,450+170,l);
+	}
+	
+	private JButton getButtonGeneric(JButton button, String name, int xSize, int ySize, int xPos, int yPos,MouseListener l ){
+		if (button == null) {
+			button = new JButton();
+			button.setText(name);
+			button.setSize(new Dimension(xSize, ySize));
+			button.setLocation(new Point(xPos, yPos));
+			if (l != null) {
+				button.addMouseListener(l);
+			}
 		}
-
-		return jButtonAlmacenar;
+		return button;
 	}
 	
 	private JSlider getJSliderBinarizar() {
