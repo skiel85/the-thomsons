@@ -39,7 +39,7 @@ public class Bordeador {
 		ONE_PERC_IMG_Y = bufimageHeight / 100;
 	}
 
-	public void bordear() {
+	public Point[] bordear() {
 
 		Point nose = getNose(minY);
 		Point philtrum = getLowPoint(nose.y);
@@ -97,6 +97,7 @@ public class Bordeador {
 			else
 				System.out.println("!!!PUNTO NULL: "+points[i]+" con i="+i);
 		}
+		return points;
 
 	}
 	
