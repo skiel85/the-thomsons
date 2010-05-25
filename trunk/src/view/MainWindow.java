@@ -31,6 +31,8 @@ import model.filters.SmoothFilter;
 import model.image.BufferedImageChanges;
 import model.image.JPanelWithFilters;
 
+import flanagan.*;
+
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 
@@ -316,6 +318,8 @@ public class MainWindow extends JFrame {
 				System.out.println("mouseClicked() on binarizar");
 
 				jContentPane.detectarBorde();
+				
+				jContentPane.transformadaFourier();
 			}
 		};
 		return getButtonGeneric(jButtonBinarizar, "Discretizar",152,25,785,57,l);

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
@@ -27,6 +28,9 @@ import com.jhlabs.image.BlurFilter;
 import com.jhlabs.image.ConvolveFilter;
 import com.jhlabs.image.ImageUtils;
 
+import flanagan.math.FourierTransform;
+import flanagan.plot.PlotGraph;
+
 import model.filters.AbstractFilter;
 
 
@@ -44,6 +48,7 @@ public class JPanelWithFilters extends JPanel {
 	AbstractFilter filter;
 	int bufimageWidth;
 	int bufimageHeight;
+	Point[] points;
 	
 
 
@@ -253,9 +258,10 @@ public class JPanelWithFilters extends JPanel {
 		bi = BufferedImageChanges.getInstance().undo();		
 	}
 
-	public void detectarBorde() {
+	public Point[] detectarBorde() {
 		Bordeador bordeador = new Bordeador (bi,bufimageWidth,bufimageHeight);
-		bordeador.bordear();
+		points= bordeador.bordear();
+		return points;
 	}
 
 	public void setFilter(AbstractFilter filter) {
@@ -269,6 +275,41 @@ public class JPanelWithFilters extends JPanel {
 		BufferedImageChanges.getInstance().changeImage(bi);
 		//bi = op.filter(bi, null);
 		bi = filter.filter(bi, null);
+	}
+	
+	public void transformadaFourier(){
+		int cant=points.length;
+		 double deltaT = 1.0D/200;
+		double[] xdata = new double[cant];
+        double[] ydata = new double[cant];
+		System.out.println("Esta es la cantidad de puntos " + cant);
+		for(int i=0; i<cant; i++){
+			System.out.println("Este es el x " + points[i].x);
+			System.out.println("Este es el y " + points[i].y);
+			ydata[i]=points[i].y;
+			xdata[i]=points[i].x;
+        }
+		FourierTransform ft0 = new FourierTransform(ydata);
+        ft0.setDeltaT(deltaT);
+        ft0.setData(ydata);
+        //ft0.setData(xdata);
+        
+
+     
+        
+        ft0.powerSpectrum();
+        
+        //Descomentar la linea de abajo si se quiere ver el grafico de frecuencias
+        //ft0.plotPowerSpectrum();
+
+        // Obtain the transformed data
+        double[] transformedData = ft0.getTransformedDataAsAlternate();
+        
+    	for(int i=0; i<transformedData.length; i++){
+    		System.out.println("Esta es la transformada " + transformedData[i]);	
+    	}
+        
+       
 	}
 
 
