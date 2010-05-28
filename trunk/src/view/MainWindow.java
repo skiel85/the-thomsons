@@ -53,7 +53,9 @@ public class MainWindow extends JFrame {
 	private JButton jButtonGrays = null;
 	private JButton jButtonSharpenV2 = null;
 	private JSlider jSliderBinarizar = null;
-	private String nombre, nombreOriginal = "";
+	//private String nombre, nombreOriginal = "";
+	
+	private Buttoner buttoner;
 
 //	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
@@ -88,9 +90,11 @@ public class MainWindow extends JFrame {
 
 	}
 
-	private JPanel getJContentPane() {
+	public JPanelWithFilters getJContentPane() {
 		if (jContentPane == null) {
 
+			buttoner = new Buttoner(this);
+			
 			jLabelFoto = new JLabel();
 			jLabelFoto.setBounds(new Rectangle(41, 21, 228, 22));
 			jLabelFoto.setText("Elija la foto:");
@@ -128,6 +132,7 @@ public class MainWindow extends JFrame {
 		return jContentPane;
 
 	}
+	
 
 	private Component getImagesCombo() {
 		File folder = new File(System.getProperty("user.dir"));
@@ -153,9 +158,9 @@ public class MainWindow extends JFrame {
 
 				BufferedImageChanges.getInstance().empty();
 				jContentPane.loadImage(str);
-				nombreOriginal = str.substring(0,str.length()-4);
-				System.out.println("Este es el nombre " + nombreOriginal);
-				nombre = nombreOriginal;
+				buttoner.setNombreOriginal (str.substring(0,str.length()-4));
+				System.out.println("Este es el nombre " + buttoner.getNombreOriginal());
+				buttoner.setNombre(buttoner.getNombreOriginal());
 				jContentPane.repaint();
 
 			}
@@ -177,83 +182,44 @@ public class MainWindow extends JFrame {
 				jContentPane.repaint();
 			}
 		};
-		return getButtonGeneric(jButtonReset, "Reset",80,25,380,57,l);
+		return Buttoner.getButtonGeneric(jButtonReset, "Reset",80,25,380,57,l);
 	}
 
+//--------------- AbstractFilters
 	private JButton getJButtonSharpenV3() {
-		MouseListener l = new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				jContentPane.setFilter(new SharpenV3Filter());
-				jContentPane.applyFilter();
-				//jContentPane.applyNewFilters(new BlurFilter());
-				jContentPane.repaint();
-				nombreOriginal = nombre;
-				nombre = nombre + "-SV3";
-
-				System.out.println("mouseClicked() on Sharpen");
-			}
-		};
-		return getButtonGeneric(jButtonFiltro1, "SharpenV3",120,25,700,165,l);
+		return buttoner.getButtonAbstractFilter(jButtonFiltro1, "SharpenV3",120,25,700,165,new SharpenV3Filter());
 	}
-	
 
 	private JButton getJButtonSharpenV2() {
-		MouseListener l = new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				jContentPane.setFilter(new SharpenV2Filter());
-				jContentPane.applyFilter();
-				jContentPane.repaint();
-				nombreOriginal = nombre;
-				nombre = nombre + "-SV2";
-
-				System.out.println("mouseClicked() on Sharpen");
-			}
-		};
-		return getButtonGeneric(jButtonSharpenV2, "SharpenV2",120,25,700,201,l);
+		return buttoner.getButtonAbstractFilter(jButtonSharpenV2, "SharpenV2",120,25,700,201,new SharpenV2Filter());
+	}
+	
+	private JButton getJButtonLowFilter() {
+		return buttoner.getButtonAbstractFilter(jButtonFiltro2, "Low Filter",120,25,850,201,new LowFilter());
 	}
 
+	private JButton getJButtonSmooth() {
+		return buttoner.getButtonAbstractFilter(jButtonFiltro3, "Smooth",120,25,700,236,new SmoothFilter());
+	}
+	
+	private JButton getJButtonGaussLowV3() {
+		return buttoner.getButtonAbstractFilter(jButtonGaussLowV3, "GaussLowV3",120,25,850,270, new GaussLowV3Filter());
+	}
+
+
+//--------------- LUT Table Filters
 	private JButton getJButtonBlancoNegro() {
 		MouseListener l = new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				jContentPane.toGrayScale();
 				jContentPane.repaint();
-				nombreOriginal = nombre;
-				nombre = nombre + "-BN";
+				buttoner.setNombreOriginal(buttoner.getNombre());
+				buttoner.setNombre(buttoner.getNombre() + "-BN");
 
 				System.out.println("mouseClicked() on Blanco y Negro");
 			}
 		};
-		return getButtonGeneric(jButtonGrays, "Grays",120,25,850,165,l);
-	}
-
-	private JButton getJButtonLowFilter() {
-		MouseListener l = new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				jContentPane.setFilter(new LowFilter());
-				jContentPane.applyFilter();
-				jContentPane.repaint();
-				nombreOriginal = nombre;
-				nombre = nombre + "-LF";
-
-				System.out.println("mouseClicked() on Low Filter");
-			}
-		};
-		return getButtonGeneric(jButtonFiltro2, "Low Filter",120,25,850,201,l);
-	}
-
-	private JButton getJButtonSmooth() {
-		MouseListener l = new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				jContentPane.setFilter(new SmoothFilter());
-				jContentPane.applyFilter();
-				jContentPane.repaint();
-				nombreOriginal = nombre;
-				nombre = nombre + "-Sm";
-
-				System.out.println("mouseClicked() on Smooth");
-			}
-		};
-		return getButtonGeneric(jButtonFiltro3, "Smooth",120,25,700,236,l);
+		return Buttoner.getButtonGeneric(jButtonGrays, "Grays",120,25,850,165,l);
 	}
 
 	private JButton getJButtonDarken() {
@@ -262,13 +228,13 @@ public class MainWindow extends JFrame {
 				jContentPane.darkenLUT();					
 				jContentPane.applyFilterWithLookUpTable();
 				jContentPane.repaint();
-				nombreOriginal = nombre;
-				nombre = nombre + "-DLUT";
+				buttoner.setNombreOriginal(buttoner.getNombre());
+				buttoner.setNombre(buttoner.getNombre() + "-DRK");
 
 				System.out.println("mouseClicked() on Darken");
 			}
 		};
-		return getButtonGeneric(jButtonDarken, "Darken",120,25,850,236,l);
+		return Buttoner.getButtonGeneric(jButtonDarken, "Darken",120,25,850,236,l);
 	}
 
 	private JButton getJButtonDeMedia() {
@@ -277,28 +243,13 @@ public class MainWindow extends JFrame {
 				jContentPane.reverseLUT();
 				jContentPane.applyFilterWithLookUpTable();
 				jContentPane.repaint();
-				nombreOriginal = nombre;
-				nombre = nombre + "-RLUT";
+				buttoner.setNombreOriginal(buttoner.getNombre());
+				buttoner.setNombre(buttoner.getNombre() + "-REV");
 
 				System.out.println("mouseClicked() on Invertir");
 			}
 		};
-		return getButtonGeneric(jButtonDeMedia, "Invertir",120,25,700,270,l);
-	}
-
-	private JButton getJButtonGaussLowV3() {
-		MouseListener l = new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				jContentPane.setFilter(new GaussLowV3Filter());
-				jContentPane.applyFilter();
-				jContentPane.repaint();
-				nombreOriginal = nombre;
-				nombre = nombre + "-GLV3";
-
-				System.out.println("mouseClicked() on GaussLowV3");
-			}
-		};
-		return getButtonGeneric(jButtonGaussLowV3, "GaussLowV3",120,25,850,270,l);
+		return Buttoner.getButtonGeneric(jButtonDeMedia, "Invertir",120,25,700,270,l);
 	}
 
 
@@ -311,9 +262,9 @@ public class MainWindow extends JFrame {
 				
 				jContentPane.repaint();
 				
-				nombreOriginal = nombre;
-				
-				nombre = nombre + "-Bin";
+				buttoner.setNombreOriginal(buttoner.getNombre());
+				buttoner.setNombre(buttoner.getNombre() + "-Bin");
+
 
 				System.out.println("mouseClicked() on binarizar");
 
@@ -322,9 +273,10 @@ public class MainWindow extends JFrame {
 				jContentPane.transformadaFourier();
 			}
 		};
-		return getButtonGeneric(jButtonBinarizar, "Discretizar",152,25,785,57,l);
+		return Buttoner.getButtonGeneric(jButtonBinarizar, "Discretizar",152,25,785,57,l);
 	}
 
+//--------------- Otros Botones
 
 	private JButton getJButtonSimilar() {
 		MouseListener l = new java.awt.event.MouseAdapter() {
@@ -332,7 +284,7 @@ public class MainWindow extends JFrame {
 				System.out.println("mouseClicked()");
 			}
 		};
-		return getButtonGeneric(jButtonSimilar, "Similar",184,28,700,370+170,l);
+		return Buttoner.getButtonGeneric(jButtonSimilar, "Similar",184,28,700,370+170,l);
 	}
 	
 	private JButton getJButtonDeshacer() {
@@ -340,35 +292,24 @@ public class MainWindow extends JFrame {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				jContentPane.undo();
 				jContentPane.repaint();
-				nombre = nombreOriginal;
+				buttoner.setNombre(buttoner.getNombreOriginal());
 				System.out.println("mouseClicked() on deshacer");
 			}
 		};
-	return getButtonGeneric(jButtonDeshacer, "Deshacer",184,28,700,410+170,l);
+	return Buttoner.getButtonGeneric(jButtonDeshacer, "Deshacer",184,28,700,410+170,l);
 	}
 	
 	private JButton getJButtonAlmacenar() {
 		MouseListener l = new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					System.out.println("mouseClicked()");
-					jContentPane.guardarImagen(nombre);
+					jContentPane.guardarImagen(buttoner.getNombre());
 				}
 			};
-		return getButtonGeneric(jButtonAlmacenar, "Almacenar",184,28,700,450+170,l);
+		return Buttoner.getButtonGeneric(jButtonAlmacenar, "Almacenar",184,28,700,450+170,l);
 	}
 	
-	private JButton getButtonGeneric(JButton button, String name, int xSize, int ySize, int xPos, int yPos,MouseListener l ){
-		if (button == null) {
-			button = new JButton();
-			button.setText(name);
-			button.setSize(new Dimension(xSize, ySize));
-			button.setLocation(new Point(xPos, yPos));
-			if (l != null) {
-				button.addMouseListener(l);
-			}
-		}
-		return button;
-	}
+
 	
 	private JSlider getJSliderBinarizar() {
 		if (jSliderBinarizar == null) {

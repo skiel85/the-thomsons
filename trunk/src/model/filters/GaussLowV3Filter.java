@@ -12,5 +12,9 @@ public class GaussLowV3Filter extends AbstractFilter {
 				1 / 9f
 		};
 	}
+	
+	public String toString() {
+		return "GL3";	
+	}
 
 }
