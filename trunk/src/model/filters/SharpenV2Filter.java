@@ -9,8 +9,6 @@ public class SharpenV2Filter extends AbstractFilter {
 		};
 	}
 	
-	public String toString() {
-		return "SV2";	
-	}
+
 
 }

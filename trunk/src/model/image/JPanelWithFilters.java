@@ -8,7 +8,6 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
 import java.awt.image.ByteLookupTable;
 import java.awt.image.ColorConvertOp;
 import java.awt.image.ConvolveOp;
@@ -23,15 +22,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import com.jhlabs.image.AbstractBufferedImageOp;
-import com.jhlabs.image.BlurFilter;
+import model.filters.AbstractFilter;
+
 import com.jhlabs.image.ConvolveFilter;
-import com.jhlabs.image.ImageUtils;
 
 import flanagan.math.FourierTransform;
-import flanagan.plot.PlotGraph;
-
-import model.filters.AbstractFilter;
 
 
 
