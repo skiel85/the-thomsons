@@ -4,4 +4,6 @@ public abstract class AbstractFilter {
 
 	public abstract float[] getPattern();
 
+	
+	
 }
