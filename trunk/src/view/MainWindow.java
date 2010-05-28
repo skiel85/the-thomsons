@@ -118,21 +118,62 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonSimilar(), null);
 
 			//Filtros
-			jContentPane.add(getJButtonSharpenV3(), null);
-			jContentPane.add(getJButtonLowFilter(), null);
-			jContentPane.add(getJButtonSmooth(), null);
+			jContentPane.add(getFilterCombo());
 			jContentPane.add(getJButtonDarken(), null);
-			jContentPane.add(getJButtonDeMedia(), null);
-			jContentPane.add(getJButtonGaussLowV3(), null);
 			jContentPane.add(getJButtonBlancoNegro(), null);
-			jContentPane.add(getJButtonSharpenV2(), null);
 
 		}
 
 		return jContentPane;
 
 	}
-	
+
+	private Component getFilterCombo() {
+
+		List<String> filList = new ArrayList<String>();
+		filList.add("-Abstract Filters-");
+		filList.add("GaussLowV3");
+		filList.add("SharpenV2");
+		filList.add("Low");
+		filList.add("Media");
+		filList.add("Smooth");
+		Object filtros[] = filList.toArray();
+
+		final JComboBox combo = new JComboBox(filtros);
+		combo.setLocation(new Point(700,201));
+		combo.setSize(new Dimension(240+30, 26));
+		
+		combo.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent ie) {
+				JComboBox cm = (JComboBox) ie.getSource();
+				String str = (String) cm.getSelectedItem();
+				System.out.println("Se selecciono: " + str);
+				
+				
+				if (str.compareTo("-Abstract Filters-")==0)
+					return;
+				
+
+				if (jButtonFiltro1 != null){
+					jContentPane.remove(jButtonFiltro1);
+					jContentPane.validate();
+				}		
+				jButtonFiltro1 = null;
+				
+				jButtonFiltro1 = buttoner.getButtonAbstractFilter(jButtonFiltro1, str,120,25,775,250,Buttoner.getFilter(str));
+				jContentPane.add(jButtonFiltro1);
+
+				
+				System.out.println("  el boton dice: " + jButtonFiltro1.getText());
+		
+				jContentPane.repaint();
+				jContentPane.validate();
+
+			}
+		});
+		jContentPane.repaint();
+		return combo;
+	}
 
 	private Component getImagesCombo() {
 		File folder = new File(System.getProperty("user.dir"));
@@ -191,15 +232,15 @@ public class MainWindow extends JFrame {
 	}
 
 	private JButton getJButtonSharpenV2() {
-		return buttoner.getButtonAbstractFilter(jButtonSharpenV2, "SharpenV2",120,25,700,201,new SharpenV2Filter());
+		return buttoner.getButtonAbstractFilter(jButtonSharpenV2, "SharpenV2",120,25,700,236,new SharpenV2Filter());
 	}
 	
 	private JButton getJButtonLowFilter() {
-		return buttoner.getButtonAbstractFilter(jButtonFiltro2, "Low Filter",120,25,850,201,new LowFilter());
+		return buttoner.getButtonAbstractFilter(jButtonFiltro2, "Low Filter",120,25,850,236,new LowFilter());
 	}
 
 	private JButton getJButtonSmooth() {
-		return buttoner.getButtonAbstractFilter(jButtonFiltro3, "Smooth",120,25,700,236,new SmoothFilter());
+		return buttoner.getButtonAbstractFilter(jButtonFiltro3, "Smooth",120,25,850,165,new SmoothFilter());
 	}
 	
 	private JButton getJButtonGaussLowV3() {
@@ -219,7 +260,7 @@ public class MainWindow extends JFrame {
 				System.out.println("mouseClicked() on Blanco y Negro");
 			}
 		};
-		return Buttoner.getButtonGeneric(jButtonGrays, "Grays",120,25,850,165,l);
+		return Buttoner.getButtonGeneric(jButtonGrays, "Grays",120,25,700,165,l);
 	}
 
 	private JButton getJButtonDarken() {
@@ -234,7 +275,7 @@ public class MainWindow extends JFrame {
 				System.out.println("mouseClicked() on Darken");
 			}
 		};
-		return Buttoner.getButtonGeneric(jButtonDarken, "Darken",120,25,850,236,l);
+		return Buttoner.getButtonGeneric(jButtonDarken, "Darken",120,25,850,165,l);
 	}
 
 	private JButton getJButtonDeMedia() {
