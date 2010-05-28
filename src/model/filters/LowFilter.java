@@ -9,8 +9,6 @@ public class LowFilter extends AbstractFilter {
 		};	
 	}
 	
-	public String toString() {
-		return "LOW";	
-	}
+
 
 }

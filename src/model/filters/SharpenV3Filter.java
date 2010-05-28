@@ -8,7 +8,5 @@ public class SharpenV3Filter extends AbstractFilter {
 				0.0f, -1.0f, 0.0f, -1.0f, 5.0f, -1.0f, 0.0f, -1.0f, 0.0f 
 		};
 	}
-	public String toString() {
-		return "SV3";	
-	}
+
 }

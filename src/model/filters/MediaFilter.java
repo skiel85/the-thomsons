@@ -9,7 +9,4 @@ public class MediaFilter extends AbstractFilter {
 		};
 	}
 	
-	public String toString() {
-		return "MED";	
-	}
 }

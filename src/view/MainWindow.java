@@ -16,22 +16,12 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 
-import com.jhlabs.image.BlurFilter;
-
-import model.filters.AbstractFilter;
-import model.filters.GaussLowV3Filter;
-import model.filters.LowFilter;
-import model.filters.SharpenV2Filter;
-import model.filters.SharpenV3Filter;
-import model.filters.SmoothFilter;
+import model.filters.CustomFilters;
 import model.image.BufferedImageChanges;
 import model.image.JPanelWithFilters;
-
-import flanagan.*;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
@@ -41,17 +31,13 @@ public class MainWindow extends JFrame {
 
 	private JButton jButtonReset = null;
 	private JButton jButtonFiltro1 = null;
-	private JButton jButtonFiltro2 = null;
-	private JButton jButtonFiltro3 = null;
 	private JButton jButtonDeshacer = null;
 	private JButton jButtonAlmacenar = null;
 	private JButton jButtonSimilar = null;
 	private JButton jButtonBinarizar = null;
 	private JButton jButtonDarken = null;
-	private JButton jButtonDeMedia = null;
-	private JButton jButtonGaussLowV3 = null;
 	private JButton jButtonGrays = null;
-	private JButton jButtonSharpenV2 = null;
+	private JButton jButtonReversa = null;
 	private JSlider jSliderBinarizar = null;
 	//private String nombre, nombreOriginal = "";
 	
@@ -86,7 +72,7 @@ public class MainWindow extends JFrame {
 
 		this.setContentPane(getJContentPane());
 
-		this.setTitle("Reconocedor de Rostros v0.3");
+		this.setTitle("Reconocedor de Rostros v0.4");
 
 	}
 
@@ -130,13 +116,11 @@ public class MainWindow extends JFrame {
 
 	private Component getFilterCombo() {
 
-		List<String> filList = new ArrayList<String>();
-		filList.add("-Abstract Filters-");
-		filList.add("GaussLowV3");
-		filList.add("SharpenV2");
-		filList.add("Low");
-		filList.add("Media");
-		filList.add("Smooth");
+		List<CustomFilters> filList = new ArrayList<CustomFilters>();
+		CustomFilters[] allFilters = CustomFilters.values();
+		for (int i=0; i< allFilters.length; i++){
+			filList.add(allFilters[i]);
+		}
 		Object filtros[] = filList.toArray();
 
 		final JComboBox combo = new JComboBox(filtros);
@@ -146,12 +130,9 @@ public class MainWindow extends JFrame {
 		combo.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent ie) {
 				JComboBox cm = (JComboBox) ie.getSource();
-				String str = (String) cm.getSelectedItem();
-				System.out.println("Se selecciono: " + str);
 				
-				
-				if (str.compareTo("-Abstract Filters-")==0)
-					return;
+				CustomFilters customFilter = (CustomFilters) cm.getSelectedItem();
+				System.out.println("Se selecciono: " + customFilter);
 				
 
 				if (jButtonFiltro1 != null){
@@ -160,12 +141,9 @@ public class MainWindow extends JFrame {
 				}		
 				jButtonFiltro1 = null;
 				
-				jButtonFiltro1 = buttoner.getButtonAbstractFilter(jButtonFiltro1, str,120,25,775,250,Buttoner.getFilter(str));
+				jButtonFiltro1 = buttoner.getButtonAbstractFilter(jButtonFiltro1,120,25,775,250,customFilter);
 				jContentPane.add(jButtonFiltro1);
 
-				
-				System.out.println("  el boton dice: " + jButtonFiltro1.getText());
-		
 				jContentPane.repaint();
 				jContentPane.validate();
 
@@ -227,7 +205,7 @@ public class MainWindow extends JFrame {
 	}
 
 //--------------- AbstractFilters
-	private JButton getJButtonSharpenV3() {
+/*	private JButton getJButtonSharpenV3() {
 		return buttoner.getButtonAbstractFilter(jButtonFiltro1, "SharpenV3",120,25,700,165,new SharpenV3Filter());
 	}
 
@@ -246,7 +224,7 @@ public class MainWindow extends JFrame {
 	private JButton getJButtonGaussLowV3() {
 		return buttoner.getButtonAbstractFilter(jButtonGaussLowV3, "GaussLowV3",120,25,850,270, new GaussLowV3Filter());
 	}
-
+*/
 
 //--------------- LUT Table Filters
 	private JButton getJButtonBlancoNegro() {
@@ -278,7 +256,7 @@ public class MainWindow extends JFrame {
 		return Buttoner.getButtonGeneric(jButtonDarken, "Darken",120,25,850,165,l);
 	}
 
-	private JButton getJButtonDeMedia() {
+	private JButton getJButtonReversa() {
 		MouseListener l = new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				jContentPane.reverseLUT();
@@ -290,7 +268,7 @@ public class MainWindow extends JFrame {
 				System.out.println("mouseClicked() on Invertir");
 			}
 		};
-		return Buttoner.getButtonGeneric(jButtonDeMedia, "Invertir",120,25,700,270,l);
+		return Buttoner.getButtonGeneric(jButtonReversa, "Invertir",120,25,700,270,l);
 	}
 
 

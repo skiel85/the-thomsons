@@ -13,8 +13,6 @@ public class GaussLowV3Filter extends AbstractFilter {
 		};
 	}
 	
-	public String toString() {
-		return "GL3";	
-	}
+
 
 }
