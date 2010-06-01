@@ -97,6 +97,28 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp, Clonea
 		}
 	}
 	
+	
+	//Agregados by Mauro
+	public String[] getParameterNames(){
+		return null;
+	}
+	
+	public Object[] getParameterTypes(){
+		return null;
+	}
+	
+	public void setParameterAt(int index,Object parameter){
+	}
 
+	public Object[] getParameters() {
+		return null;
+	}
+	
+	public int getParameterCount(){
+		String[] str = getParameterNames();
+		if (str == null) 
+			return 0;
+		return str.length;
+	}
 
 }

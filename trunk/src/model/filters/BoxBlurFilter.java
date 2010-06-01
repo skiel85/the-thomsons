@@ -267,4 +267,21 @@ public class BoxBlurFilter extends AbstractBufferedImageOp {
 	public String toString() {
 		return "Blur/Box Blur...";
 	}
+	
+	//Agregados by Mauro
+	public String[] getParameterNames(){
+		String[] name = new String[1];
+		name[0] = "hRadius";
+		return name;
+	}
+	
+	public Object[] getParameterTypes(){
+		Float[] params = new Float[1];
+		params[0] = new Float(0);
+		return params;
+	}
+	
+	public void setParameterAt(int index,Object parameter){
+		hRadius = ((Float)parameter).floatValue();
+	}
 }

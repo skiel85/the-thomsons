@@ -17,6 +17,9 @@ public enum CustomFilters {
 	BUMPFILTER ("Bump","BUM",new BumpFilter()),
 	GAUSSIANFILTER ("Gaussian","GAU",new GaussianFilter()),
 	SHARPENFILTER ("Sharpen","SHA",new SharpenFilter()),
+	//Filters Varios
+	_DUMMY_VARIOUS ("-Various Filters-","DM2",null),
+	BOXBLURFILTER ( "BoxBlur", "BBF",new BoxBlurFilter()),	
 	;
 	
 	public final String name;
