@@ -18,6 +18,10 @@ package com.jhlabs.math;
 
 import java.awt.*;
 import java.awt.image.*;
+
+import model.filters.ImageMath;
+import model.filters.PixelUtils;
+
 import com.jhlabs.image.*;
 
 public class ImageFunction2D implements Function2D {

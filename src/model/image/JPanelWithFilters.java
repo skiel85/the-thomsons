@@ -10,8 +10,6 @@ import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
 import java.awt.image.ByteLookupTable;
 import java.awt.image.ColorConvertOp;
-import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
 import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
 import java.awt.image.RenderedImage;
@@ -22,10 +20,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import model.filters.AbstractFilter;
-
-import com.jhlabs.image.ConvolveFilter;
-
+import model.filters.AbstractBufferedImageOp;
+import model.filters.ConvolveFilter;
+import model.filters.CustomFilters;
 import flanagan.math.FourierTransform;
 
 
@@ -40,7 +37,7 @@ public class JPanelWithFilters extends JPanel {
 	BufferedImage bi;
 	Graphics2D big;
 	LookupTable lookupTable;
-	AbstractFilter filter;
+	AbstractBufferedImageOp filter;
 	int bufimageWidth;
 	int bufimageHeight;
 	Point[] points;
@@ -221,14 +218,7 @@ public class JPanelWithFilters extends JPanel {
 		*/bi = lop.filter(bi, null);
 	}
 
-	public void applyFilter() {
 
-		Kernel kernel = new Kernel(3, 3, filter.getPattern());
-		ConvolveOp op = new ConvolveOp(kernel);
-		BufferedImageChanges.getInstance().binarize(false);
-		BufferedImageChanges.getInstance().changeImage(bi);
-		bi = op.filter(bi, null);
-	}
 
 	public void update(Graphics g) {
 
@@ -259,7 +249,7 @@ public class JPanelWithFilters extends JPanel {
 		return points;
 	}
 
-	public void setFilter(AbstractFilter filter) {
+	public void setFilter(AbstractBufferedImageOp filter) {
 		this.filter = filter;
 	}
 
@@ -306,6 +296,19 @@ public class JPanelWithFilters extends JPanel {
         
        
 	}
+
+
+
+	public void applyFilter(CustomFilters filter2) {
+		BufferedImageChanges.getInstance().binarize(false);
+		BufferedImageChanges.getInstance().changeImage(bi);
+		bi = filter2.filter.filter(bi, null);
+		
+	}
+
+
+
+
 
 
 }
