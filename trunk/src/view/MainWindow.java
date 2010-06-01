@@ -134,6 +134,7 @@ public class MainWindow extends JFrame {
 				CustomFilters customFilter = (CustomFilters) cm.getSelectedItem();
 				System.out.println("Se selecciono: " + customFilter);
 				
+				if (customFilter.filter == null) return;
 
 				if (jButtonFiltro1 != null){
 					jContentPane.remove(jButtonFiltro1);
@@ -368,5 +369,6 @@ public class MainWindow extends JFrame {
 		}
 		return jSliderBinarizar;
 	}
+
 
 }

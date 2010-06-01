@@ -25,19 +25,29 @@ public class Buttoner {
 		MouseListener l = new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					try {
-						mainWindow.getJContentPane().setFilter(filter.filter.getClass().newInstance());
+						if (filter.filter != null){
+							mainWindow.getJContentPane().setFilter(filter.filter);
+							mainWindow.getJContentPane().applyFilter(filter);
+							mainWindow.getJContentPane().repaint();
+							nombreOriginal = nombre;
+							nombre = nombre + "-" + filter.shortName;
+						}
+						System.out.println("mouseClicked() on " + filter.name);
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
-					mainWindow.getJContentPane().applyFilter();
-					mainWindow.getJContentPane().repaint();
-					nombreOriginal = nombre;
-					nombre = nombre + "-" + filter.shortName;
-					System.out.println("mouseClicked() on " + filter.name);
+
 				}
 			};
+		if (filter.filter == null){
+			return button;
+		}
 		return getButtonGeneric(button, filter.name, xSize, ySize, xPos, yPos,l );
 	}
+	
+//	public JButton getButtonAbstractFilter(JButton button, int xSize, int ySize, int xPos, int yPos,final CustomFilters filter ){
+		
+//	}
 	
 	public static JButton getButtonGeneric(JButton button, String name, int xSize, int ySize, int xPos, int yPos,MouseListener l ){
 		if (button == null) {
@@ -52,21 +62,6 @@ public class Buttoner {
 		return button;
 	}
 	
-	public static AbstractFilter getFilter(String name) {
-		if (name.compareTo("Low") == 0)
-			return new LowFilter();
-		if (name.compareTo("Smooth") == 0)
-			return new SmoothFilter();
-		if (name.compareTo("SharpenV3") == 0)
-			return new SharpenV3Filter();
-		if (name.compareTo("SharpenV2") == 0)
-			return new SharpenV2Filter();
-		if (name.compareTo("Media") == 0)
-			return new MediaFilter();
-		if (name.compareTo("GaussLowV3") == 0)
-			return new GaussLowV3Filter();
-		return null;
-	}
 
 
 	public String getNombreOriginal() {
