@@ -30,7 +30,6 @@ public class MainWindow extends JFrame {
 	private JLabel jLabelFoto = null;
 
 	private JButton jButtonReset = null;
-	private JButton jButtonFiltro1 = null;
 	private JButton jButtonDeshacer = null;
 	private JButton jButtonAlmacenar = null;
 	private JButton jButtonSimilar = null;
@@ -43,6 +42,11 @@ public class MainWindow extends JFrame {
 	
 	private Buttoner buttoner;
 
+	JLabel filterNameLabel = null;
+	private JButton jButtonFiltro1 = null;
+	private JSlider jSliderSlide1 = null;
+	
+	
 //	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
 
@@ -72,7 +76,7 @@ public class MainWindow extends JFrame {
 
 		this.setContentPane(getJContentPane());
 
-		this.setTitle("Reconocedor de Rostros v0.4");
+		this.setTitle("Reconocedor de Rostros v0.5");
 
 	}
 
@@ -127,6 +131,11 @@ public class MainWindow extends JFrame {
 		combo.setLocation(new Point(700,201));
 		combo.setSize(new Dimension(240+30, 26));
 		
+		filterNameLabel = new JLabel();
+		filterNameLabel.setLocation(700, 220);	
+		filterNameLabel.setSize(200, 50);
+		jContentPane.add(filterNameLabel);
+		
 		combo.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent ie) {
 				JComboBox cm = (JComboBox) ie.getSource();
@@ -136,24 +145,43 @@ public class MainWindow extends JFrame {
 				
 				if (customFilter.filter == null) return;
 
-				if (jButtonFiltro1 != null){
-					jContentPane.remove(jButtonFiltro1);
-					jContentPane.validate();
-				}		
-				jButtonFiltro1 = null;
+				sacarComponentesViejos();
+		
+				filterNameLabel.setText(customFilter.name + ":");
 				
-				jButtonFiltro1 = buttoner.getButtonAbstractFilter(jButtonFiltro1,120,25,775,250,customFilter);
+				jButtonFiltro1 = buttoner.getButtonApplyFilter(jButtonFiltro1,120,25,775,260,customFilter);
 				jContentPane.add(jButtonFiltro1);
-
-				jContentPane.repaint();
-				jContentPane.validate();
-
+				
+				Object[] parameterTypes = customFilter.filter.getParameterTypes();
+				if (parameterTypes != null){
+					for (int i=0; i< parameterTypes.length; i++){
+						if (parameterTypes[i].getClass().isInstance(new Float(0))){
+							jSliderSlide1 = buttoner.getSlider(jSliderSlide1,200,50,775,290,customFilter,i);
+							jContentPane.add(jSliderSlide1);
+						}
+					}
+				
+				}
 			}
 		});
 		jContentPane.repaint();
 		return combo;
 	}
 
+	private void sacarComponentesViejos() {
+		if (jButtonFiltro1 != null){
+			jContentPane.remove(jButtonFiltro1);
+			jContentPane.validate();
+		}		
+		jButtonFiltro1 = null;
+		
+		if (jSliderSlide1 != null){
+			jContentPane.remove(jSliderSlide1);
+			jContentPane.validate();
+		}		
+		jSliderSlide1 = null;	
+	}
+	
 	private Component getImagesCombo() {
 		File folder = new File(System.getProperty("user.dir"));
 		File[] listOfFiles = folder.listFiles();
