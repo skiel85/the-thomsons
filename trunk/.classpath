@@ -2,6 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/Administrador/Escritorio/eclipse/workspace/SVN/flanagan.jar"/>
+	<classpathentry kind="lib" path="C:/Documents and Settings/desarrollo/Escritorio/eclipse 3.4.1 + VE (visual editor) listo para trabajar/eclipse 3.4.1/workspace/SVN_Taller2/flanagan.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

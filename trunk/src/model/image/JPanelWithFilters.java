@@ -268,35 +268,76 @@ public class JPanelWithFilters extends JPanel {
 		double[] xdata = new double[cant];
         double[] ydata = new double[cant];
 		System.out.println("Esta es la cantidad de puntos " + cant);
+		ordenar();
 		for(int i=0; i<cant; i++){
-			System.out.println("Este es el x " + points[i].x);
-			System.out.println("Este es el y " + points[i].y);
+			System.out.println("Este es el punto x "+ points[i].x);
+			System.out.println("Este es el punto y "+ points[i].y);
 			ydata[i]=points[i].y;
 			xdata[i]=points[i].x;
         }
+		
 		FourierTransform ft0 = new FourierTransform(ydata);
-        ft0.setDeltaT(deltaT);
+       // ft0.setDeltaT(deltaT);
         ft0.setData(ydata);
         //ft0.setData(xdata);
         
 
      
         
-        ft0.powerSpectrum();
+        //ft0.powerSpectrum();
+        
         
         //Descomentar la linea de abajo si se quiere ver el grafico de frecuencias
-        //ft0.plotPowerSpectrum();
+        ft0.plotPowerSpectrum();
 
         // Obtain the transformed data
         double[] transformedData = ft0.getTransformedDataAsAlternate();
         
     	for(int i=0; i<transformedData.length; i++){
-    		System.out.println("Esta es la transformada " + transformedData[i]);	
+    		System.out.println("Este es el valor de la transformada " + transformedData[i]);	
     	}
         
        
 	}
-
+	
+	 public Point[] ordenar(){
+	        int p1;
+	        int p2;
+	        int py1;
+	        int py2;        
+	        int x=0;
+	        boolean bandera=true;
+	        int elementos = points.length;
+	        while((elementos > 1) && (bandera==true) )
+	        {
+	            x=0;
+	            p1 = points[x].x;
+	            p2 = points[x+1].x;
+	            py1=points[x].y;
+	            py2=points[x+1].y;
+	            elementos--;
+	            bandera=false;
+	            for(int i=0; i < elementos; i++){                                
+	                if (p1>p2){                   
+	                	points[i].x=p2;
+	                	points[i+1].x=p1;
+	                	points[i].y=py2;
+	                	points[i+1].y=py1;
+	                    bandera=true;                      
+	                }//fin de si         
+	                
+	                x++;
+	                if (x < elementos){                    
+	                    p1 = points[x].x;
+	                    p2 = points[x+1].x;
+	                    py1 = points[x].y;
+	                    py2 = points[x+1].y;   
+	                }                    
+	            }                      
+	        }
+	        return points;
+	    }
+	  
 
 
 	public void applyFilter(CustomFilters filter2) {
@@ -305,6 +346,10 @@ public class JPanelWithFilters extends JPanel {
 		bi = filter2.filter.filter(bi, null);
 		
 	}
+	
+	
+	
+
 
 
 
