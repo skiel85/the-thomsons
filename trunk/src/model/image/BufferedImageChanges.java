@@ -9,6 +9,7 @@ public class BufferedImageChanges {
 	private static boolean binarized;
 	private static List<BufferedImage> changes;
     private static BufferedImageChanges instance = null;
+    private static final Integer MAX_LIST_SIZE = 5;
     
     private BufferedImageChanges() {}
  
@@ -25,6 +26,9 @@ public class BufferedImageChanges {
     }
     
     public void changeImage(BufferedImage bi) {
+    	if(changes.size()==MAX_LIST_SIZE) {
+    		changes.remove(0);
+    	}
     	changes.add(bi);
     }
     
