@@ -192,13 +192,8 @@ public class JPanelWithFilters extends JPanel {
 		ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
 		ColorConvertOp op = new ColorConvertOp(colorSpace, null);
 		
-		
-		
-		
+		BufferedImageChanges.getInstance().changeImage(bi);		
 		bi = op.filter(bi, null);
-		
-		
-		
 	}
 
 	public void reset() {
@@ -207,15 +202,9 @@ public class JPanelWithFilters extends JPanel {
 	}
 
 	public void applyFilterWithLookUpTable() {
-
 		LookupOp lop = new LookupOp(lookupTable, null);
-		/*if(BufferedImageChanges.getInstance().lastImageBinarized()) {
-			BufferedImageChanges.getInstance().undo();
-			bi = BufferedImageChanges.getInstance().getCurrentImage();
-		}
-		BufferedImageChanges.getInstance().binarize(true);
 		BufferedImageChanges.getInstance().changeImage(bi);
-		*/bi = lop.filter(bi, null);
+		bi = lop.filter(bi, null);
 	}
 
 
@@ -256,7 +245,6 @@ public class JPanelWithFilters extends JPanel {
 	public void applyNewFilters(ConvolveFilter filter) {
 		//Kernel kernel = filter.getKernel();
 		//ConvolveOp op = new ConvolveOp(kernel);
-		BufferedImageChanges.getInstance().binarize(false);
 		BufferedImageChanges.getInstance().changeImage(bi);
 		//bi = op.filter(bi, null);
 		bi = filter.filter(bi, null);
@@ -345,7 +333,6 @@ public class JPanelWithFilters extends JPanel {
 
 
 	public void applyFilter(CustomFilters filter2) {
-		BufferedImageChanges.getInstance().binarize(false);
 		BufferedImageChanges.getInstance().changeImage(bi);
 		bi = filter2.filter.filter(bi, null);
 		
