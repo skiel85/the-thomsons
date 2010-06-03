@@ -19,8 +19,8 @@ package com.jhlabs.math;
 import java.awt.*;
 import java.awt.image.*;
 
-import model.filters.ImageMath;
-import model.filters.PixelUtils;
+import model.filters.helpers.ImageMath;
+import model.filters.helpers.PixelUtils;
 
 import com.jhlabs.image.*;
 

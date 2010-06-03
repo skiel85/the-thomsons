@@ -13,18 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 
 import model.filters.CustomFilters;
+import model.filters.Parameter;
 import model.image.BufferedImageChanges;
 import model.image.JPanelWithFilters;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
+
 
 	private JPanelWithFilters jContentPane = null;
 	private JLabel jLabelFoto = null;
@@ -42,9 +46,13 @@ public class MainWindow extends JFrame {
 	
 	private Buttoner buttoner;
 
-	JLabel filterNameLabel = null;
+	private JLabel filterNameLabel = null;
 	private JButton jButtonFiltro1 = null;
-	private JSlider jSliderSlide1 = null;
+	private static final int MAX_PARAMS = 10;
+	private JSlider filterParamSlides[] = new JSlider[MAX_PARAMS];
+	private JCheckBox filterParamCheckBoxes[] = new JCheckBox[MAX_PARAMS];
+	private JSpinner filterParamSpinner[] = new JSpinner[MAX_PARAMS];
+	private JLabel filterParamLabels[] = new JLabel[MAX_PARAMS];
 	
 	
 //	@SuppressWarnings("static-access")
@@ -127,19 +135,19 @@ public class MainWindow extends JFrame {
 		}
 		Object filtros[] = filList.toArray();
 
+		
+		final int initialX = 700;
+		final int initialY = 200;
 		final JComboBox combo = new JComboBox(filtros);
-		combo.setLocation(new Point(700,201));
+		combo.setLocation(new Point(initialX,initialY));
 		combo.setSize(new Dimension(240+30, 26));
 		
-		filterNameLabel = new JLabel();
-		filterNameLabel.setLocation(700, 220);	
-		filterNameLabel.setSize(200, 50);
+		filterNameLabel = Buttoner.getLabel("", 200, 50, initialX,initialY+20);
 		jContentPane.add(filterNameLabel);
 		
 		combo.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent ie) {
-				JComboBox cm = (JComboBox) ie.getSource();
-				
+				JComboBox cm = (JComboBox) ie.getSource();	
 				CustomFilters customFilter = (CustomFilters) cm.getSelectedItem();
 				System.out.println("Se selecciono: " + customFilter);
 				
@@ -148,38 +156,64 @@ public class MainWindow extends JFrame {
 				sacarComponentesViejos();
 		
 				filterNameLabel.setText(customFilter.name + ":");
-				
-				jButtonFiltro1 = buttoner.getButtonApplyFilter(jButtonFiltro1,120,25,775,260,customFilter);
+				jButtonFiltro1 = buttoner.getButtonApplyFilter(jButtonFiltro1,120,25,initialX+75,initialY+60,customFilter);
 				jContentPane.add(jButtonFiltro1);
 				
-				Object[] parameterTypes = customFilter.filter.getParameterTypes();
-				if (parameterTypes != null){
-					for (int i=0; i< parameterTypes.length; i++){
-						if (parameterTypes[i].getClass().isInstance(new Float(0))){
-							jSliderSlide1 = buttoner.getSlider(jSliderSlide1,200,50,775,290,customFilter,i);
-							jContentPane.add(jSliderSlide1);
-						}
+				Parameter[] parameters = customFilter.filter.getParameters();
+
+				for (int i=0; i< customFilter.filter.getParameterCount(); i++){
+					int paramY = initialY+95;
+					if (parameters[i].isType(Parameter.FLOAT)){
+						filterParamSlides[i] = buttoner.getSlider(filterParamSlides[i],200,50,initialX+75,paramY+i*50,customFilter,parameters[i],i);
+						jContentPane.add(filterParamSlides[i]);
 					}
-				
+					if (parameters[i].isType(Parameter.BOOLEAN)){
+						filterParamCheckBoxes[i] = buttoner.getCheckbox(filterParamCheckBoxes[i],200,50,initialX+75+50,paramY+i*50,customFilter,parameters[i],i);
+						jContentPane.add(filterParamCheckBoxes[i]);
+					}
+					if (parameters[i].isType(Parameter.INTEGER)){
+						filterParamSpinner[i] = buttoner.getSpinner(filterParamSpinner[i],40,40,initialX+75+50,paramY+i*50,customFilter,parameters[i],i);
+						jContentPane.add(filterParamSpinner[i]);
+					}
+					filterParamLabels[i] = Buttoner.getLabel(parameters[i].getName() + ":",200,20,initialX+5,paramY+i*50);
+					jContentPane.add(filterParamLabels[i]);
+					jContentPane.repaint();
+					jContentPane.validate();
 				}
 			}
 		});
-		jContentPane.repaint();
 		return combo;
 	}
 
 	private void sacarComponentesViejos() {
 		if (jButtonFiltro1 != null){
 			jContentPane.remove(jButtonFiltro1);
-			jContentPane.validate();
 		}		
 		jButtonFiltro1 = null;
 		
-		if (jSliderSlide1 != null){
-			jContentPane.remove(jSliderSlide1);
-			jContentPane.validate();
-		}		
-		jSliderSlide1 = null;	
+		for (int i=0; i<MAX_PARAMS;i++){
+			if (filterParamSlides[i] != null){
+				jContentPane.remove(filterParamSlides[i]);
+			}		
+			filterParamSlides[i] = null;	
+			
+			if (filterParamLabels[i] != null){
+				jContentPane.remove(filterParamLabels[i]);
+			}		
+			filterParamLabels[i] = null;	
+			
+			if (filterParamCheckBoxes[i] != null){
+				jContentPane.remove(filterParamCheckBoxes[i]);
+			}		
+			filterParamCheckBoxes[i] = null;
+			
+			if (filterParamSpinner[i] != null){
+				jContentPane.remove(filterParamSpinner[i]);
+			}
+			filterParamSpinner[i] = null;	
+		}
+		
+		jContentPane.validate();
 	}
 	
 	private Component getImagesCombo() {

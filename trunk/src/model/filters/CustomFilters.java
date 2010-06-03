@@ -1,5 +1,9 @@
 package model.filters;
 
+import model.filters.convolve.*;
+import model.filters.filters.*;
+import model.filters.point.*;
+
 
 
 public enum CustomFilters {
@@ -19,7 +23,22 @@ public enum CustomFilters {
 	SHARPENFILTER ("Sharpen","SHA",new SharpenFilter()),
 	//Filters Varios
 	_DUMMY_VARIOUS ("-Various Filters-","DM2",null),
-	BOXBLURFILTER ( "BoxBlur", "BBF",new BoxBlurFilter()),	
+	BOXBLURFILTER ( "BoxBlur", "BBF",new BoxBlurFilter()),
+	BicubicScaleFilter ("BicubicScaleFilter", "BSF", new BicubicScaleFilter()),
+	BlockFilter("BlockFilter","BKF",new BlockFilter()),
+	//Point Filters
+	_DUMMY_POINT ("-Point Filters-","DM3",null),
+	ChannelMixFilter ( "ChannelMixFilter", "CMF",new ChannelMixFilter()),	
+	DissolveFilter ("DissolveFilter","DIS",new DissolveFilter()),
+	ErodeAlphaFilter ("ErodeAlphaFilter","ERO",new ErodeAlphaFilter()),
+	FourColorFilter ("FourColorFilter","4CO",new FourColorFilter()),
+	GrayFilter ("GrayFilter","GRA",new GrayFilter()),
+	GrayscaleFilter ("GrayscaleFilter","GRS",new GrayscaleFilter()),
+	HSBAdjustFilter ("HSBAdjustFilter","HSB",new HSBAdjustFilter()),
+	InvertAlphaFilter ("InvertAlphaFilter","INA",new InvertAlphaFilter()),
+	InvertFilter ("InvertFilter","INV",new InvertFilter()),
+	JavaLnFFilter ("JavaLnFFilter","JAV",new JavaLnFFilter()),
+	NoiseFilter ("NoiseFilter","NOI",new NoiseFilter()),
 	;
 	
 	public final String name;
@@ -35,3 +54,5 @@ public enum CustomFilters {
 		return name;
 	}
 }
+
+

@@ -24,6 +24,10 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.Kernel;
 
+import model.filters.helpers.ImageMath;
+import model.filters.helpers.PixelUtils;
+
+
 /**
  * A filter which applies a convolution kernel to an image.
  * @author Jerry Huxtable
