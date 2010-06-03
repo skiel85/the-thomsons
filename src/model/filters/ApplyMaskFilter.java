@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
+
 /**
  * A filter which uses the alpha channel of a "mask" image to interpolate between a source and destination image.
  */

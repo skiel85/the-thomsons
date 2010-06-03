@@ -4,9 +4,18 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseListener;
+import java.util.Hashtable;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 
 import model.filters.*;
@@ -22,6 +31,24 @@ public class Buttoner {
 	public Buttoner(MainWindow mainWindow){
 		this.mainWindow = mainWindow;
 	}
+
+	public String getNombreOriginal() {
+		return nombreOriginal;
+	}
+
+	public void setNombreOriginal(String nombreOriginal) {
+		this.nombreOriginal = nombreOriginal;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	
+	
 	
 	public JButton getButtonApplyFilter(JButton button, int xSize, int ySize, int xPos, int yPos,final CustomFilters filter ){
 			
@@ -64,38 +91,37 @@ public class Buttoner {
 	}
 	
 
-
-	public String getNombreOriginal() {
-		return nombreOriginal;
-	}
-
-	public void setNombreOriginal(String nombreOriginal) {
-		this.nombreOriginal = nombreOriginal;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public JSlider getSlider(JSlider jSliderSlide1, int xSize, int ySize, int xPos, int yPos,	final CustomFilters customFilter, final int position) {
+	public JSlider getSlider(JSlider jSliderSlide1, int xSize, int ySize, int xPos, int yPos,	final CustomFilters customFilter, final Parameter parameter, final int index) {
 		if (jSliderSlide1 == null) {
-			jSliderSlide1 = new JSlider(JSlider.HORIZONTAL, 0, 256, 150); //TODO rehacer
+			
+			int min = ((Integer) parameter.getOthers()[0].getData()).intValue();
+			int max = ((Integer) parameter.getOthers()[1].getData()).intValue();
+			int data = ((Float) parameter.getData()).intValue();
+			final int escalador = 1000;
+			jSliderSlide1 = new JSlider(JSlider.HORIZONTAL, min*escalador, max*escalador,data*escalador );
 
-			// Turn on labels at major tick marks.
-
-			jSliderSlide1.setMajorTickSpacing(64);
-			jSliderSlide1.setMinorTickSpacing(1);
+			
+			jSliderSlide1.setMajorTickSpacing((int) ((max-min)*0.2*escalador));
+			//jSliderSlide1.setMinorTickSpacing(1);
 			jSliderSlide1.setPaintTicks(true);
-			jSliderSlide1.setPaintLabels(true);
-			// jFrameBinarizar.setBorder(
-			// BorderFactory.createEmptyBorder(0,0,10,0));
+
 			Font font = new Font("Serif", Font.PLAIN, 15);
 			jSliderSlide1.setFont(font);
-			//jSliderSlide1.set
+
+			//Create the label table.
+	        Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
+	        labelTable.put(new Integer( min*escalador ),
+	        				new JLabel(String.valueOf(min)) );
+	        labelTable.put(new Integer( (max-min)*escalador/2 ),
+	        				new JLabel(String.valueOf((max-min)/(float)2)) );
+	        labelTable.put(new Integer( max*escalador),
+	                       new JLabel(String.valueOf(max)) );
+	        jSliderSlide1.setLabelTable(labelTable);
+
+	        jSliderSlide1.setPaintLabels(true);
+	        jSliderSlide1.setBorder(BorderFactory.createEmptyBorder(0,0,0,10));
+
+
 
 			jSliderSlide1.setLocation(new Point(xPos, yPos));
 			jSliderSlide1.setSize(new Dimension(xSize, ySize));
@@ -104,12 +130,62 @@ public class Buttoner {
 					.addChangeListener(new javax.swing.event.ChangeListener() {
 						public void stateChanged(ChangeEvent e) {
 							JSlider source = (JSlider) e.getSource();
-							customFilter.filter.setParameterAt(position,new Float(source.getValue()));
-							System.out.println("stateChanged() slider:" + customFilter.filter.getParameterNames()[position] + " a valor:" + source.getValue());
+							float valor = ((float) source.getValue())/((float) escalador);
+							customFilter.filter.setParameterAt(index,new Float(valor));
+							System.out.println("stateChanged() slider:" + customFilter.filter.getParameters()[index].getName() + " a valor:" + valor);
 						}
 					});
 
 		}
 		return jSliderSlide1;
+	}
+
+	public static JLabel getLabel(String text,  int xSize, int ySize, int xPos, int yPos) {
+		JLabel filterNameLabel = new JLabel();
+		filterNameLabel.setLocation(xPos, yPos);
+		filterNameLabel.setSize(xSize, ySize);
+		filterNameLabel.setText(text);
+		return filterNameLabel;
+	}
+
+	public JCheckBox getCheckbox(JCheckBox jCheckBox, int xSize, int ySize, int xPos, int yPos, final CustomFilters customFilter, final Parameter parameter, final int index) {
+		
+		if (jCheckBox == null) {
+			jCheckBox = new JCheckBox(parameter.getName(),((Boolean)parameter.getData()).booleanValue());
+			jCheckBox.setLocation(new Point(xPos, yPos));
+			jCheckBox.setSize(new Dimension(xSize, ySize));
+			jCheckBox.addChangeListener(new javax.swing.event.ChangeListener() {
+						public void stateChanged(ChangeEvent e) {
+							JCheckBox source = (JCheckBox) e.getSource();
+							customFilter.filter.setParameterAt(index,new Boolean(source.isSelected()));
+							System.out.println("stateChanged() checkbox:" + customFilter.filter.getParameters()[index].getName() + " a valor:" + source.isSelected());
+						}
+					});
+		}
+		return jCheckBox;
+	}
+
+	public JSpinner  getSpinner(JSpinner spinner , int xSize, int ySize, int xPos, int yPos, final CustomFilters customFilter, final Parameter parameter, final int index) {
+		
+		if (spinner == null){
+			int min = ((Integer) parameter.getOthers()[0].getData()).intValue();
+			int max = ((Integer) parameter.getOthers()[1].getData()).intValue();
+			int data = ((Integer) parameter.getData()).intValue();
+			SpinnerModel model = new SpinnerNumberModel(data,min,max,1);
+			spinner = new JSpinner(model);
+			spinner.setLocation(new Point(xPos, yPos));
+			spinner.setSize(new Dimension(xSize, ySize));
+			spinner.setEditor(new JSpinner.NumberEditor(spinner, "#"));
+
+			spinner.addChangeListener(new javax.swing.event.ChangeListener() {
+						public void stateChanged(ChangeEvent e) {
+							JSpinner source = (JSpinner) e.getSource();
+							String textData = ((JSpinner.DefaultEditor)source.getEditor()).getTextField().getText();
+							customFilter.filter.setParameterAt(index,Integer.parseInt(textData));
+							System.out.println("stateChanged() spinner:" + customFilter.filter.getParameters()[index].getName() + " a valor:" + textData);
+						}
+					});
+		}
+		return spinner;
 	}
 }
