@@ -25,8 +25,8 @@ public class Bordeador {
 	public static double TIMES_FACE_DOWN = 0.5;
 	// Cantidad hacia adentro medido en unid de cara desde nariz
 	public static double TIMES_FACE_CENTER = 3.0;
-	// Resolucion de puntos
-	public static int RESOLUTION = 300;
+	// Resolucion de puntos, para la trasnformada tiene que ser multiplo de 2 o si no tira warnings
+	public static int RESOLUTION = 256;
 
 	public Bordeador(BufferedImage bi, int bufimageWidth, int bufimageHeight) {
 		this.bi = bi;

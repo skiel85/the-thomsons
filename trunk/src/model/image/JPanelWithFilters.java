@@ -250,7 +250,7 @@ public class JPanelWithFilters extends JPanel {
 
 		int cant = points.length;
 
-		System.out.println("Cantidad de puntos: " + cant);
+		
 
 		ordenar();
 
@@ -281,12 +281,16 @@ public class JPanelWithFilters extends JPanel {
 
 		// Descomentar la linea de abajo si se quiere ver el grafico de
 		// frecuencias
-		ft0.plotPowerSpectrum();
+		//ft0.plotPowerSpectrum();
+		
+		//Este metodo realiza las transformadas
+		ft0.transform();
 
-		// Obtain the transformed data
-		double[] transformedData = ft0.getTransformedDataAsAlternate();
-
-		Complex[] complexTransformedData = ft0.getTransformedDataAsComplex();
+		// Obtain the transformed data como datos alternados
+		//double[] transformedData = ft0.getTransformedDataAsAlternate();
+		
+		//Obtiene la transformada como datos complejos
+          Complex[] complexTransformedData = ft0.getTransformedDataAsComplex();
 
 		for (int i = 0; i < complexTransformedData.length; i++) {
 
