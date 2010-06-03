@@ -123,32 +123,63 @@ public class Bordeador {
 	private Point[] getBorderPoints(Point faceTop, Point faceBottom, Point faceCenter){
 		
 		Point[] points = new Point[RESOLUTION];
+		
 		double faceHeight = (1+TIMES_FACE_UP+TIMES_FACE_DOWN); // Medido en caras
+		
 		double faceWidth =  (TIMES_FACE_CENTER); //Medido en caras
+		
 		int faceFrontRes = (int) (RESOLUTION*faceHeight/(2*faceHeight + 2*faceWidth)); //2*resolution/(2+2+3+3) = 60
+		
 		int faceBorderRes = (int) (RESOLUTION*faceWidth/(2*faceHeight + 2*faceWidth)); //3*resolution/(2+2+3+3) = 90
+		
 		int faceMirrorEnd = faceFrontRes*2 + faceBorderRes ; //60+90+60
+		
 		double salto = (double)(faceHeight*ONE_FACE_SIZE_Y /(double) faceFrontRes);
-		int y=faceTop.y;
+		
+		int y = faceTop.y;
+		
 		for (int i=0; i <= faceFrontRes; i++){
+		
 			points[i] = new Point (swipeFromRightToLeft((int)(y+i*salto), maxX, minX),(int)(y+i*salto));
+			
 			points[faceMirrorEnd-i] = new Point(faceCenter.x - (points[i].x-faceCenter.x), points[i].y);
+		
 		}
+		
 		double saltoBottom = (double)((2*(faceBottom.x - faceCenter.x)) /(double) faceBorderRes);
+		
 		double saltoTop = (double)((2*(faceTop.x - faceCenter.x)) /(double) faceBorderRes);
+		
+		System.out.println( "faceTop.y: " + faceTop.y );
+		
 		for (int i=0; i <= faceBorderRes; i++){
-			points[i+faceFrontRes] = new Point ((int)(faceBottom.x - i*saltoBottom), faceBottom.y);
-			points[RESOLUTION-1 -i] = new Point((int)(faceTop.x - i*saltoTop), faceTop.y);
+		
+			int xbottom = (int) ( faceBottom.x - i*saltoBottom );
+			
+			int xtop = (int) ( faceTop.x - i*saltoTop );
+			
+			points[i+faceFrontRes] = new Point ( xbottom, (int) ( ( i - 0 ) * ( i - faceBorderRes ) * ( -1 ) * 0.025 + faceBottom.y ) );
+			
+			points[RESOLUTION-1 -i] = new Point( xtop , (int) ( ( i - 0 ) * ( i - faceBorderRes ) * ( +1 ) * 0.025 + faceTop.y ) );
+		
+			System.out.println( "delta: " + ( i - 0 ) * ( i - faceBorderRes ) * ( -1 ) * 0.5 + "     y: " + ( ( i - 0 ) * ( i - faceBorderRes ) * ( -1 ) * 0.5 + faceTop.y ) ); 
+			
 		}
+		
 		return points;
+	
 	}
 
-	private Point getHighPoint(int y) {
+	private Point getHighPoint(int y){
+		
 		return getNextCriticalPoint(y,+1,+1);
+	
 	}
 
-	private Point getLowPoint(int y) {
+	private Point getLowPoint(int y){
+		
 		return getNextCriticalPoint(y,+1,-1);
+	
 	}
 
 	public int swipeFromRightToLeft(int y, int maxX, int minX) {
