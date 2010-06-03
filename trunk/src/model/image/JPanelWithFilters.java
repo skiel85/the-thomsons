@@ -23,11 +23,8 @@ import javax.swing.JPanel;
 import model.filters.AbstractBufferedImageOp;
 import model.filters.ConvolveFilter;
 import model.filters.CustomFilters;
+import flanagan.complex.Complex;
 import flanagan.math.FourierTransform;
-
-
-
-
 
 @SuppressWarnings("serial")
 public class JPanelWithFilters extends JPanel {
@@ -41,8 +38,6 @@ public class JPanelWithFilters extends JPanel {
 	int bufimageWidth;
 	int bufimageHeight;
 	Point[] points;
-	
-
 
 	public JPanelWithFilters() {
 
@@ -65,13 +60,14 @@ public class JPanelWithFilters extends JPanel {
 		}
 		createBufferedImage();
 	}
-	
+
 	public void paintComponent(Graphics g) {
-		
+
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D) g;
 		g2D.drawImage(bi, 40, 120, this);
-		//g2D.drawImage(bi.getScaledInstance(640, 480, Image.SCALE_AREA_AVERAGING), 0, 0, this);
+		// g2D.drawImage(bi.getScaledInstance(640, 480,
+		// Image.SCALE_AREA_AVERAGING), 0, 0, this);
 	}
 
 	public void createBufferedImage() {
@@ -79,19 +75,23 @@ public class JPanelWithFilters extends JPanel {
 		int imageWidth = displayImage.getWidth(this);
 		int imageHeight = displayImage.getHeight(this);
 		bufimageWidth = 640;
-		if (bufimageWidth > imageWidth) bufimageWidth = imageWidth;
+		if (bufimageWidth > imageWidth)
+			bufimageWidth = imageWidth;
 		bufimageHeight = 480;
-		if (bufimageHeight > imageHeight) bufimageHeight = imageHeight;
-		
-		bi = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-		//bi = ImageUtils.convertImageToARGB(displayImage);
-		
-		//biDisplay = new BufferedImage(IMG_FRAME_WIDTH, IMG_FRAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-		
+		if (bufimageHeight > imageHeight)
+			bufimageHeight = imageHeight;
+
+		bi = new BufferedImage(imageWidth, imageHeight,
+				BufferedImage.TYPE_INT_ARGB);
+		// bi = ImageUtils.convertImageToARGB(displayImage);
+
+		// biDisplay = new BufferedImage(IMG_FRAME_WIDTH, IMG_FRAME_HEIGHT,
+		// BufferedImage.TYPE_INT_ARGB);
+
 		big = bi.createGraphics();
-		big.drawImage(displayImage, 0, 0, bufimageWidth, bufimageHeight, this);	
+		big.drawImage(displayImage, 0, 0, bufimageWidth, bufimageHeight, this);
 		big.dispose();
-		
+
 	}
 
 	public void brightenLUT() {
@@ -121,9 +121,9 @@ public class JPanelWithFilters extends JPanel {
 				pixelValue = 0;
 			brighten[i] = pixelValue;
 		}
-		//lookupTable = new ShortLookupTable(0, brighten);
+		// lookupTable = new ShortLookupTable(0, brighten);
 		lookupTable = new ByteLookupTable(0, brighten);
-		
+
 	}
 
 	public void contrastIncLUT() {
@@ -138,7 +138,7 @@ public class JPanelWithFilters extends JPanel {
 			brighten[i] = pixelValue;
 		}
 		lookupTable = new ShortLookupTable(0, brighten);
-		
+
 	}
 
 	public void contrastDecLUT() {
@@ -163,7 +163,7 @@ public class JPanelWithFilters extends JPanel {
 		}
 		lookupTable = new ByteLookupTable(0, reverse);
 	}
-	
+
 	public void identityLUT() {
 
 		byte reverse[] = new byte[256];
@@ -191,8 +191,8 @@ public class JPanelWithFilters extends JPanel {
 
 		ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
 		ColorConvertOp op = new ColorConvertOp(colorSpace, null);
-		
-		BufferedImageChanges.getInstance().changeImage(bi);		
+
+		BufferedImageChanges.getInstance().changeImage(bi);
 		bi = op.filter(bi, null);
 	}
 
@@ -207,34 +207,30 @@ public class JPanelWithFilters extends JPanel {
 		bi = lop.filter(bi, null);
 	}
 
-
-
 	public void update(Graphics g) {
 
 		g.clearRect(0, 0, getWidth(), getHeight());
 		paintComponent(g);
 	}
-	
-	 public void guardarImagen(String nombre)
-	    {
-	    	RenderedImage rend=bi;
-	    	
-	    	try {
-	    		   ImageIO.write(rend, "jpg", new File(nombre+".jpg"));
-	    		} catch (IOException e) {
-	    		   System.out.println("Error de escritura");
-	    		}
 
+	public void guardarImagen(String nombre) {
+		RenderedImage rend = bi;
 
-	    }
+		try {
+			ImageIO.write(rend, "jpg", new File(nombre + ".jpg"));
+		} catch (IOException e) {
+			System.out.println("Error de escritura");
+		}
+
+	}
 
 	public void undo() {
-		bi = BufferedImageChanges.getInstance().undo();		
+		bi = BufferedImageChanges.getInstance().undo();
 	}
 
 	public Point[] detectarBorde() {
-		Bordeador bordeador = new Bordeador (bi,bufimageWidth,bufimageHeight);
-		points= bordeador.bordear();
+		Bordeador bordeador = new Bordeador(bi, bufimageWidth, bufimageHeight);
+		points = bordeador.bordear();
 		return points;
 	}
 
@@ -243,108 +239,106 @@ public class JPanelWithFilters extends JPanel {
 	}
 
 	public void applyNewFilters(ConvolveFilter filter) {
-		//Kernel kernel = filter.getKernel();
-		//ConvolveOp op = new ConvolveOp(kernel);
+		// Kernel kernel = filter.getKernel();
+		// ConvolveOp op = new ConvolveOp(kernel);
 		BufferedImageChanges.getInstance().changeImage(bi);
-		//bi = op.filter(bi, null);
+		// bi = op.filter(bi, null);
 		bi = filter.filter(bi, null);
 	}
-	
-	public void transformadaFourier(){
-		int cant=points.length;
-		
+
+	public void transformadaFourier() {
+
+		int cant = points.length;
+
+		System.out.println("Cantidad de puntos: " + cant);
+
 		ordenar();
-		
-		double resta=points[cant-1].x-points[0].x;
-		double deltaT = (resta)/cant;
+
+		double resta = points[cant - 1].x - points[0].x;
+
+		double deltaT = (resta) / cant;
+
 		System.out.println("Este es el delta " + deltaT);
-        double[] ydata = new double[cant];
+
+		double[] ydata = new double[cant];
+
 		System.out.println("Esta es la cantidad de puntos " + cant);
-		
-		for(int i=0; i<cant; i++){
-		//	System.out.println("Este es el punto x "+ points[i].x);
-		//	System.out.println("Este es el punto y "+ points[i].y);
-			ydata[i]=points[i].y;
-		
-        }
-		
+
+		for (int i = 0; i < cant; i++) {
+			// System.out.println("Este es el punto x "+ points[i].x);
+			// System.out.println("Este es el punto y "+ points[i].y);
+			ydata[i] = points[i].y;
+
+		}
+
 		FourierTransform ft0 = new FourierTransform(ydata);
-        ft0.setDeltaT(deltaT);
-        ft0.setData(ydata);
-        
-        
 
-     
-        
-        //ft0.powerSpectrum();
-        
-        
-        //Descomentar la linea de abajo si se quiere ver el grafico de frecuencias
-        ft0.plotPowerSpectrum();
+		ft0.setDeltaT(deltaT);
 
-        // Obtain the transformed data
-        double[] transformedData = ft0.getTransformedDataAsAlternate();
-        
-    	for(int i=0; i<transformedData.length; i++){
-    		System.out.println("Este es el resultado de la transformada " + transformedData[i]);	
-    	}
-        
-       
+		ft0.setData(ydata);
+
+		// ft0.powerSpectrum();
+
+		// Descomentar la linea de abajo si se quiere ver el grafico de
+		// frecuencias
+		ft0.plotPowerSpectrum();
+
+		// Obtain the transformed data
+		double[] transformedData = ft0.getTransformedDataAsAlternate();
+
+		Complex[] complexTransformedData = ft0.getTransformedDataAsComplex();
+
+		for (int i = 0; i < complexTransformedData.length; i++) {
+
+			System.out.println("Transformada en del Punto: " + i
+					+ "  Numero Complejo: " + complexTransformedData[i]);
+
+		}
+
 	}
-	
-	 public Point[] ordenar(){
-	        int p1;
-	        int p2;
-	        int py1;
-	        int py2;        
-	        int x=0;
-	        boolean bandera=true;
-	        int elementos = points.length;
-	        while((elementos > 1) && (bandera==true) )
-	        {
-	            x=0;
-	            p1 = points[x].x;
-	            p2 = points[x+1].x;
-	            py1=points[x].y;
-	            py2=points[x+1].y;
-	            elementos--;
-	            bandera=false;
-	            for(int i=0; i < elementos; i++){                                
-	                if (p1>p2){                   
-	                	points[i].x=p2;
-	                	points[i+1].x=p1;
-	                	points[i].y=py2;
-	                	points[i+1].y=py1;
-	                    bandera=true;                      
-	                }//fin de si         
-	                
-	                x++;
-	                if (x < elementos){                    
-	                    p1 = points[x].x;
-	                    p2 = points[x+1].x;
-	                    py1 = points[x].y;
-	                    py2 = points[x+1].y;   
-	                }                    
-	            }                      
-	        }
-	        return points;
-	    }
-	  
 
+	public Point[] ordenar() {
+
+		int p1;
+		int p2;
+		int py1;
+		int py2;
+		int x = 0;
+		boolean bandera = true;
+		int elementos = points.length;
+		while ((elementos > 1) && (bandera == true)) {
+			x = 0;
+			p1 = points[x].x;
+			p2 = points[x + 1].x;
+			py1 = points[x].y;
+			py2 = points[x + 1].y;
+			elementos--;
+			bandera = false;
+			for (int i = 0; i < elementos; i++) {
+				if (p1 > p2) {
+					points[i].x = p2;
+					points[i + 1].x = p1;
+					points[i].y = py2;
+					points[i + 1].y = py1;
+					bandera = true;
+				}// fin de si
+
+				x++;
+				if (x < elementos) {
+					p1 = points[x].x;
+					p2 = points[x + 1].x;
+					py1 = points[x].y;
+					py2 = points[x + 1].y;
+				}
+			}
+		}
+		return points;
+	}
 
 	public void applyFilter(CustomFilters filter2) {
 		BufferedImageChanges.getInstance().changeImage(bi);
 		bi = filter2.filter.filter(bi, null);
-		
+
 	}
-	
-	
-	
-
-
-
-
-
-
 
 }
