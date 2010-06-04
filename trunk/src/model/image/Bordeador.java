@@ -119,6 +119,8 @@ public class Bordeador {
 		faceBottom = new Point (swipeFromRightToLeft(faceBottomY, maxX, minX),faceBottomY);
 		faceCenter = new Point (nose.x-(int)(ONE_FACE_SIZE_Y*TIMES_FACE_CENTER),nose.y);
 	}
+	
+	
 
 	private Point[] getBorderPoints(Point faceTop, Point faceBottom, Point faceCenter){
 		
