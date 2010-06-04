@@ -152,6 +152,9 @@ public class MainWindow extends JFrame {
 				CustomFilters customFilter = (CustomFilters) cm.getSelectedItem();
 				System.out.println("Se selecciono: " + customFilter);
 				
+				jContentPane.repaint();
+				jContentPane.validate();
+				
 				if (customFilter.filter == null) return;
 
 				sacarComponentesViejos();
