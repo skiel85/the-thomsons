@@ -283,12 +283,14 @@ public class Bordeador {
 	public void drawRedMark(int x, int y) {
 		for (int i = -5; i < 5; i++) {
 			try {
-//				if(Color.RED.getRGB()!=-65536) {
+				if(bi!=null) {
 					bi.setRGB(x + i, y + i, Color.RED.getRGB());
 					bi.setRGB(x - i, y + i, Color.RED.getRGB());
-//				}
+				}
 			} catch(ArrayIndexOutOfBoundsException a) {
 				System.out.println("Indice fuera de termino ["+(x+i)+"] ["+(y + i)+"] ["+(x - i)+"] -> "+a);
+			} catch(NullPointerException b) {
+				System.out.println("NullPointer ["+(x+i)+"] ["+(y + i)+"] ["+(x - i)+"] ["+Color.RED.getRGB()+"] -> "+b);
 			}
 		}
 	}
