@@ -157,7 +157,10 @@ public class NoiseFilter extends PointFilter {
 	
 	//Agregados by Mauro
 	public Parameter[] getParameters() {
-		this.parameterCount = 4;
+		methodNames[0] = "setDensity";
+		methodNames[1] = "setAmount";
+		methodNames[2] = "setDistribution";
+		methodNames[3] = "setMonochrome";
 		parameters = new Parameter[getParameterCount()];
 		parameters[0] = Parameter.normalMinMaxFloat("density", 0, 100, density);
 		parameters[1] = Parameter.normalMinMaxInteger("amount", 0, 100, amount);
@@ -166,16 +169,6 @@ public class NoiseFilter extends PointFilter {
 		return parameters;
 	}
 	
-	public void setParameterAt(int index,Object parameter){
-		if (index == 0)
-			density = ((Float)parameter).floatValue();
-		if (index == 1)
-			amount = ((Integer)parameter).intValue();
-		if (index == 2)
-			distribution = ((Integer)parameter).intValue();
-		if (index == 3)
-			monochrome = ((Boolean)parameter).booleanValue();
-	}
 	
 	
 }
