@@ -3,6 +3,7 @@ package model.image;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.List;
 import java.awt.MediaTracker;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -29,6 +30,7 @@ import flanagan.math.FourierTransform;
 @SuppressWarnings("serial")
 public class JPanelWithFilters extends JPanel {
 
+
 	Image displayImage;
 	BufferedImage biDisplay;
 	BufferedImage bi;
@@ -38,6 +40,7 @@ public class JPanelWithFilters extends JPanel {
 	int bufimageWidth;
 	int bufimageHeight;
 	Point[] points;
+	Point puntoCentro;
 
 	public JPanelWithFilters() {
 
@@ -231,6 +234,8 @@ public class JPanelWithFilters extends JPanel {
 	public Point[] detectarBorde() {
 		Bordeador bordeador = new Bordeador(bi, bufimageWidth, bufimageHeight);
 		points = bordeador.bordear();
+		puntoCentro=bordeador.faceCenter;
+		
 		return points;
 	}
 
@@ -337,6 +342,33 @@ public class JPanelWithFilters extends JPanel {
 			}
 		}
 		return points;
+	}
+	
+	public Point[] transformadaFourier2() {
+			
+		 Point[] salida=new  Point[points.length];
+		 Point transformedPoint = null;
+		 int N = points.length;
+		 for (int i = 0; i < N; i++) {
+			
+			 points[i].x=points[i].x-puntoCentro.x;
+			 points[i].y=points[i].y-puntoCentro.y;
+			
+		 }
+		 for (int k = 0; k < N; k++) {
+		        double u = 0;
+		        double v = 0;
+		        int n = 0;
+		        for(int j = 0; j < N; j++) {
+		            u += points[j].x * Math.cos((2*Math.PI*k*n)/N) + points[j].y * Math.sin((2*Math.PI*k*n)/N);
+		            v += points[j].y * Math.cos((2*Math.PI*k*n)/N) - points[j].x * Math.sin((2*Math.PI*k*n)/N);
+		            n++;
+		        }
+		        transformedPoint = new Point((int)Math.round(u), (int)Math.round(v));
+		        salida[k]=transformedPoint;
+		        System.out.println("Este es el valor " + k + " de la TF " + transformedPoint);
+		    }
+		    return salida;
 	}
 
 	public void applyFilter(CustomFilters filter2) {
