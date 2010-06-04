@@ -23,6 +23,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.awt.image.ColorModel;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * A convenience class which implements those methods of BufferedImageOp which are rarely changed.
@@ -99,8 +100,11 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp, Clonea
 	
 	
 	//Agregados by Mauro
+	public static int MAX_PARAMETERS = 10;
 	protected Parameter[] parameters;
-	protected int parameterCount = 0;
+	protected int parameterCount = MAX_PARAMETERS;
+	protected String methodNames[] = new String[MAX_PARAMETERS];
+	
 
 	public Parameter[] getParameters() {
 		parameters = new Parameter[getParameterCount()];
@@ -112,7 +116,21 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp, Clonea
 	}
 
 	public void setParameterAt(int position, Object data) {
-		parameters[position].setData(data);
+		setParameterGenericAt(position, data, methodNames);
+	}
+	
+	public void setParameterGenericAt (int position,Object data,String[] methodName){
+		if (methodName==null) return;
+		if (methodName[position]==null)return;
+		if (methodName[position].compareTo("")==0)return;
+
+		try {
+			String name = Parameter.getTransformationMethodName(data);
+			Object dataReal= data.getClass().getMethod(name).invoke(data);
+			this.getClass().getMethod(methodName[position],Parameter.getParameterClass(data)).invoke(this, dataReal);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 	}
 	
 }

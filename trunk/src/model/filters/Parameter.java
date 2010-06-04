@@ -46,6 +46,37 @@ public class Parameter {
 		return p;
 	}
 	
+	public static String getTransformationMethodName(Object data2) {
+		if (data2.getClass().isInstance(new Float(0))){
+			return "floatValue";
+		}
+		if (data2.getClass().isInstance(new Boolean(true))){
+			return "booleanValue";
+		}
+		if (data2.getClass().isInstance(new Integer(0))){
+			return "intValue";
+		}
+		if (data2.getClass().isInstance(new Double(0))){
+			return "doubleValue";
+		}
+		return null;
+	}
+	
+	public static Class<?> getParameterClass(Object data2) {
+		if (data2.getClass().isInstance(new Float(0))){
+			return float.class;
+		}
+		if (data2.getClass().isInstance(new Boolean(true))){
+			return boolean.class;
+		}
+		if (data2.getClass().isInstance(new Integer(0))){
+			return int.class;
+		}
+		if (data2.getClass().isInstance(new Double(0))){
+			return double.class;
+		}
+		return null;
+	}
 	
 	public String getName() {
 		return name;
@@ -86,5 +117,7 @@ public class Parameter {
 	public void setOthersCount(int othersCount) {
 		this.othersCount = othersCount;
 	}
+
+
 	
 }

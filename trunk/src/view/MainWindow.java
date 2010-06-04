@@ -21,6 +21,7 @@ import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 
+import model.filters.AbstractBufferedImageOp;
 import model.filters.CustomFilters;
 import model.filters.Parameter;
 import model.image.BufferedImageChanges;
@@ -48,7 +49,7 @@ public class MainWindow extends JFrame {
 
 	private JLabel filterNameLabel = null;
 	private JButton jButtonFiltro1 = null;
-	private static final int MAX_PARAMS = 10;
+	private static final int MAX_PARAMS = AbstractBufferedImageOp.MAX_PARAMETERS;
 	private JSlider filterParamSlides[] = new JSlider[MAX_PARAMS];
 	private JCheckBox filterParamCheckBoxes[] = new JCheckBox[MAX_PARAMS];
 	private JSpinner filterParamSpinner[] = new JSpinner[MAX_PARAMS];
@@ -162,6 +163,7 @@ public class MainWindow extends JFrame {
 				Parameter[] parameters = customFilter.filter.getParameters();
 
 				for (int i=0; i< customFilter.filter.getParameterCount(); i++){
+					if (parameters[i] == null) return;
 					int paramY = initialY+95;
 					if (parameters[i].isType(Parameter.FLOAT)){
 						filterParamSlides[i] = buttoner.getSlider(filterParamSlides[i],200,50,initialX+75,paramY+i*50,customFilter,parameters[i],i);
