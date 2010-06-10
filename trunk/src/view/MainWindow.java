@@ -358,7 +358,8 @@ public class MainWindow extends JFrame {
 				jContentPane.detectarBorde();
 				
 				//jContentPane.transformadaFourier();
-				jContentPane.transformadaFourier2();
+				//jContentPane.transformadaFourier2();
+				jContentPane.distanciaEuclidea();
 			}
 		};
 		return Buttoner.getButtonGeneric(jButtonBinarizar, "Discretizar",152,25,785,57,l);

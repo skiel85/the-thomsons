@@ -370,6 +370,19 @@ public class JPanelWithFilters extends JPanel {
 		    }
 		    return salida;
 	}
+	
+	public void distanciaEuclidea(){
+		Point[] distanciaEuclidea =transformadaFourier2();
+		Double[] resultado=new Double[distanciaEuclidea.length-1];
+		 int N = distanciaEuclidea.length;
+		 for (int i = 0; i < N-1; i++) {
+			
+			 resultado[i]=Math.sqrt(Math.pow(distanciaEuclidea[i+1].x-distanciaEuclidea[i].x, 2) + Math.pow(distanciaEuclidea[i+1].y-distanciaEuclidea[i].y, 2));
+			 System.out.println("Este es el i " + i + " este es el resultado " +resultado[i]);
+			 
+			
+		 }
+	}
 
 	public void applyFilter(CustomFilters filter2) {
 		BufferedImageChanges.getInstance().changeImage(bi);
