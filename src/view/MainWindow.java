@@ -15,6 +15,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
@@ -26,6 +27,7 @@ import model.filters.CustomFilters;
 import model.filters.Parameter;
 import model.image.BufferedImageChanges;
 import model.image.JPanelWithFilters;
+import model.image.Selector;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
@@ -44,6 +46,7 @@ public class MainWindow extends JFrame {
 	private JButton jButtonReversa = null;
 	private JSlider jSliderBinarizar = null;
 	//private String nombre, nombreOriginal = "";
+	private JButton jButtonMultiProcess = null;
 	
 	private Buttoner buttoner;
 
@@ -85,7 +88,7 @@ public class MainWindow extends JFrame {
 
 		this.setContentPane(getJContentPane());
 
-		this.setTitle("Reconocedor de Rostros v0.5");
+		this.setTitle("Reconocedor de Rostros v0.6");
 
 	}
 
@@ -105,6 +108,8 @@ public class MainWindow extends JFrame {
 
 			jContentPane.add(getImagesCombo());
 			jContentPane.add(jLabelFoto, null);
+			
+			jContentPane.add(getJButtonMultiProcess(),null);
 
 			//Binarizar
 			jContentPane.add(getJButtonBinarizar(), null);
@@ -261,16 +266,6 @@ public class MainWindow extends JFrame {
 		return extension.equals(".jpg") || extension.equals(".png") || extension.equals(".gif");
 	}
 
-	private JButton getJButtonReset() {
-		MouseListener l = new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				BufferedImageChanges.getInstance().empty();
-				jContentPane.reset();
-				jContentPane.repaint();
-			}
-		};
-		return Buttoner.getButtonGeneric(jButtonReset, "Reset",80,25,380,57,l);
-	}
 
 //--------------- AbstractFilters
 /*	private JButton getJButtonSharpenV3() {
@@ -364,6 +359,7 @@ public class MainWindow extends JFrame {
 		};
 		return Buttoner.getButtonGeneric(jButtonBinarizar, "Discretizar",152,25,785,57,l);
 	}
+	
 
 //--------------- Otros Botones
 
@@ -439,5 +435,37 @@ public class MainWindow extends JFrame {
 		return jSliderBinarizar;
 	}
 
+	private JButton getJButtonMultiProcess() {
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				
+				//TODO aca viene lo de Ezequiel, yo tomo las imagenes de la carpeta POSSIBLES y las dejo en READY
+				
+		        JFrame frame = new JFrame("Selector");
+		        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		        //Create and set up the content pane.
+		        JComponent newContentPane = new Selector("POSSIBLES","READY");
+		        newContentPane.setOpaque(true); //content panes must be opaque
+		        frame.setContentPane(newContentPane);
+
+		        //Display the window.
+		        frame.pack();
+		        frame.setVisible(true);
+		        
+			}
+		};
+		return Buttoner.getButtonGeneric(jButtonMultiProcess, "Process Multiple",152,25,380+90,57,l);
+	}
+
+	private JButton getJButtonReset() {
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				BufferedImageChanges.getInstance().empty();
+				jContentPane.reset();
+				jContentPane.repaint();
+			}
+		};
+		return Buttoner.getButtonGeneric(jButtonReset, "Reset",80,25,380,57,l);
+	}
 }
