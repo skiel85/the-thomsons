@@ -1,0 +1,15 @@
+<filters>
+
+	<filter>
+  
+		<name>SharpenV3</name>
+
+	</filter>
+
+	<filter>
+
+		<name>GaussLowV3</name>
+
+	</filter>
+
+</filters>
