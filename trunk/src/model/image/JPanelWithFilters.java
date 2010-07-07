@@ -15,8 +15,13 @@ import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
 import java.awt.image.RenderedImage;
 import java.awt.image.ShortLookupTable;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -26,6 +31,7 @@ import model.filters.ConvolveFilter;
 import model.filters.CustomFilters;
 import flanagan.complex.Complex;
 import flanagan.math.FourierTransform;
+import java.io.FileOutputStream;
 
 @SuppressWarnings("serial")
 public class JPanelWithFilters extends JPanel {
@@ -41,6 +47,11 @@ public class JPanelWithFilters extends JPanel {
 	int bufimageHeight;
 	Point[] points;
 	Point puntoCentro;
+	boolean sigue=false;
+	String nombreComparacion="";
+	String [][] matriz=new String [600][513];
+	int j=0;
+	
 
 	public JPanelWithFilters() {
 
@@ -343,9 +354,36 @@ public class JPanelWithFilters extends JPanel {
 		}
 		return points;
 	}
+/*	public void generarArchivo(){
+		
+        try {
+			fichero = new FileWriter("Datos.txt",true);
+			pw = new PrintWriter(fichero);
+
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 	
-	public Point[] transformadaFourier2() {
-			
+
+		
+	}*/
+	
+	public Point[] transformadaFourier2(String nombre) {
+		FileWriter fichero = null;
+	    PrintWriter pw = null;
+		   try {
+				fichero = new FileWriter("DatosFin.txt",true);
+				pw = new PrintWriter(fichero);
+
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+		//generarArchivo();
+		 String datos=nombre;	
+		 
+		 
 		 Point[] salida=new  Point[points.length];
 		 Point transformedPoint = null;
 		 int N = points.length;
@@ -366,20 +404,116 @@ public class JPanelWithFilters extends JPanel {
 		        }
 		        transformedPoint = new Point((int)Math.round(u), (int)Math.round(v));
 		        salida[k]=transformedPoint;
-		        System.out.println("Este es el valor " + k + " de la TF " + transformedPoint);
+		       // System.out.print("+"+transformedPoint.x+"+"+transformedPoint.y);
+		        datos=datos+","+transformedPoint.x+","+transformedPoint.y;
 		    }
+		 	if (!sigue)
+		 	pw.println(datos);
+		 	sigue=false;
+		 	pw.close();
 		    return salida;
 	}
 	
-	public void distanciaEuclidea(){
-		Point[] distanciaEuclidea =transformadaFourier2();
-		Double[] resultado=new Double[distanciaEuclidea.length-1];
-		 int N = distanciaEuclidea.length;
-		 for (int i = 0; i < N-1; i++) {
+ 
+   public Point[] procesarLinea(String linea,int j){
+	   Point[] distancia =new  Point[points.length];
+	   String comienzo=linea;
+	   String fin=linea;
+	   for (int i=0;i<512;i++){
+	   linea=fin;
+	   int cant=linea.indexOf(",");
+	   comienzo=linea.substring(0, cant);
+	   fin=linea.substring(cant+1);
+	  // System.out.println(comienzo);
+	   matriz[j][i]=comienzo;
+	   }
+	   
+	   return distancia;
+   }
+
+	public void procesarArchivo(){
+	      File archivo = null;
+	      FileReader fr = null;
+	      BufferedReader br = null;
+	      Point[] distancia =new  Point[points.length];
+	      String linea="";
+	      
+	      try {
+	         // Apertura del fichero y creacion de BufferedReader para poder
+	         // hacer una lectura comoda (disponer del metodo readLine()).
+	         archivo = new File ("DatosFin.txt");
+	         fr = new FileReader (archivo);
+	         br = new BufferedReader(fr);
+
+	         // Lectura del fichero
+	         
+	         while((linea=br.readLine())!=null){
+	           // System.out.println(linea);
+	            procesarLinea(linea,j);
+	            j=j+1;
+	         }
+	      }
+	      catch(Exception e){
+	         e.printStackTrace();
+	      }finally{
+	         // En el finally cerramos el fichero, para asegurarnos
+	         // que se cierra tanto si todo va bien como si salta 
+	         // una excepcion.
+	         try{                    
+	            if( null != fr ){   
+	               fr.close();     
+	            }                  
+	         }catch (Exception e2){ 
+	            e2.printStackTrace();
+	         }
+	      }
+	       
+		
+	}
+	
+	public void distanciaEuclidea(String nombre){
+		sigue=true;
+		Point[] distanciaEuclidea =transformadaFourier2(nombre);
+		procesarArchivo();
+		Point[] resultado= new Point[points.length];
+		Double[] resultadoDistancia=new Double[distanciaEuclidea.length-1];
+		int p=0;
+		for (int k=0;k<j;k++){
 			
-			 resultado[i]=Math.sqrt(Math.pow(distanciaEuclidea[i+1].x-distanciaEuclidea[i].x, 2) + Math.pow(distanciaEuclidea[i+1].y-distanciaEuclidea[i].y, 2));
-			 System.out.println("Este es el i " + i + " este es el resultado " +resultado[i]);
-			 
+		
+			if (matriz[k][0].equals(nombre)){
+				
+			}
+			else{
+				int t=1;
+	/*		for (p=0;p<points.length;p++){
+				System.out.println(k + " " + p + "  "+ t);
+				System.out.println(matriz[k][t] + "    " + matriz[k][t+1]);
+				resultado[p+1].x=Integer.parseInt(matriz[k][t]);
+				System.out.println(Integer.parseInt("73"));
+				//resultado[p].x=Integer.parseInt("73");
+				System.out.println("PASO");
+				//resultado[p].y=Integer.parseInt(matriz[k][t+1]);
+				t=t+2;
+				
+			
+				
+			}*/
+				double suma=0;
+			int N = distanciaEuclidea.length;
+			 for (int i = 0; i < N-1; i++) {
+				
+				 resultadoDistancia[i]=Math.sqrt(Math.pow(distanciaEuclidea[i].x-Integer.parseInt(matriz[k][t]), 2) + Math.pow(distanciaEuclidea[i].y-Integer.parseInt(matriz[k][t+1]), 2));
+				 //System.out.println("Este es el i " + i + " este es el resultado " +resultadoDistancia[i]);
+				 t=t+2;
+				 suma=suma+resultadoDistancia[i];
+			
+			}
+			 System.out.println("La Distancia entre la imagen " + nombre + " y la imagen " + matriz[k][0] + " es " + suma/254 );
+		}
+		//Point[] distancia2=procesarLinea(linea);
+	/*	Double[] resultado=new Double[distanciaEuclidea.length-1];*/
+		 	 
 			
 		 }
 	}
