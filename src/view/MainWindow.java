@@ -57,6 +57,7 @@ public class MainWindow extends JFrame {
 	private JCheckBox filterParamCheckBoxes[] = new JCheckBox[MAX_PARAMS];
 	private JSpinner filterParamSpinner[] = new JSpinner[MAX_PARAMS];
 	private JLabel filterParamLabels[] = new JLabel[MAX_PARAMS];
+	private String nombreOriginal="";
 	
 	
 //	@SuppressWarnings("static-access")
@@ -252,6 +253,8 @@ public class MainWindow extends JFrame {
 				jContentPane.loadImage(str);
 				buttoner.setNombreOriginal (str.substring(0,str.length()-4));
 				System.out.println("Este es el nombre " + buttoner.getNombreOriginal());
+				nombreOriginal=buttoner.getNombreOriginal();
+				
 				buttoner.setNombre(buttoner.getNombreOriginal());
 				jContentPane.repaint();
 
@@ -327,6 +330,7 @@ public class MainWindow extends JFrame {
 				jContentPane.repaint();
 				buttoner.setNombreOriginal(buttoner.getNombre());
 				buttoner.setNombre(buttoner.getNombre() + "-REV");
+				
 
 				System.out.println("mouseClicked() on Invertir");
 			}
@@ -353,8 +357,8 @@ public class MainWindow extends JFrame {
 				jContentPane.detectarBorde();
 				
 				//jContentPane.transformadaFourier();
-				//jContentPane.transformadaFourier2();
-				jContentPane.distanciaEuclidea();
+				jContentPane.transformadaFourier2(nombreOriginal);
+				
 			}
 		};
 		return Buttoner.getButtonGeneric(jButtonBinarizar, "Discretizar",152,25,785,57,l);
@@ -367,6 +371,7 @@ public class MainWindow extends JFrame {
 		MouseListener l = new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				System.out.println("mouseClicked()");
+				jContentPane.distanciaEuclidea(nombreOriginal);
 			}
 		};
 		return Buttoner.getButtonGeneric(jButtonSimilar, "Similar",184,28,700,370+170,l);
