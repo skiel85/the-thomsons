@@ -502,11 +502,16 @@ public class JPanelWithFilters extends JPanel {
 				double suma=0;
 			int N = distanciaEuclidea.length;
 			 for (int i = 0; i < N-1; i++) {
-				
+				 if (i!=0){
 				 resultadoDistancia[i]=Math.sqrt(Math.pow(distanciaEuclidea[i].x-Integer.parseInt(matriz[k][t]), 2) + Math.pow(distanciaEuclidea[i].y-Integer.parseInt(matriz[k][t+1]), 2));
-				 //System.out.println("Este es el i " + i + " este es el resultado " +resultadoDistancia[i]);
-				 t=t+2;
+				 
+				// System.out.println("Este es el i " + i + " este es el resultado " +distanciaEuclidea[i].x + " Y esta es la matriz "+ matriz[k][t]);
+				// System.out.println("Este es el i " + i + " este es el resultado " +distanciaEuclidea[i].y + " Y esta es la matriz "+ matriz[k][t+1]);
 				 suma=suma+resultadoDistancia[i];
+				 }
+				 t=t+2;
+				 
+				 
 			
 			}
 			 System.out.println("La Distancia entre la imagen " + nombre + " y la imagen " + matriz[k][0] + " es " + suma/254 );
