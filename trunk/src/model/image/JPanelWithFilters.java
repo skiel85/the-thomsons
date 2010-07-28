@@ -26,6 +26,8 @@ import java.io.PrintWriter;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import conexion.conexion;
+
 import model.filters.AbstractBufferedImageOp;
 import model.filters.ConvolveFilter;
 import model.filters.CustomFilters;
@@ -382,6 +384,8 @@ public class JPanelWithFilters extends JPanel {
 			}
 		//generarArchivo();
 		 String datos=nombre;	
+		 String BD="";
+		 
 		 
 		 
 		 Point[] salida=new  Point[points.length];
@@ -406,8 +410,16 @@ public class JPanelWithFilters extends JPanel {
 		        salida[k]=transformedPoint;
 		       // System.out.print("+"+transformedPoint.x+"+"+transformedPoint.y);
 		        datos=datos+","+transformedPoint.x+","+transformedPoint.y;
+		        BD=BD+","+transformedPoint.x+","+transformedPoint.y;
 		    }
-		 	if (!sigue)
+		 
+		    conexion conexion=new conexion("localhost","taller","root","");
+			String query="insert into transformada (nombre,transformada,distancia) values ('"+nombre+"','"+BD+"',"+null+")";
+			//String query="select * from transformada";
+			conexion.conectarlogeo(query);	
+			conexion.cerrarConexion();
+		 	
+			if (!sigue)
 		 	pw.println(datos);
 		 	sigue=false;
 		 	pw.close();
