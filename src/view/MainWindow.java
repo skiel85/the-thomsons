@@ -29,6 +29,8 @@ import model.image.BufferedImageChanges;
 import model.image.JPanelWithFilters;
 import model.image.Selector;
 
+import conexion.conexion;
+
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 
@@ -371,6 +373,7 @@ public class MainWindow extends JFrame {
 		MouseListener l = new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				System.out.println("mouseClicked()");
+				
 				jContentPane.distanciaEuclidea(nombreOriginal);
 			}
 		};
@@ -380,6 +383,10 @@ public class MainWindow extends JFrame {
 	private JButton getJButtonDeshacer() {
 		MouseListener l = new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
+				//conexion conexion=new conexion("localhost","taller","root","");
+				//String query="insert into transformada (nombre,transformada,distancia) values ('1','2',"+null+")";
+				//String query="select * from transformada";
+				//conexion.conectarlogeo(query);
 				jContentPane.undo();
 				jContentPane.repaint();
 				buttoner.setNombre(buttoner.getNombreOriginal());
