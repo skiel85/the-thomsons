@@ -58,7 +58,7 @@ public class Signature {
         while (mustContinue) {
 
             String[] coord = matcher.group(1).split(",");
-            sign.getPoints().add(new Point(Double.parseDouble(coord[0]), Double.parseDouble(coord[1])));
+            sign.getPoints().add(new Point(Integer.parseInt(coord[0]), Integer.parseInt(coord[1])));
             mustContinue = matcher.find();
         }
 

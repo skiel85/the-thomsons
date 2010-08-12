@@ -1,8 +1,9 @@
 package model.image;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
+
+import vectorization.Point;
 
 public class Bordeador {
 
@@ -42,10 +43,10 @@ public class Bordeador {
 	public Point[] bordear() {
 
 		Point nose = getNose(minY);
-		Point philtrum = getLowPoint(nose.y);
-		Point upperlip = getHighPoint(philtrum.y);
-		Point mouth = getLowPoint(upperlip.y);
-		Point lowerlip = getHighPoint(mouth.y);
+		Point philtrum = getLowPoint(nose.getIntY());
+		Point upperlip = getHighPoint(philtrum.getIntY());
+		Point mouth = getLowPoint(upperlip.getIntY());
+		Point lowerlip = getHighPoint(mouth.getIntY());
 		
 		
 		Point minFacePoint = nose;
@@ -104,20 +105,20 @@ public class Bordeador {
 	private boolean isInvalid(Point point) {
 		if (point == null)
 			return true;
-		if(point.x ==0 || point.y ==0 || point.x<minX || point.x>maxX || point.y<minY || point.y>maxY )
+		if(point.getIntX() ==0 || point.getIntY() ==0 || point.getIntX()<minX || point.getIntX()>maxX || point.getIntY()<minY || point.getIntY()>maxY )
 			return true;
 		return false;
 	}
 
 	private void getLimits(Point nose, Point lowerlip) {
 		
-		ONE_FACE_SIZE_Y = lowerlip.y - nose.y;
+		ONE_FACE_SIZE_Y = lowerlip.getIntY() - nose.getIntY();
 		
-		int faceTopY = nose.y - (int)(ONE_FACE_SIZE_Y*TIMES_FACE_UP);
+		int faceTopY = nose.getIntY() - (int)(ONE_FACE_SIZE_Y*TIMES_FACE_UP);
 		faceTop = new Point (swipeFromRightToLeft(faceTopY, maxX, minX),faceTopY);
-		int faceBottomY = lowerlip.y + (int)(ONE_FACE_SIZE_Y*TIMES_FACE_DOWN);
+		int faceBottomY = lowerlip.getIntY() + (int)(ONE_FACE_SIZE_Y*TIMES_FACE_DOWN);
 		faceBottom = new Point (swipeFromRightToLeft(faceBottomY, maxX, minX),faceBottomY);
-		faceCenter = new Point (nose.x-(int)(ONE_FACE_SIZE_Y*TIMES_FACE_CENTER),nose.y);
+		faceCenter = new Point (nose.getIntX()-(int)(ONE_FACE_SIZE_Y*TIMES_FACE_CENTER),nose.getIntY());
 	}
 	
 	
@@ -138,33 +139,33 @@ public class Bordeador {
 		
 		double salto = (double)(faceHeight*ONE_FACE_SIZE_Y /(double) faceFrontRes);
 		
-		int y = faceTop.y;
+		int y = faceTop.getIntY();
 		
 		for (int i=0; i <= faceFrontRes; i++){
 		
 			points[i] = new Point (swipeFromRightToLeft((int)(y+i*salto), maxX, minX),(int)(y+i*salto));
 			
-			points[faceMirrorEnd-i] = new Point(faceCenter.x - (points[i].x-faceCenter.x), points[i].y);
+			points[faceMirrorEnd-i] = new Point(faceCenter.getIntX() - (points[i].getIntX()-faceCenter.getIntX()), points[i].getIntY());
 		
 		}
 		
-		double saltoBottom = (double)((2*(faceBottom.x - faceCenter.x)) /(double) faceBorderRes);
+		double saltoBottom = (double)((2*(faceBottom.getIntX() - faceCenter.getIntX())) /(double) faceBorderRes);
 		
-		double saltoTop = (double)((2*(faceTop.x - faceCenter.x)) /(double) faceBorderRes);
+		double saltoTop = (double)((2*(faceTop.getIntX() - faceCenter.getIntX())) /(double) faceBorderRes);
 		
-		System.out.println( "faceTop.y: " + faceTop.y );
+		System.out.println( "faceTop.y: " + faceTop.getIntY() );
 		
 		for (int i=0; i <= faceBorderRes; i++){
 		
-			int xbottom = (int) ( faceBottom.x - i*saltoBottom );
+			int xbottom = (int) ( faceBottom.getIntX() - i*saltoBottom );
 			
-			int xtop = (int) ( faceTop.x - i*saltoTop );
+			int xtop = (int) ( faceTop.getIntX() - i*saltoTop );
 			
-			points[i+faceFrontRes] = new Point ( xbottom, (int) ( ( i - 0 ) * ( i - faceBorderRes ) * ( -1 ) * 0.025 + faceBottom.y ) );
+			points[i+faceFrontRes] = new Point ( xbottom, (int) ( ( i - 0 ) * ( i - faceBorderRes ) * ( -1 ) * 0.025 + faceBottom.getIntY() ) );
 			
-			points[RESOLUTION-1 -i] = new Point( xtop , (int) ( ( i - 0 ) * ( i - faceBorderRes ) * ( +1 ) * 0.025 + faceTop.y ) );
+			points[RESOLUTION-1 -i] = new Point( xtop , (int) ( ( i - 0 ) * ( i - faceBorderRes ) * ( +1 ) * 0.025 + faceTop.getIntY() ) );
 		
-			System.out.println( "delta: " + ( i - 0 ) * ( i - faceBorderRes ) * ( -1 ) * 0.5 + "     y: " + ( ( i - 0 ) * ( i - faceBorderRes ) * ( -1 ) * 0.5 + faceTop.y ) ); 
+			System.out.println( "delta: " + ( i - 0 ) * ( i - faceBorderRes ) * ( -1 ) * 0.5 + "     y: " + ( ( i - 0 ) * ( i - faceBorderRes ) * ( -1 ) * 0.5 + faceTop.getIntY() ) ); 
 			
 		}
 		
@@ -227,9 +228,9 @@ public class Bordeador {
 		Point nose = getFarthest(maxY, localMinY, maxX, minX);
 		// Si el barrido de una linea superior por PERC_HAIR_TOL% da vacio x=0 o
 		// x=minX, no era nariz sino pelo
-		int yWhiteStripe = nose.y - ONE_PERC_IMG_Y * PERC_HAIR_TOL;
+		int yWhiteStripe = nose.getIntY() - ONE_PERC_IMG_Y * PERC_HAIR_TOL;
 		if (yWhiteStripe <= minY || isWhiteStripe(yWhiteStripe,maxX,minX)==true) {
-			nose = getNose(nose.y + 2);
+			nose = getNose(nose.getIntY() + 2);
 		}
 		return nose;
 	}
@@ -277,7 +278,7 @@ public class Bordeador {
 
 
 	public void drawMark(Point p) {
-		drawRedMark(p.x, p.y);
+		drawRedMark(p.getIntX(), p.getIntY());
 	}
 
 	public void drawRedMark(int x, int y) {

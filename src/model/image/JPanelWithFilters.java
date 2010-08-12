@@ -3,9 +3,7 @@ package model.image;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.List;
 import java.awt.MediaTracker;
-import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
@@ -16,7 +14,6 @@ import java.awt.image.LookupTable;
 import java.awt.image.RenderedImage;
 import java.awt.image.ShortLookupTable;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -26,14 +23,12 @@ import java.io.PrintWriter;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import conexion.conexion;
-
 import model.filters.AbstractBufferedImageOp;
 import model.filters.ConvolveFilter;
 import model.filters.CustomFilters;
+import vectorization.Point;
 import flanagan.complex.Complex;
 import flanagan.math.FourierTransform;
-import java.io.FileOutputStream;
 
 @SuppressWarnings("serial")
 public class JPanelWithFilters extends JPanel {
@@ -272,7 +267,7 @@ public class JPanelWithFilters extends JPanel {
 
 		ordenar();
 
-		double resta = points[cant - 1].x - points[0].x;
+		double resta = points[cant - 1].getIntX() - points[0].getIntX();
 
 		double deltaT = (resta) / cant;
 
@@ -285,7 +280,7 @@ public class JPanelWithFilters extends JPanel {
 		for (int i = 0; i < cant; i++) {
 			// System.out.println("Este es el punto x "+ points[i].x);
 			// System.out.println("Este es el punto y "+ points[i].y);
-			ydata[i] = points[i].y;
+			ydata[i] = points[i].getIntY();
 
 		}
 
@@ -330,27 +325,27 @@ public class JPanelWithFilters extends JPanel {
 		int elementos = points.length;
 		while ((elementos > 1) && (bandera == true)) {
 			x = 0;
-			p1 = points[x].x;
-			p2 = points[x + 1].x;
-			py1 = points[x].y;
-			py2 = points[x + 1].y;
+			p1 = points[x].getIntX();
+			p2 = points[x + 1].getIntX();
+			py1 = points[x].getIntY();
+			py2 = points[x + 1].getIntY();
 			elementos--;
 			bandera = false;
 			for (int i = 0; i < elementos; i++) {
 				if (p1 > p2) {
-					points[i].x = p2;
-					points[i + 1].x = p1;
-					points[i].y = py2;
-					points[i + 1].y = py1;
+					points[i].setX(p2);
+					points[i + 1].setX(p1);
+					points[i].setY(py2);
+					points[i + 1].setY(py1);
 					bandera = true;
 				}// fin de si
 
 				x++;
 				if (x < elementos) {
-					p1 = points[x].x;
-					p2 = points[x + 1].x;
-					py1 = points[x].y;
-					py2 = points[x + 1].y;
+					p1 = points[x].getIntX();
+					p2 = points[x + 1].getIntX();
+					py1 = points[x].getIntY();
+					py2 = points[x + 1].getIntY();
 				}
 			}
 		}
@@ -393,8 +388,8 @@ public class JPanelWithFilters extends JPanel {
 		 int N = points.length;
 		 for (int i = 0; i < N; i++) {
 			
-			 points[i].x=points[i].x-puntoCentro.x;
-			 points[i].y=points[i].y-puntoCentro.y;
+			 points[i].setX(points[i].getIntX()-puntoCentro.getIntX());
+			 points[i].setY(points[i].getIntY()-puntoCentro.getIntY());
 			
 		 }
 		 for (int k = 0; k < N; k++) {
@@ -402,22 +397,21 @@ public class JPanelWithFilters extends JPanel {
 		        double v = 0;
 		        int n = 0;
 		        for(int j = 0; j < N; j++) {
-		            u += points[j].x * Math.cos((2*Math.PI*k*n)/N) + points[j].y * Math.sin((2*Math.PI*k*n)/N);
-		            v += points[j].y * Math.cos((2*Math.PI*k*n)/N) - points[j].x * Math.sin((2*Math.PI*k*n)/N);
+		            u += points[j].getIntX() * Math.cos((2*Math.PI*k*n)/N) + points[j].getIntY() * Math.sin((2*Math.PI*k*n)/N);
+		            v += points[j].getIntY() * Math.cos((2*Math.PI*k*n)/N) - points[j].getIntX() * Math.sin((2*Math.PI*k*n)/N);
 		            n++;
 		        }
 		        transformedPoint = new Point((int)Math.round(u), (int)Math.round(v));
 		        salida[k]=transformedPoint;
 		       // System.out.print("+"+transformedPoint.x+"+"+transformedPoint.y);
-		        datos=datos+","+transformedPoint.x+","+transformedPoint.y;
-		        BD=BD+","+transformedPoint.x+","+transformedPoint.y;
+		        datos=datos+","+transformedPoint.getIntX()+","+transformedPoint.getIntY();
+		        BD=BD+","+transformedPoint.getIntX()+","+transformedPoint.getIntY();
 		    }
 		 
-		    conexion conexion=new conexion("localhost","taller","root","");
-			String query="insert into transformada (nombre,transformada,distancia) values ('"+nombre+"','"+BD+"',"+null+")";
-			//String query="select * from transformada";
-			conexion.conectarlogeo(query);	
-			conexion.cerrarConexion();
+//		    conexion conexion=new conexion("localhost","taller","root","");
+//			String query="insert into transformada (nombre,transformada,distancia) values ('"+nombre+"','"+BD+"',"+null+")";
+//			conexion.conectarlogeo(query);	
+//			conexion.cerrarConexion();
 		 	
 			if (!sigue)
 		 	pw.println(datos);
@@ -447,7 +441,6 @@ public class JPanelWithFilters extends JPanel {
 	      File archivo = null;
 	      FileReader fr = null;
 	      BufferedReader br = null;
-	      Point[] distancia =new  Point[points.length];
 	      String linea="";
 	      
 	      try {
@@ -487,9 +480,7 @@ public class JPanelWithFilters extends JPanel {
 		sigue=true;
 		Point[] distanciaEuclidea =transformadaFourier2(nombre);
 		procesarArchivo();
-		Point[] resultado= new Point[points.length];
 		Double[] resultadoDistancia=new Double[distanciaEuclidea.length-1];
-		int p=0;
 		for (int k=0;k<j;k++){
 			
 		
@@ -515,7 +506,7 @@ public class JPanelWithFilters extends JPanel {
 			int N = distanciaEuclidea.length;
 			 for (int i = 0; i < N-1; i++) {
 				 if (i!=0){
-				 resultadoDistancia[i]=Math.sqrt(Math.pow(distanciaEuclidea[i].x-Integer.parseInt(matriz[k][t]), 2) + Math.pow(distanciaEuclidea[i].y-Integer.parseInt(matriz[k][t+1]), 2));
+				 resultadoDistancia[i]=Math.sqrt(Math.pow(distanciaEuclidea[i].getIntX()-Integer.parseInt(matriz[k][t]), 2) + Math.pow(distanciaEuclidea[i].getIntY()-Integer.parseInt(matriz[k][t+1]), 2));
 				 
 				// System.out.println("Este es el i " + i + " este es el resultado " +distanciaEuclidea[i].x + " Y esta es la matriz "+ matriz[k][t]);
 				// System.out.println("Este es el i " + i + " este es el resultado " +distanciaEuclidea[i].y + " Y esta es la matriz "+ matriz[k][t+1]);
