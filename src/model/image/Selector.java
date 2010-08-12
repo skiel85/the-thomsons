@@ -95,9 +95,6 @@ public class Selector extends JPanel implements ItemListener{
 		return img;
 	}
 
-
-
-	@Override
 	public void itemStateChanged(ItemEvent arg0) {
 		// TODO Auto-generated method stub
 		
