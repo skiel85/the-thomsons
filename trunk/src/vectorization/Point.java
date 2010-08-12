@@ -1,7 +1,9 @@
 package vectorization;
 
-public class Point {
-    private double x;
+public class Point extends java.awt.Point {
+
+	private static final long serialVersionUID = 2430782886536003874L;
+	private double x;
     private double y;
 
 
@@ -50,6 +52,14 @@ public class Point {
     public Point divideByScalar(double value){
         return new Point(this.getX() / value,this.getY() / value);
     }
+
+	public int getIntY() {
+		return (int)this.y;
+	}
+
+	public int getIntX() {
+		return (int)this.x;
+	}
 
     
 }

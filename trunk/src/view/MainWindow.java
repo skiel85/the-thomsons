@@ -10,6 +10,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -28,8 +29,7 @@ import model.filters.Parameter;
 import model.image.BufferedImageChanges;
 import model.image.JPanelWithFilters;
 import model.image.Selector;
-
-import conexion.conexion;
+import vectorization.Signature;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
@@ -359,8 +359,13 @@ public class MainWindow extends JFrame {
 				jContentPane.detectarBorde();
 				
 				//jContentPane.transformadaFourier();
-				jContentPane.transformadaFourier2(nombreOriginal);
+				vectorization.Point[] points = jContentPane.transformadaFourier2(nombreOriginal);
 				
+				Signature s = new Signature();
+				s.setPoints(Arrays.asList(points));
+				s.setImagePath(nombreOriginal);
+				s.Save("SignatureFile.txt");
+
 			}
 		};
 		return Buttoner.getButtonGeneric(jButtonBinarizar, "Discretizar",152,25,785,57,l);
