@@ -11,10 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author Agustin
- */
+
 public class Signature {
 
     private List<Point> points = new LinkedList<Point>();
@@ -58,7 +55,9 @@ public class Signature {
         while (mustContinue) {
 
             String[] coord = matcher.group(1).split(",");
-            sign.getPoints().add(new Point(Integer.parseInt(coord[0]), Integer.parseInt(coord[1])));
+            String[] coord0 = coord[0].split("[.]");
+            String[] coord1 = coord[1].split("[.]");
+            sign.getPoints().add(new Point(Integer.parseInt(coord0[0]), Integer.parseInt(coord1[0])));
             mustContinue = matcher.find();
         }
 

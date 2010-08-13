@@ -1,5 +1,7 @@
 package model.image;
 
+import imageProcessing.ImageWrapper;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -46,6 +48,7 @@ public class JPanelWithFilters extends JPanel {
 	String nombreComparacion="";
 	String [][] matriz=new String [600][513];
 	int j=0;
+	ImageWrapper imagewrapper;
 	
 
 	public JPanelWithFilters() {
@@ -55,6 +58,9 @@ public class JPanelWithFilters extends JPanel {
 
 	public void loadImage(String string) {
 
+		imagewrapper = new ImageWrapper();
+		imagewrapper.setPath(string);
+		
 		displayImage = Toolkit.getDefaultToolkit().getImage(string);
 		MediaTracker mt = new MediaTracker(this);
 		mt.addImage(displayImage, 1);
@@ -89,6 +95,12 @@ public class JPanelWithFilters extends JPanel {
 		bufimageHeight = 480;
 		if (bufimageHeight > imageHeight)
 			bufimageHeight = imageHeight;
+		
+		
+		imagewrapper.setBufimageHeight(bufimageHeight);
+		imagewrapper.setBufimageWidth(bufimageWidth);
+		imagewrapper.setImageHeight(imageHeight);
+		imagewrapper.setImageWidth(imageWidth);
 
 		bi = new BufferedImage(imageWidth, imageHeight,
 				BufferedImage.TYPE_INT_ARGB);
@@ -98,6 +110,9 @@ public class JPanelWithFilters extends JPanel {
 		// BufferedImage.TYPE_INT_ARGB);
 
 		big = bi.createGraphics();
+		
+		imagewrapper.setBufferedImage(bi);
+		
 		big.drawImage(displayImage, 0, 0, bufimageWidth, bufimageHeight, this);
 		big.dispose();
 

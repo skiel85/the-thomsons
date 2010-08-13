@@ -9,7 +9,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -29,7 +32,9 @@ import model.filters.Parameter;
 import model.image.BufferedImageChanges;
 import model.image.JPanelWithFilters;
 import model.image.Selector;
+import vectorization.FourierTransformer;
 import vectorization.Signature;
+import vectorization.index.MetricHandler;
 
 import components.ImageFileView;
 import components.ImageFilter;
@@ -66,6 +71,11 @@ public class MainWindow extends JFrame  {
 	private JLabel filterParamLabels[] = new JLabel[MAX_PARAMS];
 	private String nombreOriginal="";
 	
+	Hashtable<String, List<vectorization.Point>> fourierPoints = new Hashtable<String, List<vectorization.Point>>();
+	boolean firstRun = true;
+	String signatureFilePath = "SignatureFile.txt";
+	String indexFilePath = "index";
+	
 	
 //	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
@@ -96,7 +106,7 @@ public class MainWindow extends JFrame  {
 
 		this.setContentPane(getJContentPane());
 
-		this.setTitle("Reconocedor de Rostros v0.6");
+		this.setTitle("Reconocedor de Rostros v0.7");
 
 	}
 
@@ -135,6 +145,15 @@ public class MainWindow extends JFrame  {
 			jContentPane.add(getJButtonDarken(), null);
 			jContentPane.add(getJButtonBlancoNegro(), null);
 
+			//Indice y Firmas
+			try {
+				indexFilePath = (new File (indexFilePath)).getAbsolutePath();
+				signatureFilePath = (new File (signatureFilePath)).getAbsolutePath();
+				MetricHandler.buildIndex(signatureFilePath, indexFilePath);
+				System.out.println("Indice creado con exito");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		return jContentPane;
@@ -379,15 +398,22 @@ public class MainWindow extends JFrame  {
 
 				System.out.println("mouseClicked() on binarizar");
 
-				jContentPane.detectarBorde();
+				//ImageWrapper imagewrapper;
+				//imagewrapper = new ImageWrapper();
+				java.awt.Point[] pointArray = jContentPane.detectarBorde();
+				List<vectorization.Point> pointList = new LinkedList<vectorization.Point>();
+				for (int i=0;i<pointArray.length;i++){
+					pointList.add(new vectorization.Point(pointArray[i].getX(),pointArray[i].getY()));
+				}
+				List<vectorization.Point> pointResultList = new LinkedList<vectorization.Point>();
 				
-				//jContentPane.transformadaFourier();
+				pointResultList.addAll(FourierTransformer.transform(pointList));
 				//vectorization.Point[] points = jContentPane.transformadaFourier2(nombreOriginal);
 				
 				Signature s = new Signature();
-				//s.setPoints(Arrays.asList(points));
-				s.setImagePath(nombreOriginal);
-				s.Save("SignatureFile.txt");
+				s.setPoints(pointResultList);
+				s.setImagePath((new File (nombreOriginal)).getAbsolutePath());
+				s.Save(signatureFilePath);
 
 			}
 		};

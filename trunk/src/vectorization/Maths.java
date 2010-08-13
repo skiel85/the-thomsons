@@ -19,7 +19,7 @@ public class Maths {
     public static List<Point> SubstractVectors(List<Point> v1, List<Point> v2){
         
         if( v1.size() != v2.size() )
-            throw new ArithmeticException("Los vectores tienen q tener el mismo tamaño");
+            throw new ArithmeticException("Los vectores tienen q tener el mismo tamanyo");
 
         List<Point> result = new LinkedList<Point>();
 
