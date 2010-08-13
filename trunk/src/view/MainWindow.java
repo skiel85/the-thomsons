@@ -107,7 +107,7 @@ public class MainWindow extends JFrame  {
 
 		this.setContentPane(getJContentPane());
 
-		this.setTitle("Reconocedor de Rostros v0.7");
+		this.setTitle("Reconocedor de Rostros v0.8");
 
 	}
 
@@ -167,7 +167,7 @@ public class MainWindow extends JFrame  {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				System.out.println("mouseClicked()");
 		        //Set up the file chooser.
-		        if (fc == null) {
+ /*		        if (fc == null) {
 		            fc = new JFileChooser();
 
 			    //Add a custom file filter and disable the default
@@ -194,52 +194,59 @@ public class MainWindow extends JFrame  {
 
 		        //Reset the file chooser for the next time it's shown.
 		        fc.setSelectedFile(null);
-		        
+	*/	        
 		        
 		        
 		        ///TODO borrar las imagenes no seleccionadas
 		        
-		        //TODO hacer lo siguiente para cada archivo
-		        
-		        JFrame frame = new JFrame("Selector");
+				
+				
+				
+				File directory = new File("READY");
+				String[] photos = directory.list();
+				
+				JFrame frame = new JFrame("Selector");
 		        frame.setSize(600, 600);
-		       
-		        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		        String relativePath = "READY\\7_117_P.jpg";
-		        
-	        
-		        //Create and set up the content pane.
-		        //JComponent newContentPane = new Selector("POSSIBLES","READY");
+		
 		        JPanelWithFilters newContentPane = new JPanelWithFilters(0,0);
 		        frame.setContentPane(newContentPane);
 		        newContentPane.setLayout(null);
 		        newContentPane.setOpaque(true); //content panes must be opaque
-		        
-		        
-		        //Cargar imagen
-		        newContentPane.loadImage(relativePath);
-
-			   	newContentPane.binarizeLUT(jSliderBinarizar.getValue());
-			   	newContentPane.applyFilterWithLookUpTable();
-			   	
-			   	
-				List<vectorization.Point> pointList = newContentPane.detectarBorde();
-
-				List<vectorization.Point> pointResultList = new LinkedList<vectorization.Point>();				
-				pointResultList.addAll(FourierTransformer.transform(pointList));
-				
-				signature = new Signature();
-				signature.setPoints(pointResultList);
-				signature.setImagePath((new File (nombreOriginal)).getAbsolutePath());
-				signature.Save(signatureFilePath);
-
-		        //Display the window.
-		        newContentPane.repaint();
+		        		        
+				for (String imagePath : photos){
+					
+					if (isCorrectFormat(imagePath)) {
+								       
+				        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				       // String relativePath = "7_117_P";
+	
+						String imageNameOnly = imagePath.split("[.]")[0];
+						String fullImagePath = (new File ("READY\\"+imagePath)).getAbsolutePath();
+			               
+				        //Cargar imagen
+				        newContentPane.loadImage(fullImagePath);
+		
+					   	newContentPane.binarizeLUT(jSliderBinarizar.getValue());
+					   	newContentPane.applyFilterWithLookUpTable();
+					   	
+					   	
+						List<vectorization.Point> pointList = newContentPane.detectarBorde();
+		
+						List<vectorization.Point> pointResultList = new LinkedList<vectorization.Point>();				
+						pointResultList.addAll(FourierTransformer.transform(pointList));
+						
+						signature = new Signature();
+						signature.setPoints(pointResultList);
+						signature.setImagePath(fullImagePath);
+						signature.Save(signatureFilePath);
+		
+				        //Display the window.
+				        newContentPane.repaint();
+					}
+				}
 		       //frame.pack();
 		        frame.setVisible(false);
 		        
-		        ///TODO hasta aca
 		        
 		        //TODO borrar todos los archivos procesados
 		        
@@ -449,7 +456,7 @@ public class MainWindow extends JFrame  {
 				signature = new Signature();
 				signature.setPoints(pointResultList);
 				signature.setImagePath((new File (nombreOriginal)).getAbsolutePath());
-				signature.Save(signatureFilePath);
+			//	signature.Save(signatureFilePath);
 				
 				jContentPane.repaint();
 			}
@@ -476,6 +483,22 @@ public class MainWindow extends JFrame  {
 		            for (Signature sign : results) {
 		                System.out.println(sign.getImagePath());
 		            }
+		            
+					JFrame frame = new JFrame("MAS PARECIDA: "+ results.get(0).getImagePath());
+			        frame.setSize(600, 600);
+			
+			        JPanelWithFilters newContentPane = new JPanelWithFilters(0,0);
+			        frame.setContentPane(newContentPane);
+			        newContentPane.setLayout(null);
+			        newContentPane.setOpaque(true); //content panes must be opaque
+			        		        
+			        String path = results.get(0).getImagePath().split("READY_")[1];
+			        path = "READY\\" + path;
+					newContentPane.loadImage((new File(path)).getAbsolutePath());
+					
+			        newContentPane.repaint();	
+			        frame.setVisible(true);	
+		            
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -556,76 +579,62 @@ public class MainWindow extends JFrame  {
 		MouseListener l = new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				
-			//	File directory = new File("POSSIBLES");
-			//	String[] photos = directory.list();
+				File directory = new File("POSSIBLES");
+				String[] photos = directory.list();
 				
-				
-		        JFrame frame = new JFrame("Selector");
+				JFrame frame = new JFrame("Selector");
 		        frame.setSize(600, 600);
-		       
-		        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		        String relativePath = "7_117_P";
-		        
-		        
-		        //Create and set up the content pane.
-		        //JComponent newContentPane = new Selector("POSSIBLES","READY");
+		
 		        JPanelWithFilters newContentPane = new JPanelWithFilters(0,0);
 		        frame.setContentPane(newContentPane);
 		        newContentPane.setLayout(null);
 		        newContentPane.setOpaque(true); //content panes must be opaque
-		        
-		        
-		        //Cargar imagen
-		        newContentPane.loadImage(relativePath);
-		        
-
-		        // Aplico Filtros
-		        CustomFilters filter = CustomFilters.SHARPENV3FILTER;
-		        newContentPane.setFilter(filter.filter);
-		        newContentPane.applyFilter(filter);
-		        
-		        filter = CustomFilters.GAUSSLOWV3FILTER;
-		        newContentPane.setFilter(filter.filter);
-		        newContentPane.applyFilter(filter);
-		         
-		        //filter = CustomFilters.BicubicScaleFilter;
-		        //filter.filter.setParameterAt(0, new Integer(164));
-		        //filter.filter.setParameterAt(1, new Integer(164));
-		        //newContentPane.setFilter(filter.filter);
-		        //newContentPane.applyFilter(filter);
-	
-		        filter = CustomFilters.GrayscaleFilter;
-		        newContentPane.setFilter(filter.filter);
-		        newContentPane.applyFilter(filter);
-		        
-		      // filter = CustomFilters.OtsuThresholder;
-		      // newContentPane.setFilter(filter.filter);
-		      // newContentPane.applyOtsuFilter(filter);
-		        
-			   	newContentPane.binarizeLUT(jSliderBinarizar.getValue());
-			   	newContentPane.applyFilterWithLookUpTable();
-			   	
-			   	newContentPane.guardarImagen("READY\\"+relativePath);
-			   	
-		        
-/*
-				List<vectorization.Point> pointList = newContentPane.detectarBorde();
-
-				List<vectorization.Point> pointResultList = new LinkedList<vectorization.Point>();				
-				pointResultList.addAll(FourierTransformer.transform(pointList));
+		        		        
+				for (String imagePath : photos){
+					
+					String imageNameOnly = imagePath.split("[.]")[0];
+					String fullImagePath = (new File ("POSSIBLES\\"+imagePath)).getAbsolutePath();
+					
+					if (isCorrectFormat(imagePath) && newContentPane.loadImage(fullImagePath)){
+					
+				        // Aplico Filtros
+				        CustomFilters filter = CustomFilters.SHARPENV3FILTER;
+				        newContentPane.setFilter(filter.filter);
+				        newContentPane.applyFilter(filter);
+				        
+				        filter = CustomFilters.GAUSSLOWV3FILTER;
+				        newContentPane.setFilter(filter.filter);
+				        newContentPane.applyFilter(filter);
+				         
+				        //filter = CustomFilters.BicubicScaleFilter;
+				        //filter.filter.setParameterAt(0, new Integer(164));
+				        //filter.filter.setParameterAt(1, new Integer(164));
+				        //newContentPane.setFilter(filter.filter);
+				        //newContentPane.applyFilter(filter);
+			
+				        filter = CustomFilters.GrayscaleFilter;
+				        newContentPane.setFilter(filter.filter);
+				        newContentPane.applyFilter(filter);
+				        
+				      // filter = CustomFilters.OtsuThresholder;
+				      // newContentPane.setFilter(filter.filter);
+				      // newContentPane.applyOtsuFilter(filter);
+				        
+					   	newContentPane.binarizeLUT(jSliderBinarizar.getValue());
+					   	newContentPane.applyFilterWithLookUpTable();
+					   	
+					   	newContentPane.guardarImagen("READY\\"+imageNameOnly+"_LISTO");
+					   	
+				        //Display the window.
+				        newContentPane.repaint();	
+					}
+				}
 				
-				signature = new Signature();
-				signature.setPoints(pointResultList);
-				signature.setImagePath((new File (nombreOriginal)).getAbsolutePath());
-				signature.Save(signatureFilePath);
-		      */ 	
-		       	
-		        //Display the window.
-		        newContentPane.repaint();
-		       //frame.pack();
-		        frame.setVisible(false);
+			    //frame.pack();
+		        frame.setVisible(false);	
 		        
+		        System.out.println("--YA SE PROCESARON TODAS LAS IMAGENES--");
+		    
 			}
 		};
 		return Buttoner.getButtonGeneric(jButtonMultiProcess, "Process Multiple",152,25,380+90,57,l);

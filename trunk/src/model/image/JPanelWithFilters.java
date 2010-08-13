@@ -58,7 +58,7 @@ public class JPanelWithFilters extends JPanel {
 		this.posIniY = posIniY;
 	}
 
-	public void loadImage(String string) {
+	public boolean loadImage(String string) {
 
 		imagewrapper = new ImageWrapper();
 		imagewrapper.setPath(string);
@@ -73,9 +73,10 @@ public class JPanelWithFilters extends JPanel {
 		}
 		if (displayImage.getWidth(this) == -1) {
 			System.out.println("No image file");
-			System.exit(0);
+			return false;
 		}
 		createBufferedImage();
+		return true;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -197,6 +198,7 @@ public class JPanelWithFilters extends JPanel {
 
 		try {
 			ImageIO.write(rend, "png", new File(nombre + ".png"));
+			System.out.println("Se creo el archivo: " +nombre+".png");
 		} catch (IOException e) {
 			System.out.println("Error de escritura");
 		}

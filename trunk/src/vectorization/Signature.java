@@ -27,6 +27,7 @@ public class Signature {
             out.newLine();
             //Close the output stream
             out.close();
+            System.out.println("Se escribio la firma: " + this.toString());
         } catch (Exception e) {//Catch exception if any
             System.err.println("Error: " + e.getMessage());
         }
