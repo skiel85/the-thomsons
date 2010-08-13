@@ -39,6 +39,13 @@ public class VectorBuilder {
     {
         return vectorDown;
     }
+    
+    public VectorBuilder(BufferedImage image, Point[] points){
+    	this.image = image;
+    	for (int i=0; i<points.length; i++){
+    		vectorCenter.add(points[i]);
+    	}
+    }
 
     public VectorBuilder(BufferedImage image, Face face){
         this.image = image;
