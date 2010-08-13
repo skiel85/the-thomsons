@@ -15,18 +15,15 @@ import java.awt.image.LookupOp;
 import java.awt.image.LookupTable;
 import java.awt.image.RenderedImage;
 import java.awt.image.ShortLookupTable;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import model.filters.AbstractBufferedImageOp;
-import model.filters.ConvolveFilter;
 import model.filters.CustomFilters;
 import vectorization.Point;
 
@@ -44,16 +41,21 @@ public class JPanelWithFilters extends JPanel {
 	int bufimageHeight;
 	Point[] points;
 	Point puntoCentro;
-	boolean sigue=false;
-	String nombreComparacion="";
-	String [][] matriz=new String [600][513];
 	int j=0;
 	ImageWrapper imagewrapper;
+	int posIniX = 40;
+	int posIniY = 120;
 	
 
 	public JPanelWithFilters() {
 
 		super();
+	}
+	
+	public JPanelWithFilters(int posIniX, int posIniY) {
+		super();
+		this.posIniX = posIniX;
+		this.posIniY = posIniY;
 	}
 
 	public void loadImage(String string) {
@@ -80,7 +82,7 @@ public class JPanelWithFilters extends JPanel {
 
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D) g;
-		g2D.drawImage(bi, 40, 120, this);
+		g2D.drawImage(bi, posIniX, posIniY, this);
 		// g2D.drawImage(bi.getScaledInstance(640, 480,
 		// Image.SCALE_AREA_AVERAGING), 0, 0, this);
 	}
@@ -150,52 +152,6 @@ public class JPanelWithFilters extends JPanel {
 
 	}
 
-	public void contrastIncLUT() {
-
-		short brighten[] = new short[256];
-		for (int i = 0; i < 256; i++) {
-			short pixelValue = (short) (i * 1.2);
-			if (pixelValue > 255)
-				pixelValue = 255;
-			else if (pixelValue < 0)
-				pixelValue = 0;
-			brighten[i] = pixelValue;
-		}
-		lookupTable = new ShortLookupTable(0, brighten);
-
-	}
-
-	public void contrastDecLUT() {
-
-		short brighten[] = new short[256];
-		for (int i = 0; i < 256; i++) {
-			short pixelValue = (short) (i / 1.2);
-			if (pixelValue > 255)
-				pixelValue = 255;
-			else if (pixelValue < 0)
-				pixelValue = 0;
-			brighten[i] = pixelValue;
-		}
-		lookupTable = new ShortLookupTable(0, brighten);
-	}
-
-	public void reverseLUT() {
-
-		byte reverse[] = new byte[256];
-		for (int i = 0; i < 256; i++) {
-			reverse[i] = (byte) (255 - i);
-		}
-		lookupTable = new ByteLookupTable(0, reverse);
-	}
-
-	public void identityLUT() {
-
-		byte reverse[] = new byte[256];
-		for (int i = 0; i < 256; i++) {
-			reverse[i] = (byte) (i);
-		}
-		lookupTable = new ByteLookupTable(0, reverse);
-	}
 
 	public void binarizeLUT(int valor) {
 
@@ -211,14 +167,6 @@ public class JPanelWithFilters extends JPanel {
 		lookupTable = new ByteLookupTable(0, reverse);
 	}
 
-	public void toGrayScale() {
-
-		ColorSpace colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
-		ColorConvertOp op = new ColorConvertOp(colorSpace, null);
-
-		BufferedImageChanges.getInstance().changeImage(bi);
-		bi = op.filter(bi, null);
-	}
 
 	public void reset() {
 		createBufferedImage();
@@ -238,10 +186,17 @@ public class JPanelWithFilters extends JPanel {
 	}
 
 	public void guardarImagen(String nombre) {
-		RenderedImage rend = bi;
+		//RenderedImage rend = bi;
+		BufferedImage aux = new BufferedImage(bufimageWidth, bufimageHeight,
+								BufferedImage.TYPE_INT_ARGB);
+		for (int x=0;x<bufimageWidth;x++)
+			for (int y=0;y<bufimageHeight;y++)
+				aux.setRGB(x, y, bi.getRGB(x, y));
+
+		RenderedImage rend = aux;
 
 		try {
-			ImageIO.write(rend, "jpg", new File(nombre + ".jpg"));
+			ImageIO.write(rend, "png", new File(nombre + ".png"));
 		} catch (IOException e) {
 			System.out.println("Error de escritura");
 		}
@@ -252,32 +207,35 @@ public class JPanelWithFilters extends JPanel {
 		bi = BufferedImageChanges.getInstance().undo();
 	}
 
-	public Point[] detectarBorde() {
+	public List<vectorization.Point> detectarBorde() {
 		Bordeador bordeador = new Bordeador(bi, bufimageWidth, bufimageHeight);
 		points = bordeador.bordear();
 		puntoCentro=bordeador.faceCenter;
 		
-		return points;
+		List<vectorization.Point> pointList = new LinkedList<vectorization.Point>();
+		for (int i=0;i<points.length;i++){
+			pointList.add(new vectorization.Point(points[i].getX(),points[i].getY()));
+		}
+		return pointList;
 	}
 
 	public void setFilter(AbstractBufferedImageOp filter) {
 		this.filter = filter;
 	}
 
-	public void applyNewFilters(ConvolveFilter filter) {
-		// Kernel kernel = filter.getKernel();
-		// ConvolveOp op = new ConvolveOp(kernel);
-		BufferedImageChanges.getInstance().changeImage(bi);
-		// bi = op.filter(bi, null);
-		bi = filter.filter(bi, null);
-	}
-
-
 
 	public void applyFilter(CustomFilters filter2) {
 		BufferedImageChanges.getInstance().changeImage(bi);
 		bi = filter2.filter.filter(bi, null);
 
+	}
+	
+	public void applyOtsuFilter(CustomFilters filter2){
+		BufferedImage result = new BufferedImage( bi.getWidth(),	bi.getHeight(), BufferedImage.TYPE_BYTE_GRAY );
+			
+		result = filter2.filter.filter(bi,result);	
+		
+		bi = result;
 	}
 
 }
