@@ -10,13 +10,13 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
@@ -31,12 +31,17 @@ import model.image.JPanelWithFilters;
 import model.image.Selector;
 import vectorization.Signature;
 
+import components.ImageFileView;
+import components.ImageFilter;
+import components.ImagePreview;
+
 @SuppressWarnings("serial")
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame  {
 
 
 	private JPanelWithFilters jContentPane = null;
 	private JLabel jLabelFoto = null;
+    private JFileChooser fc;
 
 	private JButton jButtonReset = null;
 	private JButton jButtonDeshacer = null;
@@ -123,7 +128,8 @@ public class MainWindow extends JFrame {
 			jContentPane.add(getJButtonDeshacer(), null);
 			jContentPane.add(getJButtonAlmacenar(), null);
 			jContentPane.add(getJButtonSimilar(), null);
-
+			jContentPane.add(getJButtonAttach(), null);
+			
 			//Filtros
 			jContentPane.add(getFilterCombo());
 			jContentPane.add(getJButtonDarken(), null);
@@ -133,6 +139,43 @@ public class MainWindow extends JFrame {
 
 		return jContentPane;
 
+	}
+
+	private JButton getJButtonAttach() {
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				System.out.println("mouseClicked()");
+		        //Set up the file chooser.
+		        if (fc == null) {
+		            fc = new JFileChooser();
+
+			    //Add a custom file filter and disable the default
+			    //(Accept All) file filter.
+		            fc.addChoosableFileFilter(new ImageFilter());
+		            fc.setAcceptAllFileFilterUsed(false);
+
+		            fc.setMultiSelectionEnabled(true);
+			    //Add custom icons for file types.
+		            fc.setFileView(new ImageFileView());
+
+			    //Add the preview pane.
+		            fc.setAccessory(new ImagePreview(fc));
+		        }
+
+		        //Show it.
+		        int returnVal = fc.showDialog(MainWindow.this,
+		                                      "Attach");
+
+		        //Process the results.
+		        if (returnVal == JFileChooser.APPROVE_OPTION) {
+		            File[] file = fc.getSelectedFiles();
+		        }
+
+		        //Reset the file chooser for the next time it's shown.
+		        fc.setSelectedFile(null);
+			}
+		};
+		return Buttoner.getButtonGeneric(jButtonAlmacenar, "Seleccionar...",184,28,700,450+210,l);
 	}
 
 	private Component getFilterCombo() {
@@ -465,4 +508,5 @@ public class MainWindow extends JFrame {
 		};
 		return Buttoner.getButtonGeneric(jButtonReset, "Reset",80,25,380,57,l);
 	}
+
 }
