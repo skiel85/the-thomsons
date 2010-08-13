@@ -55,7 +55,7 @@ public class MainWindow extends JFrame  {
 	private JButton jButtonBinarizar = null;
 	private JButton jButtonDarken = null;
 	private JButton jButtonGrays = null;
-	private JButton jButtonReversa = null;
+	private JButton jButtonDetectar = null;
 	private JSlider jSliderBinarizar = null;
 	//private String nombre, nombreOriginal = "";
 	private JButton jButtonMultiProcess = null;
@@ -75,6 +75,7 @@ public class MainWindow extends JFrame  {
 	boolean firstRun = true;
 	String signatureFilePath = "SignatureFile.txt";
 	String indexFilePath = "index";
+	Signature signature;
 	
 	
 //	@SuppressWarnings("static-access")
@@ -139,6 +140,7 @@ public class MainWindow extends JFrame  {
 			jContentPane.add(getJButtonAlmacenar(), null);
 			jContentPane.add(getJButtonSimilar(), null);
 			jContentPane.add(getJButtonAttach(), null);
+			jContentPane.add(getJButtonDetectarCara(), null);
 			
 			//Filtros
 			jContentPane.add(getFilterCombo());
@@ -192,6 +194,56 @@ public class MainWindow extends JFrame  {
 
 		        //Reset the file chooser for the next time it's shown.
 		        fc.setSelectedFile(null);
+		        
+		        
+		        
+		        ///TODO borrar las imagenes no seleccionadas
+		        
+		        //TODO hacer lo siguiente para cada archivo
+		        
+		        JFrame frame = new JFrame("Selector");
+		        frame.setSize(600, 600);
+		       
+		        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		        String relativePath = "READY\\7_117_P.jpg";
+		        
+	        
+		        //Create and set up the content pane.
+		        //JComponent newContentPane = new Selector("POSSIBLES","READY");
+		        JPanelWithFilters newContentPane = new JPanelWithFilters(0,0);
+		        frame.setContentPane(newContentPane);
+		        newContentPane.setLayout(null);
+		        newContentPane.setOpaque(true); //content panes must be opaque
+		        
+		        
+		        //Cargar imagen
+		        newContentPane.loadImage(relativePath);
+
+			   	newContentPane.binarizeLUT(jSliderBinarizar.getValue());
+			   	newContentPane.applyFilterWithLookUpTable();
+			   	
+			   	
+				List<vectorization.Point> pointList = newContentPane.detectarBorde();
+
+				List<vectorization.Point> pointResultList = new LinkedList<vectorization.Point>();				
+				pointResultList.addAll(FourierTransformer.transform(pointList));
+				
+				signature = new Signature();
+				signature.setPoints(pointResultList);
+				signature.setImagePath((new File (nombreOriginal)).getAbsolutePath());
+				signature.Save(signatureFilePath);
+
+		        //Display the window.
+		        newContentPane.repaint();
+		       //frame.pack();
+		        frame.setVisible(false);
+		        
+		        ///TODO hasta aca
+		        
+		        //TODO borrar todos los archivos procesados
+		        
+		        
 			}
 		};
 		return Buttoner.getButtonGeneric(jButtonAlmacenar, "Seleccionar...",184,28,700,450+210,l);
@@ -340,7 +392,9 @@ public class MainWindow extends JFrame  {
 	private JButton getJButtonBlancoNegro() {
 		MouseListener l = new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
-				jContentPane.toGrayScale();
+		        CustomFilters filter = CustomFilters.GrayscaleFilter;
+		        jContentPane.setFilter(filter.filter);
+		        jContentPane.applyFilter(filter);
 				jContentPane.repaint();
 				buttoner.setNombreOriginal(buttoner.getNombre());
 				buttoner.setNombre(buttoner.getNombre() + "-BN");
@@ -366,23 +420,6 @@ public class MainWindow extends JFrame  {
 		return Buttoner.getButtonGeneric(jButtonDarken, "Darken",120,25,850,165,l);
 	}
 
-	private JButton getJButtonReversa() {
-		MouseListener l = new java.awt.event.MouseAdapter() {
-			public void mouseClicked(java.awt.event.MouseEvent e) {
-				jContentPane.reverseLUT();
-				jContentPane.applyFilterWithLookUpTable();
-				jContentPane.repaint();
-				buttoner.setNombreOriginal(buttoner.getNombre());
-				buttoner.setNombre(buttoner.getNombre() + "-REV");
-				
-
-				System.out.println("mouseClicked() on Invertir");
-			}
-		};
-		return Buttoner.getButtonGeneric(jButtonReversa, "Invertir",120,25,700,270,l);
-	}
-
-
 	private JButton getJButtonBinarizar() {
 		MouseListener l = new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -394,32 +431,34 @@ public class MainWindow extends JFrame  {
 				
 				buttoner.setNombreOriginal(buttoner.getNombre());
 				buttoner.setNombre(buttoner.getNombre() + "-Bin");
-
-
-				System.out.println("mouseClicked() on binarizar");
-
-				//ImageWrapper imagewrapper;
-				//imagewrapper = new ImageWrapper();
-				java.awt.Point[] pointArray = jContentPane.detectarBorde();
-				List<vectorization.Point> pointList = new LinkedList<vectorization.Point>();
-				for (int i=0;i<pointArray.length;i++){
-					pointList.add(new vectorization.Point(pointArray[i].getX(),pointArray[i].getY()));
-				}
-				List<vectorization.Point> pointResultList = new LinkedList<vectorization.Point>();
-				
-				pointResultList.addAll(FourierTransformer.transform(pointList));
-				//vectorization.Point[] points = jContentPane.transformadaFourier2(nombreOriginal);
-				
-				Signature s = new Signature();
-				s.setPoints(pointResultList);
-				s.setImagePath((new File (nombreOriginal)).getAbsolutePath());
-				s.Save(signatureFilePath);
-
 			}
 		};
-		return Buttoner.getButtonGeneric(jButtonBinarizar, "Discretizar",152,25,785,57,l);
+		return Buttoner.getButtonGeneric(jButtonBinarizar, "Binarizar",152,25,785,57,l);
 	}
-	
+		
+	private JButton getJButtonDetectarCara() {
+		
+		MouseListener l = new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent e) {
+				
+				List<vectorization.Point> pointList = jContentPane.detectarBorde();
+
+				List<vectorization.Point> pointResultList = new LinkedList<vectorization.Point>();				
+				pointResultList.addAll(FourierTransformer.transform(pointList));
+				
+				signature = new Signature();
+				signature.setPoints(pointResultList);
+				signature.setImagePath((new File (nombreOriginal)).getAbsolutePath());
+				signature.Save(signatureFilePath);
+				
+				jContentPane.repaint();
+			}
+		};
+		return Buttoner.getButtonGeneric(jButtonDetectar, "DETECTAR",100,55,650,57,l);
+	}
+
+
+
 
 //--------------- Otros Botones
 
@@ -428,7 +467,19 @@ public class MainWindow extends JFrame  {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				System.out.println("mouseClicked()");
 				
-				//jContentPane.distanciaEuclidea(nombreOriginal);
+   
+	            try {
+	            	
+					MetricHandler.loadIndexFromFile(indexFilePath);
+		            List<Signature> results = MetricHandler.queryIndex(signature, 0);
+		            System.out.println("Las firmas parecidas son: ");
+		            for (Signature sign : results) {
+		                System.out.println(sign.getImagePath());
+		            }
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+
 			}
 		};
 		return Buttoner.getButtonGeneric(jButtonSimilar, "Similar",184,28,700,370+170,l);
@@ -483,8 +534,8 @@ public class MainWindow extends JFrame  {
 			jSliderBinarizar
 					.addChangeListener(new javax.swing.event.ChangeListener() {
 						public void stateChanged(ChangeEvent e) {
-							JSlider source = (JSlider) e.getSource();
-							/*
+							/*JSlider source = (JSlider) e.getSource();
+							
 							if (!source.getValueIsAdjusting()) {
 
 								int valor = (int) source.getValue();
@@ -500,29 +551,86 @@ public class MainWindow extends JFrame  {
 		}
 		return jSliderBinarizar;
 	}
-
+	
 	private JButton getJButtonMultiProcess() {
 		MouseListener l = new java.awt.event.MouseAdapter() {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				
-				//TODO aca viene lo de Ezequiel, yo tomo las imagenes de la carpeta POSSIBLES y las dejo en READY
+			//	File directory = new File("POSSIBLES");
+			//	String[] photos = directory.list();
+				
 				
 		        JFrame frame = new JFrame("Selector");
+		        frame.setSize(600, 600);
+		       
 		        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		        String relativePath = "7_117_P";
+		        
+		        
 		        //Create and set up the content pane.
-		        JComponent newContentPane = new Selector("POSSIBLES","READY");
-		        newContentPane.setOpaque(true); //content panes must be opaque
+		        //JComponent newContentPane = new Selector("POSSIBLES","READY");
+		        JPanelWithFilters newContentPane = new JPanelWithFilters(0,0);
 		        frame.setContentPane(newContentPane);
+		        newContentPane.setLayout(null);
+		        newContentPane.setOpaque(true); //content panes must be opaque
+		        
+		        
+		        //Cargar imagen
+		        newContentPane.loadImage(relativePath);
+		        
 
+		        // Aplico Filtros
+		        CustomFilters filter = CustomFilters.SHARPENV3FILTER;
+		        newContentPane.setFilter(filter.filter);
+		        newContentPane.applyFilter(filter);
+		        
+		        filter = CustomFilters.GAUSSLOWV3FILTER;
+		        newContentPane.setFilter(filter.filter);
+		        newContentPane.applyFilter(filter);
+		         
+		        //filter = CustomFilters.BicubicScaleFilter;
+		        //filter.filter.setParameterAt(0, new Integer(164));
+		        //filter.filter.setParameterAt(1, new Integer(164));
+		        //newContentPane.setFilter(filter.filter);
+		        //newContentPane.applyFilter(filter);
+	
+		        filter = CustomFilters.GrayscaleFilter;
+		        newContentPane.setFilter(filter.filter);
+		        newContentPane.applyFilter(filter);
+		        
+		      // filter = CustomFilters.OtsuThresholder;
+		      // newContentPane.setFilter(filter.filter);
+		      // newContentPane.applyOtsuFilter(filter);
+		        
+			   	newContentPane.binarizeLUT(jSliderBinarizar.getValue());
+			   	newContentPane.applyFilterWithLookUpTable();
+			   	
+			   	newContentPane.guardarImagen("READY\\"+relativePath);
+			   	
+		        
+/*
+				List<vectorization.Point> pointList = newContentPane.detectarBorde();
+
+				List<vectorization.Point> pointResultList = new LinkedList<vectorization.Point>();				
+				pointResultList.addAll(FourierTransformer.transform(pointList));
+				
+				signature = new Signature();
+				signature.setPoints(pointResultList);
+				signature.setImagePath((new File (nombreOriginal)).getAbsolutePath());
+				signature.Save(signatureFilePath);
+		      */ 	
+		       	
 		        //Display the window.
-		        frame.pack();
-		        frame.setVisible(true);
+		        newContentPane.repaint();
+		       //frame.pack();
+		        frame.setVisible(false);
 		        
 			}
 		};
 		return Buttoner.getButtonGeneric(jButtonMultiProcess, "Process Multiple",152,25,380+90,57,l);
 	}
+
 
 	private JButton getJButtonReset() {
 		MouseListener l = new java.awt.event.MouseAdapter() {

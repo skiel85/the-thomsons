@@ -23,6 +23,7 @@ public enum CustomFilters {
 	SHARPENFILTER ("Sharpen","SHA",new SharpenFilter()),
 	//Filters Varios
 	_DUMMY_VARIOUS ("-Various Filters-","DM2",null),
+	OtsuThresholder ("OtsuThresholder","OTS",new OtsuThresholder()),
 	BOXBLURFILTER ( "BoxBlur", "BBF",new BoxBlurFilter()),
 	BicubicScaleFilter ("BicubicScaleFilter", "BSF", new BicubicScaleFilter()),
 	BlockFilter("BlockFilter","BKF",new BlockFilter()),
