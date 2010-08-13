@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +19,6 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,7 +31,6 @@ import model.filters.CustomFilters;
 import model.filters.Parameter;
 import model.image.BufferedImageChanges;
 import model.image.JPanelWithFilters;
-import model.image.Selector;
 import vectorization.FourierTransformer;
 import vectorization.Signature;
 import vectorization.index.MetricHandler;
@@ -167,8 +166,8 @@ public class MainWindow extends JFrame  {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				System.out.println("mouseClicked()");
 		        //Set up the file chooser.
- /*		        if (fc == null) {
-		            fc = new JFileChooser();
+ 		        if (fc == null) {
+		            fc = new JFileChooser("READY");
 
 			    //Add a custom file filter and disable the default
 			    //(Accept All) file filter.
@@ -190,62 +189,56 @@ public class MainWindow extends JFrame  {
 		        //Process the results.
 		        if (returnVal == JFileChooser.APPROVE_OPTION) {
 		            File[] file = fc.getSelectedFiles();
-		        }
 
-		        //Reset the file chooser for the next time it's shown.
-		        fc.setSelectedFile(null);
-	*/	        
+			        //Reset the file chooser for the next time it's shown.
+			        fc.setSelectedFile(null);
 		        
+			        /**TODO borrar las imagenes no seleccionadas (al final no las vamos a borrar)*/
 		        
-		        ///TODO borrar las imagenes no seleccionadas
-		        
-				
-				
-				
-				File directory = new File("READY");
-				String[] photos = directory.list();
-				
-				JFrame frame = new JFrame("Selector");
-		        frame.setSize(600, 600);
-		
-		        JPanelWithFilters newContentPane = new JPanelWithFilters(0,0);
-		        frame.setContentPane(newContentPane);
-		        newContentPane.setLayout(null);
-		        newContentPane.setOpaque(true); //content panes must be opaque
-		        		        
-				for (String imagePath : photos){
+//					File directory = new File("READY");
+//					String[] photos = directory.list();
 					
-					if (isCorrectFormat(imagePath)) {
-								       
-				        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				       // String relativePath = "7_117_P";
-	
-						String imageNameOnly = imagePath.split("[.]")[0];
-						String fullImagePath = (new File ("READY\\"+imagePath)).getAbsolutePath();
-			               
-				        //Cargar imagen
-				        newContentPane.loadImage(fullImagePath);
+					JFrame frame = new JFrame("Selector");
+			        frame.setSize(600, 600);
+			
+			        JPanelWithFilters newContentPane = new JPanelWithFilters(0,0);
+			        frame.setContentPane(newContentPane);
+			        newContentPane.setLayout(null);
+			        newContentPane.setOpaque(true); //content panes must be opaque
+			        		        
+					for (File imageFile : Arrays.asList(file)){
+						String imagePath = imageFile.getPath();
+						if (isCorrectFormat(imagePath)) {
+									       
+					        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					       // String relativePath = "7_117_P";
 		
-					   	newContentPane.binarizeLUT(jSliderBinarizar.getValue());
-					   	newContentPane.applyFilterWithLookUpTable();
-					   	
-					   	
-						List<vectorization.Point> pointList = newContentPane.detectarBorde();
-		
-						List<vectorization.Point> pointResultList = new LinkedList<vectorization.Point>();				
-						pointResultList.addAll(FourierTransformer.transform(pointList));
-						
-						signature = new Signature();
-						signature.setPoints(pointResultList);
-						signature.setImagePath(fullImagePath);
-						signature.Save(signatureFilePath);
-		
-				        //Display the window.
-				        newContentPane.repaint();
+//							String fullImagePath = (new File ("READY\\"+imagePath)).getAbsolutePath();
+				               
+					        //Cargar imagen
+					        newContentPane.loadImage(imagePath);
+			
+						   	newContentPane.binarizeLUT(jSliderBinarizar.getValue());
+						   	newContentPane.applyFilterWithLookUpTable();
+						   	
+						   	
+							List<vectorization.Point> pointList = newContentPane.detectarBorde();
+			
+							List<vectorization.Point> pointResultList = new LinkedList<vectorization.Point>();				
+							pointResultList.addAll(FourierTransformer.transform(pointList));
+							
+							signature = new Signature();
+							signature.setPoints(pointResultList);
+							signature.setImagePath(imagePath);
+							signature.Save(signatureFilePath);
+			
+					        //Display the window.
+					        newContentPane.repaint();
+						}
 					}
-				}
-		       //frame.pack();
-		        frame.setVisible(false);
+			       //frame.pack();
+			        frame.setVisible(false);
+		        }
 		        
 		        
 		        //TODO borrar todos los archivos procesados
