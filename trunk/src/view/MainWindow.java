@@ -272,27 +272,7 @@ public class MainWindow extends JFrame {
 	}
 
 
-//--------------- AbstractFilters
-/*	private JButton getJButtonSharpenV3() {
-		return buttoner.getButtonAbstractFilter(jButtonFiltro1, "SharpenV3",120,25,700,165,new SharpenV3Filter());
-	}
 
-	private JButton getJButtonSharpenV2() {
-		return buttoner.getButtonAbstractFilter(jButtonSharpenV2, "SharpenV2",120,25,700,236,new SharpenV2Filter());
-	}
-	
-	private JButton getJButtonLowFilter() {
-		return buttoner.getButtonAbstractFilter(jButtonFiltro2, "Low Filter",120,25,850,236,new LowFilter());
-	}
-
-	private JButton getJButtonSmooth() {
-		return buttoner.getButtonAbstractFilter(jButtonFiltro3, "Smooth",120,25,850,165,new SmoothFilter());
-	}
-	
-	private JButton getJButtonGaussLowV3() {
-		return buttoner.getButtonAbstractFilter(jButtonGaussLowV3, "GaussLowV3",120,25,850,270, new GaussLowV3Filter());
-	}
-*/
 
 //--------------- LUT Table Filters
 	private JButton getJButtonBlancoNegro() {
@@ -359,10 +339,10 @@ public class MainWindow extends JFrame {
 				jContentPane.detectarBorde();
 				
 				//jContentPane.transformadaFourier();
-				vectorization.Point[] points = jContentPane.transformadaFourier2(nombreOriginal);
+				//vectorization.Point[] points = jContentPane.transformadaFourier2(nombreOriginal);
 				
 				Signature s = new Signature();
-				s.setPoints(Arrays.asList(points));
+				//s.setPoints(Arrays.asList(points));
 				s.setImagePath(nombreOriginal);
 				s.Save("SignatureFile.txt");
 
@@ -379,7 +359,7 @@ public class MainWindow extends JFrame {
 			public void mouseClicked(java.awt.event.MouseEvent e) {
 				System.out.println("mouseClicked()");
 				
-				jContentPane.distanciaEuclidea(nombreOriginal);
+				//jContentPane.distanciaEuclidea(nombreOriginal);
 			}
 		};
 		return Buttoner.getButtonGeneric(jButtonSimilar, "Similar",184,28,700,370+170,l);
